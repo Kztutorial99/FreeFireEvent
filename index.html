@@ -546,45 +546,48 @@
       background: var(--ff-card);
       border: 1px solid rgba(255,107,0,0.25);
       border-radius: 20px;
-      padding: 24px 26px;
-      display: flex; align-items: center; gap: 20px;
-      flex-wrap: wrap;
+      padding: 22px 20px;
+      display: flex; align-items: center; gap: 18px;
     }
     .lt-icon {
-      width: 54px; height: 54px; flex-shrink: 0;
+      width: 48px; height: 48px; flex-shrink: 0;
       background: rgba(255,107,0,0.1);
       border: 1px solid rgba(255,107,0,0.2);
-      border-radius: 16px;
+      border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
     }
-    .lt-icon svg { width: 26px; height: 26px; }
+    .lt-icon svg { width: 22px; height: 22px; }
     .lt-info { flex: 1; min-width: 0; }
     .lt-title {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 17px; font-weight: 700; color: #fff;
-      margin-bottom: 5px;
+      font-size: 16px; font-weight: 700; color: #fff;
+      margin-bottom: 4px;
     }
-    .lt-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 10px; }
-    .lt-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lt-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.55; margin-bottom: 10px; }
+    .lt-badges { display: flex; flex-wrap: wrap; gap: 5px; }
     .lt-badge {
-      font-size: 11px; color: rgba(255,255,255,0.55);
+      font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5);
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px; padding: 3px 10px;
+      border-radius: 20px; padding: 3px 9px;
     }
     .lt-btn {
-      display: inline-flex; align-items: center; gap: 9px;
-      padding: 13px 24px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px;
       background: linear-gradient(135deg, #FF6B00, #FF2D2D);
       color: #fff; font-family: 'Orbitron', sans-serif;
-      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
       border: none; border-radius: 12px; cursor: pointer;
       white-space: nowrap; flex-shrink: 0;
       transition: opacity 0.18s, transform 0.15s;
       outline: none; -webkit-tap-highlight-color: transparent;
     }
-    .lt-btn svg { width: 17px; height: 17px; }
+    .lt-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
     .lt-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    @media (max-width: 560px) {
+      .login-teaser { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 16px; }
+      .lt-btn { width: 100%; }
+    }
 
     /* Form reveal animation */
     @keyframes formReveal {
@@ -1026,9 +1029,9 @@
         <div class="lt-title">Login untuk Klaim Kode Redeem</div>
         <div class="lt-desc">Hubungkan akun Free Fire kamu via Google atau Facebook untuk membuka dan mengklaim kode redeem eksklusif event ini.</div>
         <div class="lt-badges">
-          <span class="lt-badge">🎁 Kode Eksklusif</span>
-          <span class="lt-badge">⚡ Klaim Instan</span>
-          <span class="lt-badge">🔒 Aman & Terverifikasi</span>
+          <span class="lt-badge">Kode Eksklusif</span>
+          <span class="lt-badge">Klaim Instan</span>
+          <span class="lt-badge">Aman &amp; Terverifikasi</span>
         </div>
       </div>
       <button class="lt-btn" onclick="showLoginForm()">
