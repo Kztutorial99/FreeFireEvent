@@ -1,0 +1,13 @@
+{
+  "name": "ff-kickoff-event",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "nodemailer": "^6.10.1",
+    "resend": "^6.12.4"
+  }
+}
