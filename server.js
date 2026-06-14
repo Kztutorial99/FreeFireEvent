@@ -153,10 +153,11 @@ ${LINE}
         { text: '📤 Export',       callback_data: 'export' }
       ],
       [
-        { text: '🗑️ Hapus Data',  callback_data: 'confirm_clear' },
-        { text: 'ℹ️ Info Bot',     callback_data: 'info'  }
+        { text: '🗑️ Hapus Semua', callback_data: 'confirm_clear' },
+        { text: '🔢 Hapus No',     callback_data: 'delete_num_prompt' }
       ],
       [
+        { text: 'ℹ️ Info Bot',     callback_data: 'info'  },
         { text: '🔄 Refresh Menu', callback_data: 'menu' }
       ]
     ]
@@ -347,6 +348,33 @@ Yakin ingin menghapus semua data?`;
   return { text, keyboard };
 }
 
+// ── PROMPT HAPUS PER NOMOR ──
+function buildDeleteNumPrompt() {
+  const total = logins.length;
+  const text =
+`🔢 <b>HAPUS DATA PER NOMOR</b>
+${LINE}
+
+Total data saat ini: <b>${total}</b>
+
+Kirim perintah dengan format:
+├ <code>/hapus 5</code>       — hapus nomor 5
+├ <code>/hapus 1-50</code>    — hapus nomor 1 sampai 50
+└ <code>/hapus 10-100</code>  — hapus nomor 10 sampai 100
+
+<i>Nomor #001 = data terbaru, #${String(total).padStart(3,'0')} = data terlama</i>`;
+
+  const keyboard = {
+    inline_keyboard: [
+      [
+        { text: '📋 Lihat Data', callback_data: 'data_0' },
+        { text: '🔙 Menu Utama', callback_data: 'menu'   }
+      ]
+    ]
+  };
+  return { text, keyboard };
+}
+
 // ── INFO BOT ──
 function buildInfo() {
   const text =
@@ -365,16 +393,21 @@ ${LINE}
 ├ 📈 Statistik lengkap + grafik
 ├ 🔍 Cari data (UID/email/nickname)
 ├ 📤 Export semua data
-├ 🗑️ Hapus data dengan konfirmasi
+├ 🗑️ Hapus semua data dengan konfirmasi
+├ 🔢 Hapus data per nomor / range
 └ 🔄 Refresh & navigasi lengkap
 
 ${LINE}
 📡 <b>PERINTAH BOT:</b>
-/start — Buka menu utama
-/data  — Lihat data terbaru
-/stats — Lihat statistik
-/clear — Hapus semua data
-/info  — Info bot ini`;
+/start        — Buka menu utama
+/data         — Lihat data terbaru
+/stats        — Lihat statistik
+/export       — Export data
+/clear        — Hapus semua data
+/hapus [no]   — Hapus nomor tertentu
+/hapus [x-y]  — Hapus range nomor
+/cari [kata]  — Cari data
+/info         — Info bot ini`;
 
   const keyboard = {
     inline_keyboard: [
@@ -450,6 +483,65 @@ async function handleUpdate(update) {
     if (text === '/info') {
       const { text: t, keyboard } = buildInfo();
       return tgSend(chat, t, { reply_markup: keyboard });
+    }
+
+    // /hapus [no] atau /hapus [no1]-[no2]
+    if (text.startsWith('/hapus')) {
+      const arg = text.replace('/hapus', '').trim();
+      if (!arg) {
+        const { text: t, keyboard } = buildDeleteNumPrompt();
+        return tgSend(chat, t, { reply_markup: keyboard });
+      }
+      const total = logins.length;
+      if (total === 0) {
+        return tgSend(chat, `❌ Tidak ada data untuk dihapus.`, {
+          reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] }
+        });
+      }
+      let indices = [];
+      if (arg.includes('-')) {
+        const parts = arg.split('-');
+        const from = parseInt(parts[0]);
+        const to   = parseInt(parts[1]);
+        if (isNaN(from) || isNaN(to) || from < 1 || to < from) {
+          return tgSend(chat,
+            `❌ <b>Format salah!</b>\nContoh: <code>/hapus 1-50</code>`,
+            { reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] } }
+          );
+        }
+        const cap = Math.min(to, total);
+        for (let i = from; i <= cap; i++) indices.push(i - 1);
+      } else {
+        const no = parseInt(arg);
+        if (isNaN(no) || no < 1 || no > total) {
+          return tgSend(chat,
+            `❌ <b>Nomor tidak valid!</b>\nMasukkan nomor antara 1 – ${total}.`,
+            { reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] } }
+          );
+        }
+        indices.push(no - 1);
+      }
+      if (indices.length === 0) {
+        return tgSend(chat, `❌ Tidak ada data pada range tersebut.`, {
+          reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] }
+        });
+      }
+      // Hapus dari index terbesar agar tidak geser
+      indices.sort((a, b) => b - a).forEach(i => logins.splice(i, 1));
+      saveData(logins);
+      return tgSend(chat,
+`✅ <b>BERHASIL DIHAPUS!</b>
+${LINE}
+
+🗑️ <b>${indices.length}</b> data telah dihapus
+📊 Sisa data: <b>${logins.length}</b>
+🕐 ${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB`,
+        {
+          reply_markup: { inline_keyboard: [
+            [{ text: '📋 Lihat Data', callback_data: 'data_0' }, { text: '🔙 Menu', callback_data: 'menu' }]
+          ]}
+        }
+      );
     }
 
     // /cari [keyword]
@@ -553,6 +645,12 @@ ${LINE}
     // INFO BOT
     if (data === 'info') {
       const { text, keyboard } = buildInfo();
+      return tgEdit(chat, mid, text, { reply_markup: keyboard });
+    }
+
+    // DELETE NUM PROMPT
+    if (data === 'delete_num_prompt') {
+      const { text, keyboard } = buildDeleteNumPrompt();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
 
@@ -729,10 +827,15 @@ const _originalHandle = handleUpdate;
 //  START
 // ════════════════════════════════════════
 if (require.main === module) {
+  // Jalankan langsung (local / Replit)
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[Server] Berjalan di port ${PORT}`);
     setupWebhook();
   });
+} else {
+  // Vercel serverless — module di-import, bukan dijalankan langsung
+  // Setup webhook saat cold start
+  setupWebhook().catch(e => console.error('[Webhook setup error]', e.message));
 }
 
 module.exports = app;
