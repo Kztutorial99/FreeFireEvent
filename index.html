@@ -1017,16 +1017,83 @@
     [data-delay="6"] { transition-delay: 0.48s; }
     [data-delay="7"] { transition-delay: 0.56s; }
     [data-delay="8"] { transition-delay: 0.64s; }
+  
+    /* ── SKELETON LOADING ── */
+    .sk-wrap {
+      position: relative;
+      background: #12121e;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    .sk-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,107,0,0.08) 40%,
+        rgba(255,107,0,0.15) 50%,
+        rgba(255,107,0,0.08) 60%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: sk-shimmer 1.6s infinite ease-in-out;
+      z-index: 1;
+      border-radius: inherit;
+    }
+    @keyframes sk-shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    /* Saat gambar sudah loaded — hide shimmer */
+    .sk-wrap.sk-loaded::before { display: none; }
+    .sk-wrap.sk-loaded { background: transparent; }
+
+    /* Hero skeleton — full viewport height awal */
+    .hero-sk { width: 100%; aspect-ratio: 16/7; }
+    .hero-sk img { width: 100%; height: auto; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .hero-sk.sk-loaded img { opacity: 1; }
+
+    /* Logo skeleton */
+    .logo-sk { height: 44px; width: 120px; border-radius: 6px; }
+    .logo-sk img { height: 44px; width: auto; display: block;
+      opacity: 0; transition: opacity 0.3s ease; }
+    .logo-sk.sk-loaded img { opacity: 1; }
+
+    /* Feature banner skeleton */
+    .feat-sk { width: 100%; aspect-ratio: 16/6; border-radius: 16px; }
+    .feat-sk img { width: 100%; height: auto; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .feat-sk.sk-loaded img { opacity: 1; }
+
+    /* Item unggulan skeleton */
+    .item-sk { width: 100%; aspect-ratio: 1/1; }
+    .item-sk img { width: 100%; height: auto; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .item-sk.sk-loaded img { opacity: 1; }
+
+    /* Footer logo skeleton */
+    .footer-sk { height: 32px; width: 90px; border-radius: 4px; }
+    .footer-sk img { height: 32px; width: auto; display: block;
+      opacity: 0; transition: opacity 0.3s ease; }
+    .footer-sk.sk-loaded img { opacity: 1; }
+
   </style>
 </head>
 <body>
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <img src="assets/img/event_main.webp" alt="Fire Kickoff Event" class="hero-img" />
+  <div class="sk-wrap hero-sk" id="sk-hero">
+  <img src="assets/img/event_main.webp" alt="Fire Kickoff Event" class="hero-img" onload="skLoaded('sk-hero')" />
+</div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <img src="assets/img/ff_logo.webp" alt="Free Fire" class="hero-logo" />
+    <div class="sk-wrap logo-sk" id="sk-logo">
+    <img src="assets/img/ff_logo.webp" alt="Free Fire" class="hero-logo" onload="skLoaded('sk-logo')" />
+  </div>
     <div class="hero-title">FIRE KICKOFF</div>
     <p class="hero-sub">Event Spesial Piala Dunia FIFA 2026 — Klaim semua hadiah gratis kamu sebelum event berakhir</p>
   </div>
@@ -1193,7 +1260,9 @@
   <div class="section-block">
     <div class="sec-title" data-anim="fade-up"><span class="bar"></span> FITUR BARU EVENT</div>
     <div class="feature-banner" data-anim="slide-left">
-      <img src="assets/img/fitur_kickoff.webp" alt="Fire Kickoff — Fitur Baru Event" / loading="lazy">
+      <div class="sk-wrap feat-sk" id="sk-feat">
+      <img src="assets/img/fitur_kickoff.webp" alt="Fire Kickoff — Fitur Baru Event" loading="lazy" onload="skLoaded('sk-feat')" />
+    </div>
     </div>
     <div class="feat-list">
       <div class="feat-item" data-anim="fade-up" data-delay="1">
@@ -1250,7 +1319,9 @@
   <div class="section-block">
     <div class="sec-title" data-anim="fade-up"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
     <div class="item-unggulan-banner" data-anim="scale-up">
-      <img src="assets/img/m1887_golden.webp" alt="M1887 Golden Glare" class="item-unggulan-img" / loading="lazy">
+      <div class="sk-wrap item-sk" id="sk-item">
+      <img src="assets/img/m1887_golden.webp" alt="M1887 Golden Glare" class="item-unggulan-img" loading="lazy" onload="skLoaded('sk-item')" />
+    </div>
       <div class="item-unggulan-body">
         <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
         <div class="item-unggulan-name">M1887<br>GOLDEN GLARE</div>
@@ -1938,6 +2009,22 @@
       observeAll();
     }
   })();
+
+  // Skeleton loader
+  function skLoaded(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('sk-loaded');
+  }
+  // Handle cached images (sudah di-cache browser, onload tidak fire)
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sk-wrap img').forEach(function(img) {
+      if (img.complete && img.naturalWidth > 0) {
+        var wrap = img.closest('.sk-wrap');
+        if (wrap) wrap.classList.add('sk-loaded');
+      }
+    });
+  });
+
 </script>
 </body>
 </html>
