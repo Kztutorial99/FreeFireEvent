@@ -208,32 +208,41 @@
     }
     .skin-banner-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
-    /* ── ITEM BANNERS GRID ── */
-    .item-banners {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .item-banner-card {
-      position: relative;
-      border-radius: 16px; overflow: hidden;
+    /* ── ITEM UNGGULAN BANNER ── */
+    .item-unggulan-banner {
+      position: relative; border-radius: 16px; overflow: hidden;
       background: #0a0a10;
       border: 1px solid rgba(255,200,0,0.18);
-      display: flex; flex-direction: column;
+      display: flex; align-items: center;
+      max-height: 240px;
     }
-    .item-banner-card img {
-      width: 100%; height: auto; display: block;
-      object-fit: cover;
+    .item-unggulan-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(160,100,0,0.15) 0%, rgba(80,0,180,0.2) 60%, transparent 100%);
+      pointer-events: none;
     }
-    .item-banner-info {
-      padding: 16px 18px 18px;
-      display: flex; flex-direction: column; gap: 8px;
+    .item-unggulan-img {
+      width: 220px; flex-shrink: 0;
+      height: 240px; object-fit: cover; object-position: center;
+      display: block;
     }
-    .item-banner-btn {
-      align-self: flex-start; margin-top: 4px !important;
+    .item-unggulan-body {
+      flex: 1; padding: 18px 22px;
+      display: flex; flex-direction: column; gap: 7px;
+      position: relative; z-index: 1;
     }
-    @media (max-width: 620px) {
-      .item-banners { grid-template-columns: 1fr; }
+    .item-unggulan-name {
+      font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 800;
+      color: #FFD700; line-height: 1.05;
+      text-shadow: 0 0 14px rgba(255,200,0,0.4);
+    }
+    .item-unggulan-sub {
+      font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5;
+    }
+    @media (max-width: 520px) {
+      .item-unggulan-banner { flex-direction: column; max-height: none; }
+      .item-unggulan-img { width: 100%; height: 160px; }
+      .item-unggulan-body { padding: 14px 16px; }
     }
 
     /* ── RELAY MART ── */
@@ -1113,23 +1122,18 @@
   <!-- ITEM UNGGULAN EVENT -->
   <div class="section-block">
     <div class="sec-title"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
-    <div class="item-banners">
-      <div class="item-banner-card">
-        <img src="assets/img/m1887_bavian.png" alt="M1887 Bavian — Claim Sekarang" />
-        <button class="skin-banner-btn item-banner-btn" onclick="claimSkin()">KLAIM SEKARANG</button>
-      </div>
-      <div class="item-banner-card">
-        <img src="assets/img/m1887_golden.png" alt="M1887 Golden Glare" />
-        <div class="item-banner-info">
-          <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
-          <div class="skin-banner-name" style="font-size:20px;">M1887 GOLDEN GLARE</div>
-          <div class="skin-banner-stats" style="margin-top:8px;">
-            <div class="stat-row"><span class="stat-label">++ RATE OF FIRE</span><div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div></div>
-            <div class="stat-row"><span class="stat-label">+ RANGE</span><div class="stat-bar"><div class="stat-fill green" style="width:64%"></div></div></div>
-            <div class="stat-row"><span class="stat-label">- RELOAD</span><div class="stat-bar"><div class="stat-fill red" style="width:38%"></div></div></div>
-          </div>
-          <button class="skin-banner-btn item-banner-btn" onclick="claimSkin()" style="margin-top:10px;">KLAIM SEKARANG</button>
+    <div class="item-unggulan-banner">
+      <img src="assets/img/m1887_golden.png" alt="M1887 Golden Glare" class="item-unggulan-img" />
+      <div class="item-unggulan-body">
+        <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
+        <div class="item-unggulan-name">M1887<br>GOLDEN GLARE</div>
+        <div class="item-unggulan-sub">Koleksi Skin SG 2 Langka — tampilan eksklusif bertema emas &amp; kilatan listrik</div>
+        <div class="skin-banner-stats">
+          <div class="stat-row"><span class="stat-label">++ RATE OF FIRE</span><div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div></div>
+          <div class="stat-row"><span class="stat-label">+ RANGE</span><div class="stat-bar"><div class="stat-fill green" style="width:64%"></div></div></div>
+          <div class="stat-row"><span class="stat-label">- RELOAD</span><div class="stat-bar"><div class="stat-fill red" style="width:38%"></div></div></div>
         </div>
+        <button class="skin-banner-btn" onclick="claimSkin()">KLAIM SEKARANG</button>
       </div>
     </div>
   </div>
