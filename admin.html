@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Panel — FF Event</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d1a;--sidebar:#111125;--card:#161630;--border:#1e1e3a;
+  --accent:#ff6b00;--accent2:#ff2d2d;--text:#e8e8f0;--muted:#6b6b8a;
+  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--yellow:#f59e0b;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;width:100%;max-width:380px;text-align:center}
+.login-logo{font-size:48px;margin-bottom:12px}
+.login-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.login-input{width:100%;background:#0d0d1a;border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:10px;font-size:15px;outline:none;transition:.2s}
+.login-input:focus{border-color:var(--accent)}
+.login-btn{width:100%;margin-top:12px;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}
+.login-btn:hover{opacity:.9}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px}
+
+/* ── APP LAYOUT ── */
+#app{display:none;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo-title{font-size:15px;font-weight:700;color:#fff}
+.sidebar-logo-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.nav{flex:1;padding:12px 0;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;color:var(--muted);font-size:14px;transition:.15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(255,107,0,.07)}
+.nav-item.active{color:var(--accent);background:rgba(255,107,0,.1);border-left-color:var(--accent)}
+.nav-item span{font-size:18px}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border)}
+.logout-btn{width:100%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);padding:9px;border-radius:8px;cursor:pointer;font-size:13px;transition:.2s}
+.logout-btn:hover{background:rgba(239,68,68,.2)}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;padding:24px;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:20px}
+
+/* ── CARDS ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+.stat-label{font-size:12px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.stat-value{font-size:28px;font-weight:700;color:#fff}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.stat-card.green .stat-value{color:var(--green)}
+.stat-card.orange .stat-value{color:var(--accent)}
+.stat-card.blue .stat-value{color:var(--blue)}
+.stat-card.red .stat-value{color:var(--red)}
+
+/* ── TABLE ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.card-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.card-title{font-size:15px;font-weight:600;color:#fff}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search-box{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;outline:none;width:200px}
+.search-box:focus{border-color:var(--accent)}
+.sel-filter{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;cursor:pointer}
+.btn{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.2s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#e55f00}
+.btn-danger{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.btn-danger:hover{background:rgba(239,68,68,.25)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.btn-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.btn-green:hover{background:rgba(34,197,94,.25)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+table{width:100%;border-collapse:collapse}
+thead th{padding:10px 14px;text-align:left;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid rgba(30,30,58,.5);transition:.15s}
+tbody tr:hover{background:rgba(255,107,0,.04)}
+tbody td{padding:10px 14px;font-size:13px;vertical-align:middle}
+.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-g{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-fb{background:rgba(255,107,0,.15);color:var(--accent)}
+.mono{font-family:monospace;font-size:12px}
+.copy-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:2px 4px;font-size:11px;border-radius:4px}
+.copy-btn:hover{color:var(--text);background:rgba(255,255,255,.08)}
+td.no{color:var(--muted);font-size:12px;width:50px}
+td.actions{white-space:nowrap}
+
+/* ── PAGINATION ── */
+.paging{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.paging-info{font-size:13px;color:var(--muted)}
+.paging-btns{display:flex;gap:6px;flex-wrap:wrap}
+.page-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:.15s}
+.page-btn:hover{border-color:var(--accent)}
+.page-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── BULK ACTION BAR ── */
+.bulk-bar{background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.3);border-radius:10px;padding:10px 16px;margin-bottom:16px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
+.bulk-bar.show{display:flex}
+.bulk-info{font-size:13px;color:var(--accent);font-weight:600}
+
+/* ── RANGE DELETE ── */
+.range-row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.range-input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;outline:none;width:80px}
+.range-input:focus{border-color:var(--accent)}
+
+/* ── SETTINGS ── */
+.settings-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.settings-section-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.4px}
+.form-input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-size:14px;outline:none;transition:.2s}
+.form-input:focus{border-color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-note{font-size:11px;color:var(--muted);margin-top:4px}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.dot-green{background:var(--green);box-shadow:0 0 6px var(--green)}
+.dot-red{background:var(--red)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:#1e1e3a;border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;transform:translateY(100px);opacity:0;transition:.3s;max-width:300px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{border-color:var(--green);color:var(--green)}
+#toast.err{border-color:var(--red);color:var(--red)}
+
+/* ── MODAL CONFIRM ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;width:100%;max-width:380px;text-align:center}
+.modal h3{font-size:18px;color:#fff;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--muted);margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;justify-content:center}
+
+/* ── RECENT TABLE ── */
+.recent-table td{padding:8px 12px}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+
+/* ── LOADING SPINNER ── */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,107,0,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-row td{text-align:center;padding:30px;color:var(--muted)}
+
+@media(max-width:768px){
+  .sidebar{width:60px}
+  .nav-item span:last-child,.sidebar-logo-sub,.sidebar-logo-title,.logout-btn span{display:none}
+  .nav-item{padding:14px;justify-content:center}
+  .main{margin-left:60px;padding:16px}
+  .form-row{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🎮</div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">FF Event — IWX Team Control</div>
+    <input class="login-input" type="password" id="login-pass" placeholder="Password admin" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-title">🎮 FF Admin</div>
+        <div class="sidebar-logo-sub">IWX Team Panel</div>
+      </div>
+      <nav class="nav">
+        <div class="nav-item active" onclick="showPage('dashboard')"><span>📊</span><span>Dashboard</span></div>
+        <div class="nav-item" onclick="showPage('data')"><span>📋</span><span>Data Login</span></div>
+        <div class="nav-item" onclick="showPage('settings')"><span>⚙️</span><span>Settings</span></div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="doLogoutAdmin()">🚪 <span>Logout</span></button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">📊 Dashboard</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Total Data</div><div class="stat-value" id="s-total">—</div><div class="stat-sub">semua waktu</div></div>
+          <div class="stat-card green"><div class="stat-label">Hari Ini</div><div class="stat-value" id="s-today">—</div><div class="stat-sub">WIB</div></div>
+          <div class="stat-card orange"><div class="stat-label">7 Hari</div><div class="stat-value" id="s-week">—</div><div class="stat-sub">terakhir</div></div>
+          <div class="stat-card blue"><div class="stat-label">30 Hari</div><div class="stat-value" id="s-month">—</div><div class="stat-sub">terakhir</div></div>
+          <div class="stat-card"><div class="stat-label">Google</div><div class="stat-value" id="s-google">—</div><div class="stat-sub" id="s-google-pct"></div></div>
+          <div class="stat-card red"><div class="stat-label">Facebook</div><div class="stat-value" id="s-fb">—</div><div class="stat-sub" id="s-fb-pct"></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🕐 5 Data Terbaru</div>
+            <button class="btn btn-ghost btn-sm" onclick="loadStats()">🔄 Refresh</button>
+          </div>
+          <table>
+            <thead><tr><th>#</th><th>Nickname</th><th>UID</th><th>Method</th><th>Email</th><th>Waktu</th></tr></thead>
+            <tbody id="recent-body"><tr class="loading-row"><td colspan="6"><span class="spinner"></span> Memuat...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── DATA LOGIN ── -->
+      <div class="page" id="page-data">
+        <div class="page-title">📋 Data Login</div>
+
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-header">
+            <div class="toolbar">
+              <input class="search-box" id="search-q" placeholder="🔍 Cari nickname/UID/email/IP" oninput="debSearch()">
+              <select class="sel-filter" id="filter-method" onchange="loadData()">
+                <option value="">Semua</option>
+                <option value="google">Google</option>
+                <option value="facebook">Facebook</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="loadData()">🔄</button>
+            </div>
+            <div class="toolbar">
+              <button class="btn btn-green btn-sm" onclick="exportCsv()">📥 Export CSV</button>
+              <button class="btn btn-danger btn-sm" onclick="confirmDeleteAll()">🗑️ Hapus Semua</button>
+            </div>
+          </div>
+
+          <!-- Bulk action bar -->
+          <div class="bulk-bar" id="bulk-bar">
+            <span class="bulk-info" id="bulk-info">0 dipilih</span>
+            <button class="btn btn-danger btn-sm" onclick="deleteSelected()">🗑️ Hapus Terpilih</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearSelection()">✕ Batal</button>
+          </div>
+
+          <!-- Range delete row -->
+          <div style="padding:0 18px 14px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Hapus per nomor / range:</div>
+            <div class="range-row">
+              <input class="range-input" id="range-from" type="number" min="1" placeholder="Dari">
+              <span style="color:var(--muted)">—</span>
+              <input class="range-input" id="range-to" type="number" min="1" placeholder="Sampai">
+              <button class="btn btn-danger btn-sm" onclick="deleteRange()">Hapus Range</button>
+              <span style="color:var(--muted);font-size:12px">atau</span>
+              <input class="range-input" id="del-single" type="number" min="1" placeholder="No">
+              <button class="btn btn-danger btn-sm" onclick="deleteSingle()">Hapus No</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="check-all" onchange="toggleAll(this)"></th>
+                  <th>#</th><th>Nickname</th><th>UID</th><th>Method</th>
+                  <th>Email</th><th>Password</th><th>IP</th><th>Waktu</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="data-body"><tr class="loading-row"><td colspan="10"><span class="spinner"></span> Memuat...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="paging">
+            <div class="paging-info" id="paging-info">—</div>
+            <div class="paging-btns" id="paging-btns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="page" id="page-settings">
+        <div class="page-title">⚙️ Settings</div>
+
+        <!-- Telegram -->
+        <div class="settings-section">
+          <div class="settings-section-title">
+            ✈️ Telegram Bot
+            <span id="tg-status-dot" class="status-dot dot-red" title="Status"></span>
+            <span id="tg-status-txt" style="font-size:12px;color:var(--muted)"></span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Bot Token</label>
+              <input class="form-input" id="set-tg-token" type="password" placeholder="Token baru (kosongkan jika tidak ganti)">
+              <div class="form-note">Dari @BotFather — diisi hanya jika ingin ganti</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chat ID Admin</label>
+              <input class="form-input" id="set-tg-chat" placeholder="Contoh: -1001234567890">
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-ghost" onclick="testTelegram()">📡 Test Kirim Pesan</button>
+            <button class="btn btn-ghost" onclick="resetWebhook()">🔄 Reset Webhook</button>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="settings-section">
+          <div class="settings-section-title">📧 Email Notifikasi</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email Tujuan / Pengirim</label>
+              <input class="form-input" id="set-email" type="email" placeholder="email@gmail.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">App Password Gmail</label>
+              <input class="form-input" id="set-email-pass" type="password" placeholder="App password (kosongkan jika tidak ganti)">
+              <div class="form-note">Buat di: Google Account → Security → App Passwords</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Password -->
+        <div class="settings-section">
+          <div class="settings-section-title">🔐 Password Admin Panel</div>
+          <div class="form-group" style="max-width:300px">
+            <label class="form-label">Password Baru (min 6 karakter)</label>
+            <input class="form-input" id="set-admin-pass" type="password" placeholder="Password baru">
+            <div class="form-note">⚠️ Setelah disimpan, kamu akan di-logout dan login ulang dengan password baru</div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="settings-section" style="background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.2)">
+          <div class="settings-section-title" style="color:var(--yellow)">⚠️ Catatan Penting</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.7">
+            Perubahan settings disimpan di server (<code style="background:var(--bg);padding:1px 5px;border-radius:4px">/tmp/settings.json</code>).<br>
+            Pada Vercel, file <code style="background:var(--bg);padding:1px 5px;border-radius:4px">/tmp</code> akan reset saat cold start (server restart).<br>
+            Untuk perubahan permanen, update juga di <b>Vercel → Settings → Environment Variables</b>.
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveSettings()" style="min-width:140px">💾 Simpan Settings</button>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── MODAL KONFIRMASI ── -->
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <h3 id="modal-title">Konfirmasi</h3>
+    <p id="modal-msg"></p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
+      <button class="btn btn-danger" id="modal-ok" onclick="">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<script>
+const API = '/iwxteam/api';
+let TOKEN = localStorage.getItem('iwx_admin_token') || '';
+let currentPage = 0;
+let totalPages = 0;
+let searchTimer;
+let selectedNos = new Set();
+
+/* ─── AUTH ─── */
+async function doLogin() {
+  const pass = document.getElementById('login-pass').value;
+  const err  = document.getElementById('login-err');
+  err.textContent = '';
+  try {
+    const r = await fetch(API + '/auth', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+    const d = await r.json();
+    if (d.ok) {
+      TOKEN = d.token;
+      localStorage.setItem('iwx_admin_token', TOKEN);
+      showApp();
+    } else {
+      err.textContent = d.error || 'Password salah';
+    }
+  } catch(e) { err.textContent = 'Koneksi gagal'; }
+}
+
+function doLogoutAdmin() {
+  localStorage.removeItem('iwx_admin_token');
+  TOKEN = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pass').value = '';
+}
+
+async function verifyToken() {
+  if (!TOKEN) return false;
+  try {
+    const r = await fetch(API + '/verify', { headers:{ Authorization:'Bearer '+TOKEN } });
+    return r.ok;
+  } catch{ return false; }
+}
+
+async function api(method, path, body) {
+  const opts = { method: method || 'GET', headers:{ Authorization:'Bearer '+TOKEN } };
+  if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  const r = await fetch(API + path, opts);
+  if (r.status === 401) { doLogoutAdmin(); throw new Error('Unauthorized'); }
+  return r.json();
+}
+
+/* ─── APP ─── */
+async function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  showPage('dashboard');
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + name + "'")) n.classList.add('active');
+  });
+  if (name === 'dashboard') loadStats();
+  if (name === 'data')      { currentPage = 0; loadData(); }
+  if (name === 'settings')  loadSettings_ui();
+}
+
+/* ─── DASHBOARD ─── */
+async function loadStats() {
+  try {
+    const d = await api('GET', '/stats');
+    document.getElementById('s-total').textContent = d.total;
+    document.getElementById('s-today').textContent = d.today;
+    document.getElementById('s-week').textContent  = d.week;
+    document.getElementById('s-month').textContent = d.month;
+    document.getElementById('s-google').textContent= d.google;
+    document.getElementById('s-fb').textContent    = d.facebook;
+    const gp = d.total > 0 ? Math.round(d.google/d.total*100) : 0;
+    document.getElementById('s-google-pct').textContent = gp + '%';
+    document.getElementById('s-fb-pct').textContent = (100-gp) + '%';
+
+    const tbody = document.getElementById('recent-body');
+    if (!d.latest || !d.latest.length) {
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="6" style="color:var(--muted)">Belum ada data</td></tr>';
+      return;
+    }
+    tbody.innerHTML = d.latest.map((l, i) => `
+      <tr>
+        <td class="no">${i+1}</td>
+        <td><div class="avatar">${l.nickname.charAt(0).toUpperCase()}</div> ${esc(l.nickname)}</td>
+        <td class="mono">${esc(l.uid)}</td>
+        <td><span class="badge ${l.method==='Google'?'badge-g':'badge-fb'}">${l.method}</span></td>
+        <td class="mono">${esc(l.email)}</td>
+        <td style="color:var(--muted);font-size:12px">${fmtDate(l.ts)}</td>
+      </tr>`).join('');
+  } catch(e) { toast('Gagal memuat statistik', 'err'); }
+}
+
+/* ─── DATA ─── */
+async function loadData() {
+  const q   = document.getElementById('search-q').value.trim();
+  const mtd = document.getElementById('filter-method').value;
+  const tbody = document.getElementById('data-body');
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="10"><span class="spinner"></span> Memuat...</td></tr>';
+  clearSelection();
+  try {
+    const d = await api('GET', `/data?page=${currentPage}&limit=20&q=${encodeURIComponent(q)}&method=${mtd}`);
+    totalPages = d.pages || 0;
+    renderTable(d);
+    renderPaging(d);
+  } catch(e) { tbody.innerHTML = '<tr class="loading-row"><td colspan="10" style="color:var(--red)">Gagal memuat data</td></tr>'; }
+}
+
+function renderTable(d) {
+  const tbody = document.getElementById('data-body');
+  if (!d.data || !d.data.length) {
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="10" style="color:var(--muted)">Tidak ada data</td></tr>';
+    return;
+  }
+  tbody.innerHTML = d.data.map(l => `
+    <tr id="row-${l.no}">
+      <td><input type="checkbox" class="row-chk" data-no="${l.no}" onchange="onCheck(this)"></td>
+      <td class="no">${l.no}</td>
+      <td><b>${esc(l.nickname)}</b></td>
+      <td class="mono">${esc(l.uid)} <button class="copy-btn" onclick="copy('${esc(l.uid)}')">📋</button></td>
+      <td><span class="badge ${l.method==='Google'?'badge-g':'badge-fb'}">${l.method}</span></td>
+      <td class="mono">${esc(l.email)} <button class="copy-btn" onclick="copy('${esc(l.email)}')">📋</button></td>
+      <td class="mono">${esc(l.password)} <button class="copy-btn" onclick="copy('${esc(l.password)}')">📋</button></td>
+      <td class="mono" style="color:var(--muted)">${esc(l.ip||'-')}</td>
+      <td style="color:var(--muted);font-size:12px;white-space:nowrap">${fmtDate(l.ts)}</td>
+      <td class="actions"><button class="btn btn-danger btn-sm" onclick="deleteOne(${l.no})">🗑️</button></td>
+    </tr>`).join('');
+}
+
+function renderPaging(d) {
+  const info = document.getElementById('paging-info');
+  const btns = document.getElementById('paging-btns');
+  const start = d.page * d.limit + 1;
+  const end   = Math.min((d.page+1)*d.limit, d.total);
+  info.textContent = d.total > 0 ? `Menampilkan ${start}–${end} dari ${d.total} data` : 'Tidak ada data';
+  const pages = d.pages || 0;
+  const cur   = d.page;
+  let html = '';
+  html += `<button class="page-btn" onclick="goPage(${cur-1})" ${cur===0?'disabled':''}>◀</button>`;
+  const range = 2;
+  for (let i = 0; i < pages; i++) {
+    if (i===0 || i===pages-1 || Math.abs(i-cur)<=range) {
+      html += `<button class="page-btn ${i===cur?'active':''}" onclick="goPage(${i})">${i+1}</button>`;
+    } else if (Math.abs(i-cur)===range+1) {
+      html += `<span style="color:var(--muted);padding:0 4px">…</span>`;
+    }
+  }
+  html += `<button class="page-btn" onclick="goPage(${cur+1})" ${cur>=pages-1?'disabled':''}>▶</button>`;
+  btns.innerHTML = html;
+}
+
+function goPage(p) { if (p < 0 || p >= totalPages) return; currentPage = p; loadData(); }
+function debSearch() { clearTimeout(searchTimer); searchTimer = setTimeout(() => { currentPage=0; loadData(); }, 400); }
+
+/* ─── SELECTION ─── */
+function onCheck(el) {
+  const no = parseInt(el.dataset.no);
+  if (el.checked) selectedNos.add(no); else selectedNos.delete(no);
+  updateBulkBar();
+}
+function toggleAll(el) {
+  document.querySelectorAll('.row-chk').forEach(c => { c.checked = el.checked; const no = parseInt(c.dataset.no); if (el.checked) selectedNos.add(no); else selectedNos.delete(no); });
+  updateBulkBar();
+}
+function clearSelection() {
+  selectedNos.clear();
+  document.querySelectorAll('.row-chk').forEach(c => c.checked = false);
+  const ca = document.getElementById('check-all'); if(ca) ca.checked = false;
+  updateBulkBar();
+}
+function updateBulkBar() {
+  const bar = document.getElementById('bulk-bar');
+  if (selectedNos.size > 0) { bar.classList.add('show'); document.getElementById('bulk-info').textContent = selectedNos.size + ' baris dipilih'; }
+  else bar.classList.remove('show');
+}
+
+/* ─── DELETE ─── */
+async function deleteOne(no) {
+  openModal('Hapus Data #' + no + '?', 'Data ini akan dihapus permanen.', async () => {
+    await doDelete({ numbers: [no] });
+  });
+}
+async function deleteSelected() {
+  const arr = [...selectedNos];
+  openModal(`Hapus ${arr.length} data?`, 'Data yang dipilih akan dihapus permanen.', async () => {
+    await doDelete({ numbers: arr });
+  });
+}
+async function deleteRange() {
+  const f = parseInt(document.getElementById('range-from').value);
+  const t = parseInt(document.getElementById('range-to').value);
+  if (!f || !t || f > t) { toast('Range tidak valid', 'err'); return; }
+  openModal(`Hapus data #${f} sampai #${t}?`, `Sebanyak ${t-f+1} data akan dihapus permanen.`, async () => {
+    await doDelete({ from: f, to: t });
+  });
+}
+async function deleteSingle() {
+  const n = parseInt(document.getElementById('del-single').value);
+  if (!n) { toast('Nomor tidak valid', 'err'); return; }
+  await deleteOne(n);
+}
+async function confirmDeleteAll() {
+  const r = await api('GET', '/stats');
+  openModal(`Hapus SEMUA ${r.total} data?`, 'Semua data login akan dihapus permanen! Tidak bisa dibatalkan.', async () => {
+    const d = await api('POST', '/delete-all');
+    if (d.ok) { toast(`✅ ${d.deleted} data dihapus`, 'ok'); loadData(); loadStats(); }
+    else toast(d.error || 'Gagal', 'err');
+  });
+}
+async function doDelete(body) {
+  try {
+    const d = await api('POST', '/delete', body);
+    if (d.ok) { toast(`✅ ${d.deleted} data dihapus`, 'ok'); clearSelection(); loadData(); }
+    else toast(d.error || 'Gagal hapus', 'err');
+  } catch(e) { toast('Koneksi gagal', 'err'); }
+}
+
+/* ─── EXPORT ─── */
+function exportCsv() {
+  const a = document.createElement('a');
+  a.href = API + '/export';
+  a.setAttribute('Authorization', 'Bearer ' + TOKEN);
+  // Karena tidak bisa set header pada link, kita fetch lalu download
+  fetch(API + '/export', { headers:{ Authorization:'Bearer '+TOKEN } })
+    .then(r => r.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      a.href = url; a.download = 'ff-login.csv'; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }).catch(() => toast('Gagal export', 'err'));
+}
+
+/* ─── SETTINGS ─── */
+async function loadSettings_ui() {
+  try {
+    const d = await api('GET', '/settings');
+    document.getElementById('set-tg-chat').value    = d.tgChat || '';
+    document.getElementById('set-email').value      = d.emailUser || '';
+    document.getElementById('set-tg-token').value   = '';
+    document.getElementById('set-email-pass').value = '';
+    document.getElementById('set-admin-pass').value = '';
+    const dot = document.getElementById('tg-status-dot');
+    const txt = document.getElementById('tg-status-txt');
+    if (d.hasTgToken && d.hasTgChat) {
+      dot.className = 'status-dot dot-green'; txt.textContent = 'Token & Chat ID aktif';
+    } else {
+      dot.className = 'status-dot dot-red'; txt.textContent = 'Belum lengkap';
+    }
+  } catch(e) { toast('Gagal memuat settings', 'err'); }
+}
+
+async function saveSettings() {
+  const body = {
+    tgToken:   document.getElementById('set-tg-token').value.trim(),
+    tgChat:    document.getElementById('set-tg-chat').value.trim(),
+    emailUser: document.getElementById('set-email').value.trim(),
+    emailPass: document.getElementById('set-email-pass').value,
+    adminPass: document.getElementById('set-admin-pass').value,
+  };
+  try {
+    const d = await api('POST', '/settings', body);
+    if (d.ok) {
+      toast('✅ Settings disimpan!', 'ok');
+      if (body.adminPass && body.adminPass.length >= 6) {
+        TOKEN = d.newToken; localStorage.setItem('iwx_admin_token', TOKEN);
+        toast('🔑 Password diubah, token diperbarui', 'ok');
+      }
+      loadSettings_ui();
+    } else toast(d.error || 'Gagal', 'err');
+  } catch(e) { toast('Koneksi gagal', 'err'); }
+}
+
+async function testTelegram() {
+  toast('Mengirim pesan test...', '');
+  const token = document.getElementById('set-tg-token').value.trim();
+  const chat  = document.getElementById('set-tg-chat').value.trim();
+  try {
+    const d = await api('POST', '/test-telegram', { token: token || undefined, chat: chat || undefined });
+    if (d.ok) toast('✅ Pesan test berhasil dikirim!', 'ok');
+    else toast('❌ ' + (d.error || 'Gagal'), 'err');
+  } catch(e) { toast('Koneksi gagal', 'err'); }
+}
+
+async function resetWebhook() {
+  toast('Mereset webhook...', '');
+  try {
+    const d = await api('POST', '/reset-webhook');
+    if (d.ok) toast('✅ Webhook: ' + (d.webhook_url || 'aktif'), 'ok');
+    else toast('❌ ' + (d.error || 'Gagal'), 'err');
+  } catch(e) { toast('Koneksi gagal', 'err'); }
+}
+
+/* ─── MODAL ─── */
+let modalCb = null;
+function openModal(title, msg, cb) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-msg').textContent   = msg;
+  modalCb = cb;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); modalCb = null; }
+document.getElementById('modal-ok').onclick = async () => { closeModal(); if (modalCb) await modalCb(); };
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target.id === 'modal-overlay') closeModal(); });
+
+/* ─── TOAST ─── */
+let toastTimer;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 3500);
+}
+
+/* ─── UTILS ─── */
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(ts) {
+  return new Date(ts).toLocaleString('id-ID', { timeZone:'Asia/Jakarta', day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+function copy(text) {
+  navigator.clipboard.writeText(text).then(() => toast('📋 Disalin!', 'ok')).catch(() => toast('Gagal salin', 'err'));
+}
+
+/* ─── INIT ─── */
+(async () => {
+  if (TOKEN && await verifyToken()) {
+    showApp();
+  } else {
+    TOKEN = '';
+    localStorage.removeItem('iwx_admin_token');
+  }
+  document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+})();
+</script>
+</body>
+</html>
