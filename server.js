@@ -806,6 +806,30 @@ app.get('/api/search', (req, res) => {
   res.json({ total: results.length, results: results.slice(0, 50) });
 });
 
+// ── API: Webhook status ──
+app.get('/api/webhook-status', async (req, res) => {
+  if (!TG_TOKEN) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
+  const info = await tgRequest('getWebhookInfo', {});
+  const me   = await tgRequest('getMe', {});
+  res.json({
+    bot: me && me.result ? { name: me.result.first_name, username: me.result.username } : null,
+    webhook: info && info.result ? {
+      url: info.result.url,
+      active: !!(info.result.url && info.result.url.length > 0),
+      pending: info.result.pending_update_count || 0,
+      last_error: info.result.last_error_message || null
+    } : null
+  });
+});
+
+// ── API: Manual setup webhook ──
+app.get('/api/setup-webhook', async (req, res) => {
+  if (!TG_TOKEN) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
+  await setupWebhook();
+  const info = await tgRequest('getWebhookInfo', {});
+  res.json({ ok: true, webhook_url: info && info.result && info.result.url });
+});
+
 // ── API: Stats (untuk internal) ──
 app.get('/api/stats', (req, res) => {
   const total = logins.length;
