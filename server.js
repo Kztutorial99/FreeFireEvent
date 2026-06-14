@@ -721,8 +721,8 @@ const gmailTransporter = process.env.EMAIL_USER ? nodemailer.createTransport({
 
 // ── Webhook Telegram ──
 app.post('/webhook', async (req, res) => {
-  res.sendStatus(200);
   try { await handleUpdate(req.body); } catch (e) { console.error('[Webhook]', e.message); }
+  res.sendStatus(200);
 });
 
 // ── API Login ──
