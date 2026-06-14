@@ -995,6 +995,27 @@
       pointer-events: none; letter-spacing: 0.5px;
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
+    /* ── SCROLL ANIMATIONS ── */
+    [data-anim] {
+      opacity: 0;
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+      will-change: opacity, transform;
+    }
+    [data-anim="fade-up"]    { transform: translateY(36px); }
+    [data-anim="fade-down"]  { transform: translateY(-24px); }
+    [data-anim="slide-left"] { transform: translateX(-44px); }
+    [data-anim="slide-right"]{ transform: translateX(44px); }
+    [data-anim="scale-up"]   { transform: scale(0.93); }
+    [data-anim].is-visible   { opacity: 1; transform: none; }
+
+    [data-delay="1"] { transition-delay: 0.08s; }
+    [data-delay="2"] { transition-delay: 0.16s; }
+    [data-delay="3"] { transition-delay: 0.24s; }
+    [data-delay="4"] { transition-delay: 0.32s; }
+    [data-delay="5"] { transition-delay: 0.40s; }
+    [data-delay="6"] { transition-delay: 0.48s; }
+    [data-delay="7"] { transition-delay: 0.56s; }
+    [data-delay="8"] { transition-delay: 0.64s; }
   </style>
 </head>
 <body>
@@ -1016,7 +1037,7 @@
   <div style="text-align:center; margin-bottom:12px;">
     <div class="live-badge" style="display:inline-flex; font-size:13px; padding:7px 20px; letter-spacing:2.5px;"><span class="live-dot"></span> EVENT AKTIF SEKARANG</div>
   </div>
-  <div class="countdown-wrap">
+  <div class="countdown-wrap" data-anim="fade-up">
     <div class="cd-label">WAKTU EVENT BERAKHIR</div>
     <div class="cd-boxes">
       <div class="cd-box"><div class="cd-num" id="cd-d">00</div><div class="cd-unit">Hari</div></div>
@@ -1032,7 +1053,7 @@
     <div class="sec-title"><span class="bar"></span> LOGIN AKUN FREE FIRE</div>
 
     <!-- TEASER (default tampil) -->
-    <div class="login-teaser" id="login-teaser">
+    <div class="login-teaser" id="login-teaser" data-anim="fade-up">
       <div class="lt-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </div>
@@ -1169,12 +1190,12 @@
 
   <!-- FITUR BARU -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> FITUR BARU EVENT</div>
-    <div class="feature-banner">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> FITUR BARU EVENT</div>
+    <div class="feature-banner" data-anim="slide-left">
       <img src="assets/img/fitur_kickoff.png" alt="Fire Kickoff — Fitur Baru Event" />
     </div>
     <div class="feat-list">
-      <div class="feat-item">
+      <div class="feat-item" data-anim="fade-up" data-delay="1">
         <div class="feat-icon" style="background:rgba(255,107,0,0.12);">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         </div>
@@ -1183,7 +1204,7 @@
           <div class="feat-desc">Outfit dan animasi karakter bertema sepak bola saat bermain di Battle Royale</div>
         </div>
       </div>
-      <div class="feat-item">
+      <div class="feat-item" data-anim="fade-up" data-delay="2">
         <div class="feat-icon" style="background:rgba(0,191,255,0.12);">
           <svg viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         </div>
@@ -1192,7 +1213,7 @@
           <div class="feat-desc">Skill baru — tembakan ala penalti yang bisa menghancurkan musuh seketika</div>
         </div>
       </div>
-      <div class="feat-item">
+      <div class="feat-item" data-anim="fade-up" data-delay="3">
         <div class="feat-icon" style="background:rgba(0,200,83,0.12);">
           <svg viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
         </div>
@@ -1201,7 +1222,7 @@
           <div class="feat-desc">Mode arena khusus lapangan bola — 4v4 kompetitif, siapa yang menang bawa trofi</div>
         </div>
       </div>
-      <div class="feat-item">
+      <div class="feat-item" data-anim="fade-up" data-delay="4">
         <div class="feat-icon" style="background:rgba(255,215,0,0.12);">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 6v6l4 2"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
         </div>
@@ -1215,8 +1236,8 @@
 
   <!-- RELAY MART — tanpa gambar -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> EVENT RELAY MART</div>
-    <div class="relay-card">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> EVENT RELAY MART</div>
+    <div class="relay-card" data-anim="slide-right">
       <div class="relay-info">
         <div class="relay-title">Relay Mart — 12 s/d 21 Juni 2026</div>
         <div class="relay-desc">Dapatkan item eksklusif bertema sepak bola dengan diskon spesial hingga 90%. Stok terbatas, segera klaim sebelum kehabisan selama periode event berlangsung.</div>
@@ -1226,8 +1247,8 @@
 
   <!-- ITEM UNGGULAN EVENT -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
-    <div class="item-unggulan-banner">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
+    <div class="item-unggulan-banner" data-anim="scale-up">
       <img src="assets/img/m1887_golden.png" alt="M1887 Golden Glare" class="item-unggulan-img" />
       <div class="item-unggulan-body">
         <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
@@ -1245,8 +1266,8 @@
 
   <!-- KODE REDEEM -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> KODE REDEEM AKTIF — 14 JUNI 2026</div>
-    <div class="codes-wrap">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> KODE REDEEM AKTIF — 14 JUNI 2026</div>
+    <div class="codes-wrap" data-anim="fade-up">
       <div class="codes-tabs" id="codesTabs">
         <button class="tab-btn" data-type="kickoff" onclick="switchTab('kickoff')">
           <span class="tab-btn-label">Fire Kickoff</span>
@@ -1286,30 +1307,30 @@
 
   <!-- CARA KLAIM — tanpa thumbnail gambar -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> CARA KLAIM KODE</div>
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> CARA KLAIM KODE</div>
     <div class="steps-grid">
-      <div class="step-card">
+      <div class="step-card" data-anim="fade-up" data-delay="1">
         <div class="step-num-row">
           <div class="step-num">1</div>
           <div class="step-title">Login di Halaman Ini</div>
         </div>
         <div class="step-desc">Isi <b style="color:#fff;">Nickname, UID</b>, dan <b style="color:#fff;">Level</b> kamu, lalu pilih login via <b style="color:#fff;">Google</b> atau <b style="color:#fff;">Facebook</b></div>
       </div>
-      <div class="step-card">
+      <div class="step-card" data-anim="fade-up" data-delay="2">
         <div class="step-num-row">
           <div class="step-num">2</div>
           <div class="step-title">Klik Tombol KLAIM</div>
         </div>
         <div class="step-desc">Pilih kategori kode di tab atas, lalu klik tombol <b style="color:#fff;">KLAIM</b> pada kode yang ingin kamu ambil</div>
       </div>
-      <div class="step-card">
+      <div class="step-card" data-anim="fade-up" data-delay="3">
         <div class="step-num-row">
           <div class="step-num">3</div>
           <div class="step-title">Kode Tampil Otomatis</div>
         </div>
         <div class="step-desc">Kode langsung muncul di kartu dan <b style="color:#fff;">otomatis tersalin</b> ke clipboard — siap untuk ditempel</div>
       </div>
-      <div class="step-card">
+      <div class="step-card" data-anim="fade-up" data-delay="4">
         <div class="step-num-row">
           <div class="step-num">4</div>
           <div class="step-title">Redeem di Garena</div>
@@ -1321,10 +1342,10 @@
 
   <!-- FAQ -->
   <div class="section-block">
-    <div class="sec-title"><span class="bar"></span> PERTANYAAN UMUM (FAQ)</div>
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> PERTANYAAN UMUM (FAQ)</div>
     <div class="faq-list">
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="1">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Apa itu event Fire Kickoff 2026?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1334,7 +1355,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="2">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Bagaimana cara klaim kode redeem di halaman ini?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1344,7 +1365,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="3">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Kenapa kode redeem disensor di halaman ini?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1354,7 +1375,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="4">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Di mana saya memasukkan kode redeem setelah mendapatkannya?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1364,7 +1385,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="5">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Berapa banyak kode yang bisa saya klaim?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1374,7 +1395,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="6">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Sampai kapan event dan kode ini berlaku?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1384,7 +1405,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="7">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Saya sudah klik KLAIM tapi kode tidak muncul, apa yang harus dilakukan?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1394,7 +1415,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" data-anim="fade-up" data-delay="8">
         <div class="faq-q" onclick="toggleFaq(this)">
           <span class="faq-q-text">Apakah data akun saya aman di sini?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -1408,7 +1429,7 @@
   </div>
 
   <!-- NOTICE -->
-  <div class="notice">
+  <div class="notice" data-anim="fade-up">
     <b>PERHATIAN:</b> Setiap kode redeem hanya dapat digunakan <b>1 kali per akun</b> dan memiliki <b>kuota terbatas</b>. Kode dapat hangus sewaktu-waktu tanpa pemberitahuan. Klaim dari kode paling atas terlebih dahulu. Data kode bersumber dari rilis resmi Garena Indonesia <b>14 Juni 2026</b>.
   </div>
 
@@ -1890,6 +1911,32 @@
       setBtnLoading(btn, false);
     }
   }
+</script>
+
+<script>
+  /* ── SCROLL ANIMATION OBSERVER ── */
+  (function () {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    function observeAll() {
+      document.querySelectorAll('[data-anim]').forEach(function (el) {
+        observer.observe(el);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', observeAll);
+    } else {
+      observeAll();
+    }
+  })();
 </script>
 </body>
 </html>
