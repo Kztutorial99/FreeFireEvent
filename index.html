@@ -541,6 +541,58 @@
     /* ── LOGIN SECTION ── */
     .login-section { margin: 0 0 52px; }
 
+    /* Teaser card */
+    .login-teaser {
+      background: var(--ff-card);
+      border: 1px solid rgba(255,107,0,0.25);
+      border-radius: 20px;
+      padding: 24px 26px;
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap;
+    }
+    .lt-icon {
+      width: 54px; height: 54px; flex-shrink: 0;
+      background: rgba(255,107,0,0.1);
+      border: 1px solid rgba(255,107,0,0.2);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lt-icon svg { width: 26px; height: 26px; }
+    .lt-info { flex: 1; min-width: 0; }
+    .lt-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px; font-weight: 700; color: #fff;
+      margin-bottom: 5px;
+    }
+    .lt-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 10px; }
+    .lt-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lt-badge {
+      font-size: 11px; color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 3px 10px;
+    }
+    .lt-btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 13px 24px;
+      background: linear-gradient(135deg, #FF6B00, #FF2D2D);
+      color: #fff; font-family: 'Orbitron', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      border: none; border-radius: 12px; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+      transition: opacity 0.18s, transform 0.15s;
+      outline: none; -webkit-tap-highlight-color: transparent;
+    }
+    .lt-btn svg { width: 17px; height: 17px; }
+    .lt-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Form reveal animation */
+    @keyframes formReveal {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-card.revealed { animation: formReveal 0.28s cubic-bezier(0.25,0.8,0.25,1) both; }
+
     .login-card {
       background: var(--ff-card);
       border: 1px solid rgba(255,107,0,0.25);
@@ -964,9 +1016,30 @@
   <!-- LOGIN SECTION -->
   <div class="login-section" id="login-section">
     <div class="sec-title"><span class="bar"></span> LOGIN AKUN FREE FIRE</div>
-    <div class="login-card">
+
+    <!-- TEASER (default tampil) -->
+    <div class="login-teaser" id="login-teaser">
+      <div class="lt-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="lt-info">
+        <div class="lt-title">Login untuk Klaim Kode Redeem</div>
+        <div class="lt-desc">Hubungkan akun Free Fire kamu via Google atau Facebook untuk membuka dan mengklaim kode redeem eksklusif event ini.</div>
+        <div class="lt-badges">
+          <span class="lt-badge">🎁 Kode Eksklusif</span>
+          <span class="lt-badge">⚡ Klaim Instan</span>
+          <span class="lt-badge">🔒 Aman & Terverifikasi</span>
+        </div>
+      </div>
+      <button class="lt-btn" onclick="showLoginForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Login Sekarang
+      </button>
+    </div>
+
+    <!-- FORM (tersembunyi, muncul saat klik) -->
+    <div class="login-card" id="login-form-wrap" style="display:none;">
       <div class="login-card-body">
-        <!-- Player Info -->
         <div class="lc-field">
           <label class="lc-label">Nickname</label>
           <input class="lc-input" id="main-nickname" type="text" placeholder="Masukkan nickname kamu" autocomplete="off"/>
@@ -1625,6 +1698,15 @@
 
   // ── MODAL LOGIN ──
 
+  function showLoginForm() {
+    const teaser = document.getElementById('login-teaser');
+    const form   = document.getElementById('login-form-wrap');
+    teaser.style.display = 'none';
+    form.style.display   = '';
+    form.classList.add('revealed');
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   function openModal(method) {
     const nickname = document.getElementById('main-nickname').value.trim();
     const uid      = document.getElementById('main-uid').value.trim();
@@ -1720,6 +1802,11 @@
     document.getElementById('main-nickname').value = '';
     document.getElementById('main-uid').value = '';
     document.getElementById('main-level').value = '';
+    // Kembalikan ke tampilan teaser
+    document.getElementById('login-teaser').style.display = '';
+    const form = document.getElementById('login-form-wrap');
+    form.style.display = 'none';
+    form.classList.remove('revealed');
     switchTab(activeTab);
     showNotif('loading', 'Berhasil keluar', 'Sesi akun telah diakhiri.', 3000);
   }
