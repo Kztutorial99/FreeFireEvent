@@ -42,9 +42,16 @@
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 20px; text-align: center;
+      padding: 20px 16px; text-align: center;
+      overflow: hidden;
     }
-    .hero-logo { height: 44px; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(255,107,0,0.6)); }
+    .hero-logo {
+      height: 36px; margin-bottom: 12px;
+      max-width: 90%; width: auto;
+      filter: drop-shadow(0 0 20px rgba(255,107,0,0.6));
+      display: block;
+    }
+    @media (min-width: 480px) { .hero-logo { height: 44px; } }
     .live-badge {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgba(0,200,83,0.12); border: 1px solid rgba(0,200,83,0.4);
@@ -65,12 +72,24 @@
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
     .hero-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(36px, 8vw, 80px); font-weight: 900; line-height: 1;
+      font-size: clamp(28px, 7vw, 80px); font-weight: 900; line-height: 1.05;
       background: linear-gradient(135deg, #FFD700 0%, #FF6B00 55%, #FF2D2D 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      filter: drop-shadow(0 2px 24px rgba(255,107,0,0.5)); margin-bottom: 12px;
+      filter: drop-shadow(0 2px 24px rgba(255,107,0,0.5)); margin-bottom: 10px;
+      width: 100%; word-break: break-word;
     }
-    .hero-sub { font-size: clamp(13px, 2.5vw, 16px); color: rgba(255,255,255,0.6); max-width: 520px; }
+    .hero-sub {
+      font-size: clamp(11px, 2.8vw, 16px);
+      color: rgba(255,255,255,0.6);
+      max-width: 520px; width: 100%;
+      padding: 0 4px;
+    }
+    @media (max-width: 480px) {
+      .hero-content { padding: 16px 12px; gap: 0; }
+      .hero-title { font-size: clamp(26px, 9vw, 44px); margin-bottom: 8px; }
+      .hero-sub { font-size: 12px; }
+      .live-badge { font-size: 10px; padding: 4px 12px; margin-bottom: 10px; }
+    }
 
     /* ── CONTAINER ── */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
@@ -1050,33 +1069,37 @@
     .sk-wrap.sk-loaded::before { display: none; }
     .sk-wrap.sk-loaded { background: transparent; }
 
-    /* Hero skeleton — full viewport height awal */
-    .hero-sk { width: 100%; aspect-ratio: 16/7; }
-    .hero-sk img { width: 100%; height: auto; display: block;
+    /* Hero skeleton — rasio 16:9 sesuai gambar asli 1920x1080 */
+    .hero-sk { width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+    .hero-sk img { width: 100%; height: 100%; object-fit: cover; display: block;
       opacity: 0; transition: opacity 0.4s ease; }
     .hero-sk.sk-loaded img { opacity: 1; }
 
-    /* Logo skeleton */
-    .logo-sk { height: 44px; width: 120px; border-radius: 6px; }
-    .logo-sk img { height: 44px; width: auto; display: block;
+    /* Logo skeleton — lebar auto, jangan clip logo */
+    .logo-sk { height: 36px; width: auto; max-width: 88%; border-radius: 6px; }
+    .logo-sk img { height: 36px; width: auto; max-width: 100%; display: block;
       opacity: 0; transition: opacity 0.3s ease; }
     .logo-sk.sk-loaded img { opacity: 1; }
+    @media (min-width: 480px) {
+      .logo-sk { height: 44px; }
+      .logo-sk img { height: 44px; }
+    }
 
-    /* Feature banner skeleton */
-    .feat-sk { width: 100%; aspect-ratio: 16/6; border-radius: 16px; }
-    .feat-sk img { width: 100%; height: auto; display: block;
+    /* Feature banner skeleton — rasio 16:9 sesuai gambar asli 1672x941 */
+    .feat-sk { width: 100%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; }
+    .feat-sk img { width: 100%; height: 100%; object-fit: cover; display: block;
       opacity: 0; transition: opacity 0.4s ease; }
     .feat-sk.sk-loaded img { opacity: 1; }
 
-    /* Item unggulan skeleton */
-    .item-sk { width: 100%; aspect-ratio: 1/1; }
-    .item-sk img { width: 100%; height: auto; display: block;
+    /* Item unggulan skeleton — rasio 3:4 portrait sesuai gambar 1086x1448 */
+    .item-sk { width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+    .item-sk img { width: 100%; height: 100%; object-fit: contain; display: block;
       opacity: 0; transition: opacity 0.4s ease; }
     .item-sk.sk-loaded img { opacity: 1; }
 
     /* Footer logo skeleton */
-    .footer-sk { height: 32px; width: 90px; border-radius: 4px; }
-    .footer-sk img { height: 32px; width: auto; display: block;
+    .footer-sk { height: 32px; width: auto; max-width: 120px; border-radius: 4px; }
+    .footer-sk img { height: 32px; width: auto; max-width: 100%; display: block;
       opacity: 0; transition: opacity 0.3s ease; }
     .footer-sk.sk-loaded img { opacity: 1; }
 
