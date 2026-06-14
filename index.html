@@ -168,28 +168,6 @@
     .feat-desc { font-size: 11px; color: rgba(255,255,255,0.42); line-height: 1.6; }
 
     /* ── SKIN PROMO BANNER ── */
-    .skin-banner {
-      position: relative; border-radius: 18px; overflow: hidden;
-      background: #0a0a10;
-      border: 1px solid rgba(255,200,0,0.18);
-      display: flex; align-items: stretch; min-height: 200px;
-      margin-bottom: 0;
-    }
-    .skin-banner::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(160,100,0,0.18) 0%, rgba(80,0,180,0.22) 60%, transparent 100%);
-      pointer-events: none;
-    }
-    .skin-banner-img {
-      width: 48%; max-width: 280px; flex-shrink: 0;
-      object-fit: cover; object-position: center;
-      display: block;
-    }
-    .skin-banner-body {
-      flex: 1; padding: 26px 24px 22px;
-      display: flex; flex-direction: column; justify-content: center; gap: 10px;
-      position: relative; z-index: 1;
-    }
     .skin-banner-tag {
       display: inline-block; font-family: 'Orbitron', sans-serif;
       font-size: 9px; font-weight: 700; letter-spacing: 2px;
@@ -201,9 +179,6 @@
       font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 800;
       color: #FFD700; line-height: 1.05;
       text-shadow: 0 0 18px rgba(255,200,0,0.4);
-    }
-    .skin-banner-sub {
-      font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6;
     }
     .skin-banner-stats {
       display: flex; flex-direction: column; gap: 5px; margin-top: 2px;
@@ -232,9 +207,33 @@
       width: fit-content; transition: opacity 0.2s, transform 0.15s;
     }
     .skin-banner-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    @media (max-width: 520px) {
-      .skin-banner { flex-direction: column; }
-      .skin-banner-img { width: 100%; max-width: 100%; max-height: 200px; }
+
+    /* ── ITEM BANNERS GRID ── */
+    .item-banners {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .item-banner-card {
+      position: relative;
+      border-radius: 16px; overflow: hidden;
+      background: #0a0a10;
+      border: 1px solid rgba(255,200,0,0.18);
+      display: flex; flex-direction: column;
+    }
+    .item-banner-card img {
+      width: 100%; height: auto; display: block;
+      object-fit: cover;
+    }
+    .item-banner-info {
+      padding: 16px 18px 18px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .item-banner-btn {
+      align-self: flex-start; margin-top: 4px !important;
+    }
+    @media (max-width: 620px) {
+      .item-banners { grid-template-columns: 1fr; }
     }
 
     /* ── RELAY MART ── */
@@ -399,6 +398,39 @@
     .t-bundle   .copy-btn:hover { background: rgba(255,105,180,0.18); border-color: rgba(255,105,180,0.4); color: var(--ff-pink); }
     .t-special  .copy-btn:hover { background: rgba(0,200,83,0.18); border-color: rgba(0,200,83,0.4); color: var(--ff-green); }
     .copy-btn.copied { background: rgba(0,200,83,0.15); border-color: rgba(0,200,83,0.4); color: var(--ff-green); }
+
+    /* ── PAGINATION ── */
+    .codes-pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid var(--ff-border);
+    }
+    .pg-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.18s;
+      flex-shrink: 0;
+    }
+    .pg-btn svg { width: 16px; height: 16px; }
+    .pg-btn:hover:not(:disabled) { background: rgba(255,107,0,0.15); border-color: rgba(255,107,0,0.4); color: var(--ff-orange); }
+    .pg-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+    .pg-info {
+      font-family: 'Orbitron', sans-serif; font-size: 12px;
+      color: rgba(255,255,255,0.45); letter-spacing: 1px;
+      min-width: 100px; text-align: center;
+    }
+    .pg-dots {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .pg-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); transition: all 0.2s;
+      cursor: pointer; border: none; padding: 0; flex-shrink: 0;
+    }
+    .pg-dot.active { background: var(--ff-orange); transform: scale(1.3); }
 
     /* ── CARA KLAIM ── */
     .steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
@@ -1078,30 +1110,26 @@
     </div>
   </div>
 
-  <!-- M1887 SKIN PROMO -->
+  <!-- ITEM UNGGULAN EVENT -->
   <div class="section-block">
     <div class="sec-title"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
-    <div class="skin-banner">
-      <img src="assets/img/m1887_golden.png" alt="M1887 Golden Glare" class="skin-banner-img" />
-      <div class="skin-banner-body">
-        <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
-        <div class="skin-banner-name">M1887<br>GOLDEN GLARE</div>
-        <div class="skin-banner-sub">Koleksi Skin SG 2 Langka — tampilan eksklusif bertema emas & kilatan listrik</div>
-        <div class="skin-banner-stats">
-          <div class="stat-row">
-            <span class="stat-label">++ RATE OF FIRE</span>
-            <div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div>
+    <div class="item-banners">
+      <div class="item-banner-card">
+        <img src="assets/img/m1887_bavian.png" alt="M1887 Bavian — Claim Sekarang" />
+        <button class="skin-banner-btn item-banner-btn" onclick="claimSkin()">KLAIM SEKARANG</button>
+      </div>
+      <div class="item-banner-card">
+        <img src="assets/img/m1887_golden.png" alt="M1887 Golden Glare" />
+        <div class="item-banner-info">
+          <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
+          <div class="skin-banner-name" style="font-size:20px;">M1887 GOLDEN GLARE</div>
+          <div class="skin-banner-stats" style="margin-top:8px;">
+            <div class="stat-row"><span class="stat-label">++ RATE OF FIRE</span><div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">+ RANGE</span><div class="stat-bar"><div class="stat-fill green" style="width:64%"></div></div></div>
+            <div class="stat-row"><span class="stat-label">- RELOAD</span><div class="stat-bar"><div class="stat-fill red" style="width:38%"></div></div></div>
           </div>
-          <div class="stat-row">
-            <span class="stat-label">+ RANGE</span>
-            <div class="stat-bar"><div class="stat-fill green" style="width:64%"></div></div>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">- RELOAD</span>
-            <div class="stat-bar"><div class="stat-fill red" style="width:38%"></div></div>
-          </div>
+          <button class="skin-banner-btn item-banner-btn" onclick="claimSkin()" style="margin-top:10px;">KLAIM SEKARANG</button>
         </div>
-        <button class="skin-banner-btn" onclick="claimSkin()">KLAIM SEKARANG</button>
       </div>
     </div>
   </div>
@@ -1134,6 +1162,15 @@
       </div>
       <div class="codes-body">
         <div class="codes-grid" id="codesGrid"></div>
+        <div class="codes-pagination" id="codesPagination">
+          <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="pg-info" id="pgInfo"></div>
+          <button class="pg-btn" id="pgNext" onclick="changePage(1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1417,7 +1454,9 @@
   ];
 
   const TYPES = ['kickoff','diamond','weapon','bundle','special'];
+  const PER_PAGE = 5;
   let activeTab  = 'kickoff';
+  let currentPage = 0;
   let claimedSet = new Set();
 
   function censorCode(code) {
@@ -1426,7 +1465,6 @@
     return code.slice(0, show) + '•'.repeat(code.length - show - 2) + code.slice(-2);
   }
 
-  // Update count badges on all tabs
   function initCounts() {
     TYPES.forEach(t => {
       const n = CODES.filter(c => c.type === t).length;
@@ -1436,18 +1474,33 @@
 
   function switchTab(type) {
     activeTab = type;
-    // Update tab active state
+    currentPage = 0;
     document.querySelectorAll('.tab-btn').forEach(b => {
       b.className = 'tab-btn';
       if (b.dataset.type === type) b.classList.add('active-' + type);
     });
-    // Render codes for this tab
-    const list = CODES.filter(c => c.type === type);
-    document.getElementById('codesGrid').innerHTML = list.map((c, i) => {
+    renderPage();
+  }
+
+  function changePage(dir) {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    currentPage = Math.max(0, Math.min(totalPages - 1, currentPage + dir));
+    renderPage();
+  }
+
+  function renderPage() {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    const start = currentPage * PER_PAGE;
+    const pageItems = list.slice(start, start + PER_PAGE);
+
+    document.getElementById('codesGrid').innerHTML = pageItems.map((c, i) => {
       const claimed = claimedSet.has(c.code);
+      const globalIdx = start + i;
       return `
       <div class="code-card t-${c.type}" id="card-${c.code.replace(/[^a-z0-9]/gi,'_')}">
-        <div class="code-num">${String(i + 1).padStart(2,'0')}</div>
+        <div class="code-num">${String(globalIdx + 1).padStart(2,'0')}</div>
         <div class="code-info">
           <div class="code-text" style="letter-spacing:${claimed ? '1px' : '2px'};color:${claimed ? '#666' : ''};">${claimed ? c.code : censorCode(c.code)}</div>
           <div class="code-reward">${c.reward}</div>
@@ -1455,6 +1508,25 @@
         <button class="copy-btn${claimed ? ' copied' : ''}" onclick="claimCode(this,'${c.code}','${c.reward.replace(/'/g,'&#39;')}')">${claimed ? 'DIKLAIM' : 'KLAIM'}</button>
       </div>`;
     }).join('');
+
+    // Update pagination controls
+    document.getElementById('pgPrev').disabled = currentPage === 0;
+    document.getElementById('pgNext').disabled = currentPage >= totalPages - 1;
+
+    // Dots
+    let dotsHtml = '<div class="pg-dots">';
+    for (let p = 0; p < totalPages; p++) {
+      dotsHtml += `<button class="pg-dot${p === currentPage ? ' active' : ''}" onclick="goPage(${p})"></button>`;
+    }
+    dotsHtml += '</div>';
+    document.getElementById('pgInfo').innerHTML = dotsHtml;
+  }
+
+  function goPage(p) {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    currentPage = Math.max(0, Math.min(totalPages - 1, p));
+    renderPage();
   }
 
   function claimSkin() {
