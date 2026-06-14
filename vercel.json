@@ -2,17 +2,22 @@
   "version": 2,
   "builds": [
     {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": [
-          "index.html",
-          "assets/**"
-        ]
+        "includeFiles": ["index.html"]
       }
     }
   ],
   "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/server.js"
