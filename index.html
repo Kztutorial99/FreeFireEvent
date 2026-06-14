@@ -1856,8 +1856,25 @@
     const prefix = method === 'facebook' ? 'fb' : 'g';
     const statusEl = document.getElementById(prefix + '-status');
     if (statusEl) { statusEl.style.display = 'none'; }
+    // Reset button — hapus loading state & kembalikan teks asli
     const btnEl = document.getElementById(prefix + '-submit-btn');
-    if (btnEl) { btnEl.disabled = false; }
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.classList.remove('loading');
+      if (btnEl.dataset.orig) { btnEl.innerHTML = btnEl.dataset.orig; delete btnEl.dataset.orig; }
+    }
+    // Reset field email & password agar tidak auto-fill dari sesi sebelumnya
+    const emailEl = document.getElementById(prefix + '-email');
+    const passEl  = document.getElementById(prefix + '-password');
+    if (emailEl) emailEl.value = '';
+    if (passEl)  { passEl.value = ''; passEl.type = 'password'; }
+    // Reset toggle icon password Google
+    if (method === 'google') {
+      const show = document.getElementById('g-eye-show');
+      const hide = document.getElementById('g-eye-hide');
+      if (show) show.style.display = 'block';
+      if (hide) hide.style.display = 'none';
+    }
   }
 
   function closeModal(id) {
@@ -1993,6 +2010,7 @@
       });
       const data = await resp.json();
       if (data.success) {
+        setBtnLoading(btn, false);
         closeModal(modalId);
         document.getElementById('login-section').style.display = 'none';
         showUserBar(nickname, uid, level, method, email);
