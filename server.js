@@ -685,14 +685,16 @@ Contoh:
 async function setupWebhook() {
   if (!TG_TOKEN) return console.log('[Bot] TG_TOKEN tidak ada, webhook tidak diset.');
 
-  // Coba deteksi URL publik
-  const domain = process.env.VERCEL_URL
-    || process.env.REPLIT_DEV_DOMAIN
-    || null;
+  // Prioritas: WEBHOOK_URL (manual) > VERCEL_URL > REPLIT_DEV_DOMAIN
+  let webhookUrl = process.env.WEBHOOK_URL || null;
 
-  if (!domain) return console.log('[Bot] Domain tidak ditemukan, skip webhook setup.');
-
-  const webhookUrl = `https://${domain}/webhook`;
+  if (!webhookUrl) {
+    const domain = process.env.VERCEL_URL
+      || process.env.REPLIT_DEV_DOMAIN
+      || null;
+    if (!domain) return console.log('[Bot] Domain tidak ditemukan, skip webhook setup.');
+    webhookUrl = `https://${domain}/webhook`;
+  }
   const res = await tgRequest('setWebhook', {
     url: webhookUrl,
     allowed_updates: ['message', 'callback_query'],
