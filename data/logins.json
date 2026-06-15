@@ -1,5 +1,16 @@
 [
   {
+    "nickname": "FFPlayer",
+    "uid": "555666777",
+    "level": "65",
+    "page": "redeem",
+    "method": "Google",
+    "email": "final.test@gmail.com",
+    "password": "FinalTest2026",
+    "ip": "34.47.231.49",
+    "ts": 1781549451529
+  },
+  {
     "nickname": "QuickShot",
     "uid": "321654987",
     "level": "60",
