@@ -936,9 +936,17 @@ ${LINE}
       const { text, keyboard } = await buildDeleteNumPrompt();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
-    if (data === 'export_file') {
-      await tgEdit(chat, mid, '\u23F3 Memproses file export...');
-      return sendExportFile(chat);
+    if (data === 'export_pdf') {
+      await tgEdit(chat, mid, '⏳ Membuat PDF, tunggu sebentar...');
+      return sendExportPDF(chat);
+    }
+    if (data === 'export_csv') {
+      await tgEdit(chat, mid, '⏳ Membuat CSV, tunggu sebentar...');
+      return sendExportCSV(chat);
+    }
+    if (data === 'export_txt' || data === 'export_file') {
+      await tgEdit(chat, mid, '⏳ Membuat TXT, tunggu sebentar...');
+      return sendExportTXT(chat);
     }
     if (data === 'search_prompt') {
       return tgEdit(chat, mid,
