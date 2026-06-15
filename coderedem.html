@@ -573,6 +573,61 @@
       font-size:12px;color:rgba(255,255,255,0.35);line-height:1.4;
     }
     .rp-codes-login-notice svg{width:14px;height:14px;color:#ffa618;flex-shrink:0}
+
+    /* ═══ CODE FORMAT INFO ═══ */
+    .rp-format-info{
+      display:grid;gap:8px;margin-bottom:20px;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    }
+    .rp-format-chip{
+      display:flex;align-items:center;gap:8px;
+      background:#111;border:1px solid rgba(255,255,255,0.06);
+      border-radius:7px;padding:9px 12px;
+    }
+    .rp-format-chip svg{width:14px;height:14px;color:#ffa618;flex-shrink:0}
+    .rp-format-chip-txt{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4}
+    .rp-format-chip-txt strong{color:rgba(255,255,255,0.7);display:block;font-size:12px}
+
+    /* ═══ EXPIRED CODE SECTION ═══ */
+    .rp-expired-section{margin-top:28px}
+    .rp-expired-head{
+      display:flex;align-items:center;gap:8px;margin-bottom:14px;
+    }
+    .rp-expired-label{
+      font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+      letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);
+    }
+    .rp-expired-line{flex:1;height:1px;background:rgba(255,255,255,0.05)}
+
+    .rp-code-item.expired{
+      background:#111;border-color:rgba(255,255,255,0.04);
+      opacity:0.75;
+    }
+    .rp-code-item.expired .rp-code-name{color:rgba(255,255,255,0.4)}
+    .rp-code-item.expired .rp-code-val{
+      filter:none!important;color:rgba(255,255,255,0.2);
+      text-decoration:line-through;letter-spacing:3px;font-size:13px;
+      user-select:text!important;pointer-events:auto!important;
+    }
+    .rp-code-item.expired .rp-code-display{
+      background:#0a0a0a;border-color:rgba(255,255,255,0.04);
+    }
+    .rp-code-tag.used{
+      background:rgba(255,60,60,0.08);color:rgba(255,80,80,0.7);
+      border-color:rgba(255,60,60,0.2);
+    }
+    .rp-code-tag.expired-tag{
+      background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);
+      border-color:rgba(255,255,255,0.08);
+    }
+    .rp-used-banner{
+      display:flex;align-items:center;gap:6px;
+      background:rgba(255,50,50,0.06);border:1px solid rgba(255,50,50,0.15);
+      border-radius:5px;padding:7px 10px;margin-top:8px;
+    }
+    .rp-used-banner svg{width:12px;height:12px;color:rgba(255,80,80,0.7);flex-shrink:0}
+    .rp-used-banner-txt{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.3px}
+    .rp-used-banner-txt strong{color:rgba(255,80,80,0.6)}
   </style>
 </head>
 <body>
@@ -736,24 +791,47 @@
   <div class="rp-codes-section" id="kode-aktif">
     <div class="rp-section-head">
       <div class="rp-section-title">Kode Redeem Aktif</div>
-      <div class="rp-section-sub">Kode eksklusif Fire Kickoff 2026 — login untuk melihat dan menyalin</div>
+      <div class="rp-section-sub">Diperbarui 15 Juni 2026 — Sumber: Garena Free Fire official &amp; komunitas FF</div>
     </div>
+
+    <!-- FORMAT INFO -->
+    <div class="rp-format-info">
+      <div class="rp-format-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <div class="rp-format-chip-txt"><strong>Format Kode</strong>12–16 karakter, huruf kapital &amp; angka</div>
+      </div>
+      <div class="rp-format-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="rp-format-chip-txt"><strong>1× Per Akun</strong>Setiap kode hanya bisa dipakai sekali per akun</div>
+      </div>
+      <div class="rp-format-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="rp-format-chip-txt"><strong>Cepat Kedaluwarsa</strong>Kode aktif 12–24 jam atau hingga kuota habis</div>
+      </div>
+      <div class="rp-format-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div class="rp-format-chip-txt"><strong>Kode Expired = Sudah Dipakai</strong>Error "invalid" berarti kuota habis atau sudah digunakan</div>
+      </div>
+    </div>
+
     <div class="rp-codes-login-notice">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       Kode tersembunyi untuk keamanan akun. Masuk dengan akun Garena untuk melihat dan menyalin kode aktif.
     </div>
+
+    <!-- ACTIVE CODES — sumber resmi Garena FF Juni 2026 -->
     <div class="rp-codes-grid">
 
       <div class="rp-code-item">
         <div class="rp-code-meta">
-          <div class="rp-code-name">Fire Kickoff Bundle</div>
-          <div class="rp-code-tag">EVENT</div>
+          <div class="rp-code-name">Diamond Royale Voucher</div>
+          <div class="rp-code-tag">AKTIF</div>
         </div>
-        <div class="rp-code-reward-desc">Bundle Eksklusif + 50 Diamond</div>
+        <div class="rp-code-reward-desc">Diamond Royale Vouchers + Rare Loot Crate</div>
         <div class="rp-code-display">
-          <div class="rp-code-val">FFKICK26AA01</div>
+          <div class="rp-code-val">FFRSX4CYHLLQ</div>
           <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-0" onclick="copyCode('FFKICK26AA01',0)">
+          <button class="rp-copy-btn" id="copy-0" onclick="copyCode('FFRSX4CYHLLQ',0)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Salin</span>
           </button>
@@ -766,14 +844,14 @@
 
       <div class="rp-code-item">
         <div class="rp-code-meta">
-          <div class="rp-code-name">OB53 Character Skin</div>
-          <div class="rp-code-tag">OB53</div>
+          <div class="rp-code-name">M4A1 Wild Beast Skin</div>
+          <div class="rp-code-tag">AKTIF</div>
         </div>
-        <div class="rp-code-reward-desc">Skin Karakter Eksklusif + 30 Diamond</div>
+        <div class="rp-code-reward-desc">Weapon Skin: M4A1 Wild Beast</div>
         <div class="rp-code-display">
-          <div class="rp-code-val">OB53FKICK012</div>
+          <div class="rp-code-val">FFSKTXVQF2NR</div>
           <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-1" onclick="copyCode('OB53FKICK012',1)">
+          <button class="rp-copy-btn" id="copy-1" onclick="copyCode('FFSKTXVQF2NR',1)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Salin</span>
           </button>
@@ -786,14 +864,14 @@
 
       <div class="rp-code-item">
         <div class="rp-code-meta">
-          <div class="rp-code-name">Jersey Kickoff Pack</div>
-          <div class="rp-code-tag">EKSKLUSIF</div>
+          <div class="rp-code-name">Cobra Bundle Fragments</div>
+          <div class="rp-code-tag">AKTIF</div>
         </div>
-        <div class="rp-code-reward-desc">Jersey Eksklusif + Emote Kickoff</div>
+        <div class="rp-code-reward-desc">Cobra Theme Limited Bundle Fragments</div>
         <div class="rp-code-display">
-          <div class="rp-code-val">JRSEYKCK26B3</div>
+          <div class="rp-code-val">FFCBRAXQTS9S</div>
           <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-2" onclick="copyCode('JRSEYKCK26B3',2)">
+          <button class="rp-copy-btn" id="copy-2" onclick="copyCode('FFCBRAXQTS9S',2)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Salin</span>
           </button>
@@ -806,14 +884,14 @@
 
       <div class="rp-code-item">
         <div class="rp-code-meta">
-          <div class="rp-code-name">Football Pack</div>
-          <div class="rp-code-tag">EVENT</div>
+          <div class="rp-code-name">Gintama Collab Gift</div>
+          <div class="rp-code-tag">AKTIF</div>
         </div>
-        <div class="rp-code-reward-desc">100.000 Gold + Avatar Border</div>
+        <div class="rp-code-reward-desc">Gintama Collaboration Pre-event Gift</div>
         <div class="rp-code-display">
-          <div class="rp-code-val">FFBALL2026C4</div>
+          <div class="rp-code-val">FFSGT7KNFQ2X</div>
           <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-3" onclick="copyCode('FFBALL2026C4',3)">
+          <button class="rp-copy-btn" id="copy-3" onclick="copyCode('FFSGT7KNFQ2X',3)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Salin</span>
           </button>
@@ -826,34 +904,14 @@
 
       <div class="rp-code-item">
         <div class="rp-code-meta">
-          <div class="rp-code-name">Gold Badge Pack</div>
-          <div class="rp-code-tag">BADGE</div>
+          <div class="rp-code-name">Street Fighter Costume</div>
+          <div class="rp-code-tag">AKTIF</div>
         </div>
-        <div class="rp-code-reward-desc">Gold Badge FF + Namecard Eksklusif</div>
+        <div class="rp-code-reward-desc">Street Fighter Theme Costume Set</div>
         <div class="rp-code-display">
-          <div class="rp-code-val">KBADGE2026D5</div>
+          <div class="rp-code-val">B1RK7C5ZL8YT</div>
           <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-4" onclick="copyCode('KBADGE2026D5',4)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span>Salin</span>
-          </button>
-        </div>
-        <button class="rp-code-unlock-btn" onclick="requireLogin()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Login untuk Lihat Kode
-        </button>
-      </div>
-
-      <div class="rp-code-item">
-        <div class="rp-code-meta">
-          <div class="rp-code-name">Bonus Bundle</div>
-          <div class="rp-code-tag">BONUS</div>
-        </div>
-        <div class="rp-code-reward-desc">Map Skin Eksklusif + Potion Elite</div>
-        <div class="rp-code-display">
-          <div class="rp-code-val">FIREKK26EE06</div>
-          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <button class="rp-copy-btn" id="copy-5" onclick="copyCode('FIREKK26EE06',5)">
+          <button class="rp-copy-btn" id="copy-4" onclick="copyCode('B1RK7C5ZL8YT',4)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>Salin</span>
           </button>
@@ -865,6 +923,63 @@
       </div>
 
     </div>
+
+    <!-- EXPIRED / SUDAH DIGUNAKAN -->
+    <div class="rp-expired-section">
+      <div class="rp-expired-head">
+        <div class="rp-expired-label">Kode Sudah Tidak Aktif</div>
+        <div class="rp-expired-line"></div>
+      </div>
+      <div class="rp-codes-grid">
+
+        <div class="rp-code-item expired">
+          <div class="rp-code-meta">
+            <div class="rp-code-name">Black Rose Rocker Bundle</div>
+            <div class="rp-code-tag used">SUDAH DIGUNAKAN</div>
+          </div>
+          <div class="rp-code-reward-desc">Black Rose Rocker Bundle + M14 Gun Skin</div>
+          <div class="rp-code-display">
+            <div class="rp-code-val">X99TK56XDJ4X</div>
+          </div>
+          <div class="rp-used-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span class="rp-used-banner-txt"><strong>Kode tidak dapat digunakan</strong> — kuota habis atau sudah diklaim orang lain</span>
+          </div>
+        </div>
+
+        <div class="rp-code-item expired">
+          <div class="rp-code-meta">
+            <div class="rp-code-name">Brave Crystal &amp; Diamonds</div>
+            <div class="rp-code-tag used">SUDAH DIGUNAKAN</div>
+          </div>
+          <div class="rp-code-reward-desc">Brave Crystal + Diamond &amp; Weapon Vouchers</div>
+          <div class="rp-code-display">
+            <div class="rp-code-val">FFAC2YXE6RF2</div>
+          </div>
+          <div class="rp-used-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span class="rp-used-banner-txt"><strong>Kode tidak dapat digunakan</strong> — kuota habis atau sudah diklaim orang lain</span>
+          </div>
+        </div>
+
+        <div class="rp-code-item expired">
+          <div class="rp-code-meta">
+            <div class="rp-code-name">FF Evo Diamond Pack</div>
+            <div class="rp-code-tag expired-tag">KEDALUWARSA</div>
+          </div>
+          <div class="rp-code-reward-desc">Diamond Evo Voucher + Gun Skin Fragments</div>
+          <div class="rp-code-display">
+            <div class="rp-code-val">FFPLOWHITEX1</div>
+          </div>
+          <div class="rp-used-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="rp-used-banner-txt"><strong>Kode kedaluwarsa</strong> — melewati batas waktu event yang ditentukan Garena</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- HOW TO REDEEM -->
