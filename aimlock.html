@@ -308,15 +308,22 @@
 
     /* ═══ FOOTER ═══ */
     .al-footer{
-      background:#050505;border-top:1px solid rgba(255,255,255,0.04);
-      padding:20px clamp(20px,5vw,80px) calc(20px + env(safe-area-inset-bottom,0px));
-      display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+      background:#050505;border-top:1px solid rgba(255,255,255,0.07);
+      padding:24px clamp(20px,5vw,80px) calc(24px + env(safe-area-inset-bottom,0px));
+      display:flex;align-items:center;flex-wrap:wrap;gap:12px;
     }
-    .al-footer-logo{height:20px;opacity:0.35;filter:brightness(0) invert(1) opacity(0.35)}
-    .al-footer-links{display:flex;gap:14px;flex-wrap:wrap;flex:1}
-    .al-footer-links a{font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+    .al-footer-logo{height:22px;opacity:0.55;filter:brightness(0) invert(1)}
+    .al-footer-links{display:flex;gap:16px;flex-wrap:wrap;flex:1;list-style:none;margin:0;padding:0}
+    .al-footer-links a{font-size:11px;color:rgba(255,255,255,0.38);letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s;text-decoration:none}
     .al-footer-links a:hover{color:#FFBA00}
-    .al-footer-copy{font-size:9px;color:rgba(255,255,255,0.1);width:100%;letter-spacing:0.3px}
+    .al-footer-copy{font-size:10px;color:rgba(255,255,255,0.25);width:100%;letter-spacing:0.3px;line-height:1.6}
+    @media(max-width:600px){
+      .al-footer{flex-direction:column;align-items:center;text-align:center;padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));gap:14px}
+      .al-footer-logo{height:20px}
+      .al-footer-links{justify-content:center;gap:12px 20px;flex:unset}
+      .al-footer-links a{font-size:11px;color:rgba(255,255,255,0.45)}
+      .al-footer-copy{font-size:10px;color:rgba(255,255,255,0.3);text-align:center;line-height:1.7}
+    }
 
     /* ═══ MODAL (install confirm) ═══ */
     .al-modal-backdrop{
