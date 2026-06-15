@@ -89,7 +89,11 @@
     }
     .nav-burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:0.3s}
     @media(max-width:900px){
-      .nav-menu,.nav-shop,.nav-lang-btn{display:none}
+      .nav-menu{display:none}
+      .nav-download-btn{display:none}
+      .nav-shop,.nav-lang-btn{width:30px;height:30px}
+      .nav-shop svg,.nav-lang-btn svg{width:22px;height:22px}
+      .nav-right{gap:4px}
       .nav-burger{display:flex}
     }
     /* Mobile nav menu */
