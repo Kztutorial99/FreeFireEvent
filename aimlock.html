@@ -238,7 +238,7 @@
       position:absolute;top:-10px;right:12px;line-height:1;
       user-select:none;pointer-events:none;
     }
-    .al-step-icon{font-size:22px;margin-bottom:10px}
+    .al-step-icon{display:flex;align-items:center;justify-content:center;width:38px;height:38px;margin-bottom:10px;color:#ffa618}
     .al-step-title{
       font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;
       text-transform:uppercase;color:#fff;margin-bottom:6px;
@@ -669,10 +669,10 @@
       <div class="al-section-sub">Letakkan file config di folder Free Fire yang benar agar pengaturan aktif otomatis saat game dibuka.</div>
     </div>
     <div class="al-steps-grid">
-      <div class="al-step-card"><div class="al-step-num">1</div><div class="al-step-icon">⬇️</div><div class="al-step-title">Download Config</div><div class="al-step-desc">Klik tombol Download &amp; verifikasi akun untuk mendapatkan file <strong style="color:#ffa618">.cfg</strong> yang valid.</div></div>
-      <div class="al-step-card"><div class="al-step-num">2</div><div class="al-step-icon">📁</div><div class="al-step-title">Buka File Manager</div><div class="al-step-desc">Masuk ke <strong style="color:#ffa618">Internal Storage → Android → data → com.dts.freefireth → files</strong></div></div>
-      <div class="al-step-card"><div class="al-step-num">3</div><div class="al-step-icon">📋</div><div class="al-step-title">Paste File Config</div><div class="al-step-desc">Copy file <strong style="color:#ffa618">com.dts.freefireth.cfg</strong> ke dalam folder <em>files/</em>. Timpa file lama jika diminta.</div></div>
-      <div class="al-step-card"><div class="al-step-num">4</div><div class="al-step-icon">🎮</div><div class="al-step-title">Buka Free Fire</div><div class="al-step-desc">Restart game. Config aktif otomatis — cek Settings → Sensitivity untuk konfirmasi.</div></div>
+      <div class="al-step-card"><div class="al-step-num">1</div><div class="al-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="al-step-title">Download Config</div><div class="al-step-desc">Klik tombol Download &amp; verifikasi akun untuk mendapatkan file <strong style="color:#ffa618">.cfg</strong> yang valid.</div></div>
+      <div class="al-step-card"><div class="al-step-num">2</div><div class="al-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="al-step-title">Buka File Manager</div><div class="al-step-desc">Masuk ke <strong style="color:#ffa618">Internal Storage → Android → data → com.dts.freefireth → files</strong></div></div>
+      <div class="al-step-card"><div class="al-step-num">3</div><div class="al-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div><div class="al-step-title">Paste File Config</div><div class="al-step-desc">Copy file <strong style="color:#ffa618">com.dts.freefireth.cfg</strong> ke dalam folder <em>files/</em>. Timpa file lama jika diminta.</div></div>
+      <div class="al-step-card"><div class="al-step-num">4</div><div class="al-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="al-step-title">Buka Free Fire</div><div class="al-step-desc">Restart game. Config aktif otomatis — cek Settings → Sensitivity untuk konfirmasi.</div></div>
     </div>
   </div>
 </div>
@@ -730,6 +730,41 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="al-faq-a">Biasanya update tersedia dalam 24–48 jam setelah patch resmi Garena. Tim developer kami memantau setiap update OB untuk memastikan kompatibilitas penuh.</div>
+      </div>
+      <div class="al-faq-item">
+        <div class="al-faq-q" onclick="toggleFaq(this)">
+          Apakah tool ini gratis?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="al-faq-a">Ya, tool ini sepenuhnya gratis. Kamu hanya perlu verifikasi akun satu kali untuk mengaktifkan lisensi dan mengunduh file config. Tidak ada biaya berlangganan atau pembayaran tersembunyi.</div>
+      </div>
+      <div class="al-faq-item">
+        <div class="al-faq-q" onclick="toggleFaq(this)">
+          Apakah bisa digunakan di iOS atau PC?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="al-faq-a">Saat ini tool hanya mendukung Android. Versi untuk iOS sedang dalam pengujian. Untuk PC (emulator), kompatibel dengan LDPlayer 9 dan BlueStacks 5 ke atas menggunakan mode bridge network.</div>
+      </div>
+      <div class="al-faq-item">
+        <div class="al-faq-q" onclick="toggleFaq(this)">
+          Config tidak aktif setelah dipasang, kenapa?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="al-faq-a">Pastikan file diletakkan di path yang tepat: <strong style="color:#ffa618">Internal Storage/Android/data/com.dts.freefireth/files/</strong>. Jika game masih belum membaca config, coba clear cache Free Fire lalu restart HP sebelum membuka game.</div>
+      </div>
+      <div class="al-faq-item">
+        <div class="al-faq-q" onclick="toggleFaq(this)">
+          Apakah perlu koneksi internet saat menggunakan tool?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="al-faq-a">Koneksi internet hanya diperlukan saat proses download dan verifikasi lisensi. Setelah config terpasang, tool bekerja secara lokal di perangkat dan tidak memerlukan koneksi tambahan selama bermain.</div>
+      </div>
+      <div class="al-faq-item">
+        <div class="al-faq-q" onclick="toggleFaq(this)">
+          Bagaimana cara menghapus atau menonaktifkan config?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="al-faq-a">Untuk menonaktifkan, cukup hapus file <strong style="color:#ffa618">com.dts.freefireth.cfg</strong> dari folder <em>files/</em> menggunakan File Manager, lalu restart game. Pengaturan sensitivity akan kembali ke default bawaan akun kamu.</div>
       </div>
     </div>
   </div>
