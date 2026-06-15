@@ -1,0 +1,26 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "1mlCr1RF23EcGP9X8-eOL"
+uri = "file://attached_assets/ff-logo.png"
+type = "image"
+title = "FF Icon Asli — 48x48 (Garena CDN resmi)"
+
+[[outputs]]
+id = "rEVQXQ157Fo3wjmsJdQSY"
+uri = "file://attached_assets/ff-max.png"
+type = "image"
+title = "FF Max Logo — 616x136 (Garena CDN)"
+
+[[outputs]]
+id = "kgo6vLhI8MVaWWMzUHPtG"
+uri = "file://attached_assets/ff-full.png"
+type = "image"
+title = "FF Full Logo — 616x90 (Garena CDN)"
+
+[[outputs]]
+id = "EhiOiY8_qI840WVoQJXlP"
+uri = "file://attached_assets/garena_logo.png"
+type = "image"
+title = "Garena Logo — 459x138"

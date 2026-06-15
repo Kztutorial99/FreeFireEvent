@@ -2,292 +2,914 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Free Fire — Fire Kickoff Event 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Free Fire — Fire Kickoff Event 2026 | Garena</title>
+  <link rel="icon" href="https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:#0a0a0a;color:#fff;font-family:'Barlow',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+    img{display:block;max-width:100%}
 
-    :root {
-      --ff-orange:#FF6B00; --ff-yellow:#FFD700; --ff-red:#FF2D2D;
-      --ff-green:#00C853;  --ff-blue:#00BFFF;   --ff-dark:#080810;
-      --ff-card:#10101A;   --ff-border:#1C1C2E;
+    /* ═══════════════════════════════════════
+       NAVIGATION — replica ff.garena.com nav
+    ═══════════════════════════════════════ */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:1000;
+      height:64px;
+      display:flex;align-items:center;
+      padding:0 24px;gap:0;
+      background:rgba(8,8,8,0.96);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border-bottom:1px solid rgba(255,186,0,0.1);
+      transition:background 0.3s;
     }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; }
-    body {
-      background: var(--ff-dark);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
+    .nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:32px}
+    .nav-logo-img{width:32px;height:32px;border-radius:8px;object-fit:cover}
+    .nav-logo-name{
+      font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;
+      letter-spacing:3px;color:#FFBA00;text-transform:uppercase;
     }
-
-    /* ── BG PARTICLES ── */
-    .bg-glow {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 70% 50% at 20% 30%, rgba(255,107,0,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 70%, rgba(255,45,45,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 50% 50%, rgba(0,191,255,0.04) 0%, transparent 70%);
+    .nav-menu{display:flex;align-items:center;gap:4px;flex:1}
+    .nav-item{position:relative}
+    .nav-link{
+      display:block;padding:0 14px;height:64px;line-height:64px;
+      font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;
+      color:rgba(255,255,255,0.65);transition:color 0.2s;white-space:nowrap;
     }
-
-    /* ── HEADER ── */
-    .top-bar {
-      position: relative; z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-      padding: 22px 20px 0;
+    .nav-link:hover,.nav-link.active{color:#FFBA00}
+    .nav-item-drop .nav-link{display:flex;align-items:center;gap:5px}
+    .nav-item-drop svg{width:10px;height:10px;transition:transform 0.2s;flex-shrink:0}
+    .nav-dropdown{
+      display:none;position:absolute;top:100%;left:0;
+      background:#181818;border:1px solid rgba(255,186,0,0.15);
+      border-radius:8px;padding:8px 0;min-width:160px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
     }
-    .logo-wrap {
-      display: flex; align-items: center; gap: 10px;
+    .nav-item-drop:hover .nav-dropdown{display:block}
+    .nav-dropdown-item a{
+      display:block;padding:9px 18px;font-size:13px;font-weight:500;
+      color:rgba(255,255,255,0.65);transition:color 0.2s;
     }
-    .logo-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      overflow: hidden; flex-shrink: 0;
-      box-shadow: 0 0 16px rgba(255,107,0,0.4);
+    .nav-dropdown-item a:hover{color:#FFBA00}
+    .nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+    /* Shop icon — exact from real Garena HTML */
+    .nav-shop,.nav-lang-btn{
+      display:flex;align-items:center;justify-content:center;
+      width:36px;height:36px;cursor:pointer;border:none;background:none;padding:0;
+      transition:opacity 0.2s;flex-shrink:0;
     }
-    .logo-icon img { width:100%; height:100%; object-fit:cover; display:block; }
-    .logo-text {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 15px; font-weight: 900; letter-spacing: 2px;
-      background: linear-gradient(135deg, #FFD700, #FF6B00);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    .nav-shop:hover,.nav-lang-btn:hover{opacity:0.75}
+    .nav-shop svg,.nav-lang-btn svg{width:28px;height:28px}
+    .nav-shop-path{fill:#A3A3A3;transition:fill 0.2s}
+    .nav-shop:hover .nav-shop-path{fill:#FFBA00}
+    .nav-global-path{fill:#A3A3A3;transition:fill 0.2s}
+    .nav-lang-btn:hover .nav-global-path{fill:#FFBA00}
+    /* Download button */
+    .nav-download-btn{
+      display:flex;align-items:center;gap:6px;flex-shrink:0;
+      background:linear-gradient(135deg,#FF6B00,#FFBA00);
+      border:none;color:#000;cursor:pointer;
+      font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+      letter-spacing:1.5px;text-transform:uppercase;
+      padding:9px 18px;border-radius:4px;
+      transition:opacity 0.2s,transform 0.15s;white-space:nowrap;
     }
-
-    /* ── HERO TEXT ── */
-    .hero-wrap {
-      position: relative; z-index: 10;
-      display: flex; flex-direction: column; align-items: center;
-      padding: 32px 20px 20px;
-      text-align: center;
+    .nav-download-btn:hover{opacity:0.9;transform:translateY(-1px)}
+    .nav-download-btn svg{width:13px;height:13px}
+    /* Mobile burger */
+    .nav-burger{
+      display:none;flex-direction:column;justify-content:center;gap:5px;
+      width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;
+      margin-left:auto;
     }
-    .event-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(0,200,83,0.10); border: 1px solid rgba(0,200,83,0.35);
-      border-radius: 50px; padding: 5px 14px; margin-bottom: 18px;
-      font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #00C853;
-      text-transform: uppercase;
-      animation: badgeGlow 2.4s ease-in-out infinite;
+    .nav-burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:0.3s}
+    @media(max-width:900px){
+      .nav-menu,.nav-shop,.nav-lang-btn{display:none}
+      .nav-burger{display:flex}
     }
-    @keyframes badgeGlow {
-      0%,100%{ box-shadow:0 0 0 rgba(0,200,83,0); border-color:rgba(0,200,83,0.35); }
-      50%    { box-shadow:0 0 12px rgba(0,200,83,0.4); border-color:rgba(0,200,83,0.75); }
+    /* Mobile nav menu */
+    .nav-mobile{
+      display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;
+      background:rgba(8,8,8,0.98);backdrop-filter:blur(20px);
+      flex-direction:column;padding:24px 24px calc(24px + env(safe-area-inset-bottom));
+      overflow-y:auto;
     }
-    .live-dot { width:6px; height:6px; background:#00C853; border-radius:50%; animation:blink 1.2s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
-
-    .main-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(28px, 8vw, 52px); font-weight: 900; line-height: 1.05;
-      background: linear-gradient(135deg, #FFD700 0%, #FF6B00 55%, #FF2D2D 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      filter: drop-shadow(0 2px 20px rgba(255,107,0,0.45));
-      margin-bottom: 10px;
+    .nav-mobile.open{display:flex}
+    .nav-mobile-item a{
+      display:block;padding:14px 0;font-size:20px;font-weight:700;
+      font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;
+      text-transform:uppercase;color:rgba(255,255,255,0.7);
+      border-bottom:1px solid rgba(255,255,255,0.06);
     }
-    .main-sub {
-      font-size: clamp(12px, 3vw, 15px); color: rgba(255,255,255,0.45);
-      margin-bottom: 6px; font-weight: 500;
-    }
-
-    /* ── CARDS ── */
-    .cards-section {
-      position: relative; z-index: 10;
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center;
-      padding: 12px 16px 28px;
-      gap: 14px;
-    }
-    .menu-card {
-      width: 100%; max-width: 440px;
-      background: var(--ff-card);
-      border: 1px solid var(--ff-border);
-      border-radius: 20px; overflow: hidden;
-      text-decoration: none; color: inherit;
-      display: flex; flex-direction: column;
-      transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
-      position: relative;
-      cursor: pointer;
-    }
-    .menu-card:active { transform: scale(0.98); }
-    @media (hover: hover) {
-      .menu-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-    }
-    .menu-card.card-redeem { border-color: rgba(255,215,0,0.2); }
-    .menu-card.card-redeem:hover { border-color: rgba(255,215,0,0.5); box-shadow: 0 12px 40px rgba(255,215,0,0.1); }
-    .menu-card.card-tool   { border-color: rgba(255,107,0,0.2); }
-    .menu-card.card-tool:hover   { border-color: rgba(255,107,0,0.5); box-shadow: 0 12px 40px rgba(255,107,0,0.12); }
-
-    .card-glow {
-      position: absolute; inset: 0; opacity: 0.07; pointer-events: none;
-    }
-    .card-redeem .card-glow { background: radial-gradient(ellipse at 30% 50%, #FFD700, transparent 70%); }
-    .card-tool   .card-glow { background: radial-gradient(ellipse at 30% 50%, #FF6B00, transparent 70%); }
-
-    .card-inner {
-      display: flex; align-items: center; gap: 18px;
-      padding: 22px 20px; position: relative; z-index: 1;
-    }
-    .card-icon-box {
-      width: 64px; height: 64px; flex-shrink: 0;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px;
-    }
-    .card-redeem .card-icon-box {
-      background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1));
-      border: 1px solid rgba(255,215,0,0.2);
-      box-shadow: 0 0 20px rgba(255,215,0,0.1);
-    }
-    .card-tool .card-icon-box {
-      background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,45,45,0.1));
-      border: 1px solid rgba(255,107,0,0.2);
-      box-shadow: 0 0 20px rgba(255,107,0,0.1);
-    }
-    .card-body { flex: 1; min-width: 0; }
-    .card-tag {
-      font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
-    }
-    .card-redeem .card-tag { background: rgba(255,215,0,0.12); color: #FFD700; border: 1px solid rgba(255,215,0,0.2); }
-    .card-tool   .card-tag { background: rgba(255,107,0,0.12); color: var(--ff-orange); border: 1px solid rgba(255,107,0,0.2); }
-    .card-title {
-      font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700;
-      line-height: 1.1; margin-bottom: 5px;
-    }
-    .card-redeem .card-title { color: #FFD700; }
-    .card-tool   .card-title { color: #FF8C42; }
-    .card-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
-    .card-arrow {
-      flex-shrink: 0; width: 32px; height: 32px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      margin-left: 4px;
-    }
-    .card-redeem .card-arrow { background: rgba(255,215,0,0.12); }
-    .card-tool   .card-arrow { background: rgba(255,107,0,0.12); }
-    .card-arrow svg { width: 14px; height: 14px; }
-    .card-redeem .card-arrow svg { stroke: #FFD700; }
-    .card-tool   .card-arrow svg { stroke: var(--ff-orange); }
-
-    /* ── BADGE LIST ── */
-    .card-badges {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      padding: 0 20px 18px; position: relative; z-index: 1;
-    }
-    .mini-badge {
-      font-size: 10px; font-weight: 600; padding: 3px 9px;
-      border-radius: 4px; background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.08);
+    .nav-mobile-item a:hover{color:#FFBA00}
+    .nav-mobile-dl{
+      margin-top:24px;display:flex;align-items:center;justify-content:center;gap:8px;
+      background:linear-gradient(135deg,#FF6B00,#FFBA00);
+      color:#000;font-family:'Barlow Condensed',sans-serif;
+      font-size:15px;font-weight:800;letter-spacing:2px;
+      padding:14px;border-radius:8px;cursor:pointer;border:none;width:100%;
     }
 
-    /* ── DIVIDER ── */
-    .or-divider {
-      display: flex; align-items: center; gap: 12px;
-      width: 100%; max-width: 440px; color: rgba(255,255,255,0.18); font-size: 11px;
+    /* ═══════════════════════════════════════
+       HERO BANNER
+    ═══════════════════════════════════════ */
+    .hero{
+      position:relative;width:100%;
+      padding-top:64px; /* nav height */
+      height:100svh;min-height:480px;max-height:860px;
+      overflow:hidden;background:#000;
     }
-    .or-divider::before, .or-divider::after {
-      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08);
+    .hero-bg{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;object-position:center top;
     }
+    .hero-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.1) 0%,
+        rgba(0,0,0,0.15) 30%,
+        rgba(0,0,0,0.55) 65%,
+        rgba(10,10,10,1) 100%
+      );
+    }
+    .hero-content{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:0 clamp(20px,5vw,80px) clamp(28px,5vh,64px);
+    }
+    .hero-live{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(0,200,83,0.12);border:1px solid rgba(0,200,83,0.4);
+      border-radius:3px;padding:4px 12px;margin-bottom:14px;
+      font-size:10px;font-weight:700;color:#00C853;letter-spacing:2px;text-transform:uppercase;
+    }
+    .hero-live-dot{
+      width:6px;height:6px;background:#00C853;border-radius:50%;
+      animation:blink 1.2s infinite;flex-shrink:0;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.1}}
+    .hero-title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(36px,8vw,96px);font-weight:900;
+      text-transform:uppercase;line-height:0.95;
+      color:#fff;margin-bottom:12px;
+    }
+    .hero-title span{display:block}
+    .hero-title .gold{color:#FFBA00}
+    .hero-title-deco{
+      display:block;margin-top:10px;
+    }
+    .hero-desc{
+      font-size:clamp(12px,2vw,15px);color:rgba(255,255,255,0.55);
+      margin-bottom:24px;letter-spacing:0.5px;
+    }
+    .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-cta{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;
+      letter-spacing:2px;text-transform:uppercase;
+      padding:12px 28px;border-radius:3px;transition:0.2s;
+    }
+    .hero-cta-primary{
+      background:linear-gradient(135deg,#FF6B00,#FFBA00);color:#000;
+    }
+    .hero-cta-primary:hover{opacity:0.9;transform:translateY(-2px)}
+    .hero-cta-secondary{
+      background:rgba(255,255,255,0.08);color:#fff;
+      border:1px solid rgba(255,255,255,0.2);
+      backdrop-filter:blur(8px);
+    }
+    .hero-cta-secondary:hover{background:rgba(255,255,255,0.12)}
+    .hero-cta svg{width:13px;height:13px}
 
-    /* ── FOOTER ── */
-    .page-footer {
-      position: relative; z-index: 10;
-      text-align: center; padding: 12px 16px 20px;
-      font-size: 10px; color: rgba(255,255,255,0.18); letter-spacing: 1px;
-    }
+    /* ═══════════════════════════════════════
+       REAL GARENA SECTION DECORATIONS
+       (exact SVG paths from ff.garena.com HTML)
+    ═══════════════════════════════════════ */
+    .section-decoration{display:block;line-height:0;overflow:hidden}
+    .section-decoration.polygon{width:100%}
+    .section-decoration.trapezoid{width:55%}
 
-    /* ── ENTRY ANIMATION ── */
-    .fade-up {
-      opacity: 0; transform: translateY(18px);
-      animation: fadeUp 0.5s ease forwards;
+    /* ═══════════════════════════════════════
+       SECTION MODULE WRAPPER
+    ═══════════════════════════════════════ */
+    .section-module{position:relative;overflow:hidden}
+    .section.overflow{position:relative;overflow:hidden}
+
+    /* ═══════════════════════════════════════
+       SECTION TITLE (real Garena title style)
+    ═══════════════════════════════════════ */
+    .section-title.big .section-title-text{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(32px,5.5vw,68px);font-weight:900;
+      text-transform:uppercase;line-height:1.0;
+      margin-bottom:10px;letter-spacing:1px;
     }
-    .fade-up:nth-child(1) { animation-delay: 0.05s; }
-    .fade-up:nth-child(2) { animation-delay: 0.15s; }
-    .fade-up:nth-child(3) { animation-delay: 0.22s; }
-    .fade-up:nth-child(4) { animation-delay: 0.30s; }
-    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+    .section-title.big .title-decoration{
+      display:block;height:9px;
+      width:clamp(120px,18vw,165px);
+    }
+    .section-desc{
+      font-size:clamp(12px,1.6vw,15px);
+      color:rgba(255,255,255,0.6);
+      line-height:1.65;margin-bottom:22px;max-width:480px;
+    }
+    .section-desc.black-text{color:rgba(0,0,0,0.65)}
+    .section-content.black .section-title.big .section-title-text{color:#0a0a0a}
+    /* View More button (exact from real Garena) */
+    .view-more{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+      letter-spacing:2px;text-transform:uppercase;color:#FFBA00;
+      border:1px solid rgba(255,186,0,0.4);padding:10px 20px;
+      transition:border-color 0.2s,background 0.2s;border-radius:2px;
+    }
+    .view-more:hover{border-color:#FFBA00;background:rgba(255,186,0,0.08)}
+    .view-more-icon{width:15px;height:11px;flex-shrink:0}
+
+    /* ═══════════════════════════════════════
+       TWO-PANEL SECTION (exact from Garena CSS)
+       home-about-left / right with diagonal clips
+    ═══════════════════════════════════════ */
+    .home-about-section{background:#0a0a0a;padding-bottom:0}
+    .home-about-inner{
+      position:relative;display:flex;align-items:center;
+      justify-content:center;white-space:nowrap;
+      transition:all 0.3s;
+      padding-bottom:56.25%; /* 16:9 */
+      height:0;overflow:hidden;
+    }
+    @media(max-width:768px){.home-about-inner{padding-bottom:75%}}
+    .home-about-left,.home-about-right{
+      position:absolute;top:0;width:94.5%;height:100%;
+      flex-shrink:0;overflow:hidden;cursor:pointer;
+    }
+    .home-about-left{
+      right:50.25%;
+      transform:translateX(8%);
+      clip-path:polygon(0 0,100% 0,85% 100%,0 100%);
+      -webkit-clip-path:polygon(0 0,100% 0,85% 100%,0 100%);
+    }
+    .home-about-right{
+      left:50.25%;
+      transform:translateX(-8%);
+      clip-path:polygon(15% 0,100% 0,100% 100%,0 100%);
+      -webkit-clip-path:polygon(15% 0,100% 0,100% 100%,0 100%);
+    }
+    .about-cover{
+      width:100%;height:100%;object-fit:cover;object-position:center;
+      transition:transform 0.5s ease;
+    }
+    .home-about-left:hover .about-cover,.home-about-right:hover .about-cover{transform:scale(1.04)}
+    .home-about-layer{
+      position:absolute;left:0;bottom:0;width:100%;height:100%;
+      background:linear-gradient(transparent 20%,rgba(0,0,0,0.85));
+      transition:background 0.3s;
+    }
+    .home-about-left:hover .home-about-layer,.home-about-right:hover .home-about-layer{
+      background:linear-gradient(transparent 15%,rgba(0,0,0,0.6));
+    }
+    /* Gold center border — exact from Garena CSS */
+    .home-about-border{
+      position:absolute;left:42%;bottom:24%;width:11%;height:76%;
+      transform:skewX(-15deg);
+      border-color:transparent #FFBA00 #FFBA00 transparent;
+      border-style:solid;border-width:1px;
+      transition:0.3s;pointer-events:none;z-index:3;
+    }
+    .home-about-border-left,.home-about-border-right{
+      position:absolute;width:7%;height:22.5%;bottom:2%;
+      transform:skewX(-25deg);border:1px solid #FFBA00;
+      pointer-events:none;z-index:3;
+    }
+    .home-about-border-left{left:0;border-right-color:transparent;border-bottom-color:transparent}
+    .home-about-border-right{right:0;transform:skewX(25deg);border-left-color:transparent;border-bottom-color:transparent}
+    /* Panel labels */
+    .panel-label{
+      position:absolute;bottom:clamp(14px,4%,40px);
+      z-index:4;width:100%;padding:0 clamp(12px,4%,48px);
+      white-space:normal;
+    }
+    .home-about-left .panel-label{right:0;padding-left:clamp(12px,6%,60px);padding-right:clamp(24px,10%,100px)}
+    .home-about-right .panel-label{left:0;padding-left:clamp(24px,10%,100px);padding-right:clamp(12px,6%,60px)}
+    .panel-badge{
+      display:inline-block;
+      font-size:clamp(8px,1.2vw,10px);font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;
+      padding:3px 10px;border-radius:3px;margin-bottom:8px;
+    }
+    .panel-badge-gold{background:rgba(255,186,0,0.15);color:#FFBA00;border:1px solid rgba(255,186,0,0.4)}
+    .panel-badge-orange{background:rgba(255,107,0,0.15);color:#FF6B00;border:1px solid rgba(255,107,0,0.4)}
+    .panel-title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(18px,3.5vw,44px);font-weight:900;
+      text-transform:uppercase;color:#fff;line-height:1.0;
+      margin-bottom:6px;
+    }
+    .panel-desc{
+      font-size:clamp(10px,1.3vw,13px);color:rgba(255,255,255,0.55);
+      margin-bottom:12px;line-height:1.4;
+      display:none;
+    }
+    @media(min-width:600px){.panel-desc{display:block}}
+    .panel-btn{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(10px,1.4vw,13px);font-weight:700;letter-spacing:1.5px;
+      text-transform:uppercase;padding:8px 16px;border-radius:3px;
+    }
+    .panel-btn-gold{background:linear-gradient(135deg,#FFBA00,#FF8C00);color:#000}
+    .panel-btn-orange{background:linear-gradient(135deg,#FF6B00,#FF2D2D);color:#fff}
+    .panel-btn svg{width:10px;height:10px}
+    /* Panel info section below two panels */
+    .home-about-ctx{padding:32px clamp(20px,5vw,80px)}
+    .home-about-ctx .section-title.big .section-title-text{color:#fff}
+    .home-about-tabs{
+      display:flex;gap:2px;margin-bottom:28px;
+      background:rgba(255,255,255,0.04);border-radius:6px;
+      padding:4px;width:fit-content;
+    }
+    .ha-tab{
+      font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+      letter-spacing:1.5px;text-transform:uppercase;
+      padding:8px 20px;border-radius:4px;cursor:pointer;
+      color:rgba(255,255,255,0.45);transition:0.2s;border:none;background:none;
+    }
+    .ha-tab.active,.ha-tab:hover{background:#FFBA00;color:#000}
+
+    /* ═══════════════════════════════════════
+       CHARACTERS SECTION (polygon deco)
+    ═══════════════════════════════════════ */
+    .home-chars-section{position:relative;overflow:hidden}
+    .home-chars-inner{
+      position:relative;min-height:min(50vw,460px);
+      display:flex;align-items:center;
+      background-image:url('/attached_assets/ff-chars-bg.jpg');
+      background-size:cover;background-position:center top;
+    }
+    @media(max-width:768px){
+      .home-chars-inner{
+        background-image:url('/attached_assets/ff-chars-bg-m.jpg');
+        min-height:360px;
+      }
+    }
+    .home-chars-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);
+    }
+    @media(max-width:768px){
+      .home-chars-overlay{background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.8) 80%)}
+    }
+    .home-chars-container{
+      position:relative;z-index:2;
+      padding:clamp(32px,5vh,80px) clamp(20px,5vw,80px);
+      max-width:520px;
+    }
+    @media(max-width:768px){.home-chars-container{max-width:100%;padding:24px 20px 36px}}
+    .section-content.black .section-title.big .section-title-text{color:#fff}
+
+    /* ═══════════════════════════════════════
+       NEWS SECTION
+    ═══════════════════════════════════════ */
+    .home-news-section{
+      background:#0f0f0f;
+      padding:clamp(32px,5vw,72px) clamp(20px,5vw,80px);
+    }
+    .home-news-head{
+      display:flex;align-items:flex-end;justify-content:space-between;
+      margin-bottom:28px;flex-wrap:wrap;gap:12px;
+    }
+    .news-view-more{
+      font-size:12px;font-weight:600;color:#FFBA00;
+      display:flex;align-items:center;gap:6px;letter-spacing:1px;
+      text-transform:uppercase;
+    }
+    .news-view-more svg{width:13px;height:9px}
+    .news-grid{
+      display:grid;gap:16px;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    }
+    @media(min-width:900px){.news-grid{grid-template-columns:repeat(3,1fr)}}
+    .news-card{
+      background:#181818;border-radius:8px;overflow:hidden;
+      border:1px solid rgba(255,255,255,0.06);
+      transition:border-color 0.2s,transform 0.2s;
+      display:block;
+    }
+    .news-card:hover{border-color:rgba(255,186,0,0.3);transform:translateY(-3px)}
+    .news-thumb{
+      width:100%;aspect-ratio:16/9;overflow:hidden;background:#0a0a0a;
+    }
+    .news-thumb img{
+      width:100%;height:100%;object-fit:cover;
+      transition:transform 0.4s ease;
+    }
+    .news-card:hover .news-thumb img{transform:scale(1.05)}
+    .news-body{padding:14px 14px 16px}
+    .news-tag{
+      font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+      color:#FFBA00;margin-bottom:6px;
+    }
+    .news-title{
+      font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;
+      color:#fff;line-height:1.2;margin-bottom:6px;
+    }
+    .news-date{font-size:11px;color:rgba(255,255,255,0.3)}
+
+    /* ═══════════════════════════════════════
+       DOWNLOAD SECTION
+    ═══════════════════════════════════════ */
+    .home-dl-section{
+      position:relative;overflow:hidden;
+      background:#000;
+      padding:clamp(32px,5vw,72px) clamp(20px,5vw,80px);
+      text-align:center;
+    }
+    .home-dl-bg{
+      position:absolute;inset:0;
+      background:radial-gradient(ellipse at center bottom, rgba(255,107,0,0.12) 0%, transparent 70%);
+    }
+    .home-dl-inner{position:relative;z-index:1;max-width:480px;margin:0 auto}
+    .home-dl-logo{height:44px;margin:0 auto 16px;opacity:0.9}
+    .home-dl-title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(28px,5vw,52px);font-weight:900;
+      text-transform:uppercase;color:#fff;line-height:1.0;
+      margin-bottom:10px;
+    }
+    .home-dl-desc{
+      font-size:14px;color:rgba(255,255,255,0.45);
+      margin-bottom:28px;line-height:1.6;
+    }
+    .home-dl-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .dl-store-btn{
+      display:flex;align-items:center;gap:10px;
+      background:#181818;border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px;padding:10px 18px;
+      transition:border-color 0.2s,transform 0.2s;
+    }
+    .dl-store-btn:hover{border-color:rgba(255,186,0,0.4);transform:translateY(-2px)}
+    .dl-store-icon{width:24px;height:24px;flex-shrink:0}
+    .dl-store-label{text-align:left}
+    .dl-store-sub{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.5px;text-transform:uppercase}
+    .dl-store-name{font-size:15px;font-weight:700;color:#fff}
+    .dl-gplay-img{height:40px;filter:brightness(0.9)}
+
+    /* ═══════════════════════════════════════
+       FOOTER — exact Garena footer
+    ═══════════════════════════════════════ */
+    .footer{
+      background:#050505;border-top:1px solid rgba(255,255,255,0.06);
+      padding:clamp(20px,3vw,40px) clamp(20px,5vw,80px) calc(24px + env(safe-area-inset-bottom,0px));
+    }
+    .footer-inner{
+      max-width:1200px;margin:0 auto;
+      display:flex;align-items:flex-start;flex-wrap:wrap;gap:24px;
+    }
+    .footer-logo{margin-bottom:0}
+    .relate-logo{height:28px;opacity:0.55;filter:brightness(0) invert(1) opacity(0.55)}
+    .footer-content{flex:1;min-width:200px}
+    .footer-links{
+      display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;
+    }
+    .footer-links a{
+      font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;
+      transition:color 0.2s;text-transform:uppercase;
+    }
+    .footer-links a:hover{color:#FFBA00}
+    .footer-copyright{
+      font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.5px;line-height:1.7;
+    }
+    .footer-socials{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .footer-social-link{
+      width:32px;height:32px;border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;
+      transition:background 0.2s;
+    }
+    .footer-social-link:hover{background:rgba(255,186,0,0.2)}
+    .footer-social-link svg{width:14px;height:14px;fill:rgba(255,255,255,0.45)}
+
+    /* ═══════════════════════════════════════
+       HELPERS & ANIMATIONS
+    ═══════════════════════════════════════ */
+    .spacer-nav{height:64px}
+    [data-anim]{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(0.22,1,0.36,1),transform 0.65s cubic-bezier(0.22,1,0.36,1)}
+    [data-anim].visible{opacity:1;transform:none}
   </style>
 </head>
 <body>
-<div class="bg-glow"></div>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <div class="logo-wrap">
-    <div class="logo-icon"><img src="/attached_assets/ff-icon.png" alt="Free Fire"/></div>
-    <div class="logo-text">FREE FIRE</div>
+<!-- ════════════════════════════════════════════
+     NAVIGATION — exact replica of ff.garena.com
+════════════════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <a href="/index.html" class="nav-logo">
+    <img class="nav-logo-img"
+         src="https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png"
+         onerror="this.src='/attached_assets/ff-icon-real.png'"
+         alt="Free Fire"/>
+    <span class="nav-logo-name">Free Fire</span>
+  </a>
+
+  <ul class="nav-menu">
+    <li class="nav-item"><a href="/index.html" class="nav-link active">Home</a></li>
+    <li class="nav-item"><a href="https://ff.garena.com/en/news/" target="_blank" class="nav-link">News</a></li>
+    <li class="nav-item"><a href="https://ff.garena.com/en/chars/" target="_blank" class="nav-link">Characters</a></li>
+    <li class="nav-item"><a href="https://ff.garena.com/en/esports/" target="_blank" class="nav-link">Esports</a></li>
+    <li class="nav-item nav-item-drop">
+      <a href="#home-dl" class="nav-link">
+        Download
+        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg>
+      </a>
+      <ul class="nav-dropdown">
+        <li class="nav-dropdown-item"><a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank">Android (Google Play)</a></li>
+        <li class="nav-dropdown-item"><a href="https://apps.apple.com/app/garena-free-fire/id1300146617" target="_blank">iOS (App Store)</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <!-- Shop icon — exact SVG from real Garena HTML -->
+    <a href="https://shop.garena.sg/?utm_source=official+website&utm_medium=Entrance" target="_blank" class="nav-shop">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="14" fill="#181818"/>
+        <path d="M20.344 9.70707C20.2475 9.68587 20.1491 9.68179 20.0514 9.69525H12.985C12.525 9.69525 12.1506 10.0676 12.1506 10.5251C12.1506 10.9826 12.525 11.355 12.985 11.355H19.1276L17.936 16.781H11.3607L11.0631 14.8258H16.4934C16.7164 14.8258 16.926 14.7396 17.0836 14.5829C17.2414 14.4261 17.328 14.2177 17.328 13.9961C17.328 13.5386 16.9537 13.1663 16.4936 13.1663H10.8107L9.97993 7.7056C9.91764 7.29801 9.55842 6.99517 9.14448 7.00006H6.83528C6.37524 7.00006 6.00085 7.37239 6.00085 7.82991C6.00085 8.28743 6.37524 8.65976 6.83528 8.65976H8.43691L9.81497 17.7182C9.87091 18.0861 10.1664 18.3716 10.5361 18.4177C10.5998 18.4329 10.6656 18.4407 10.7314 18.4407H18.4963C18.5551 18.4407 18.6139 18.4344 18.6719 18.4221C19.0391 18.3959 19.3479 18.1305 19.4266 17.7712L20.9807 10.6949C21.0788 10.2479 20.7932 9.80489 20.344 9.70707Z" class="nav-shop-path"/>
+        <path d="M10.606 19.0872C9.7986 19.0872 9.14185 19.7403 9.14185 20.5431C9.14185 21.3458 9.7986 21.9992 10.606 21.9992C11.4133 21.9992 12.0701 21.346 12.0701 20.5431C12.0701 19.7401 11.4133 19.0872 10.606 19.0872Z" class="nav-shop-path"/>
+        <path d="M17.3672 19.0872C16.5598 19.0872 15.9031 19.7403 15.9031 20.5431C15.9031 21.3458 16.5598 21.9992 17.3672 21.9992C18.1746 21.9992 18.8313 21.346 18.8313 20.5431C18.8313 19.7401 18.1746 19.0872 17.3672 19.0872Z" class="nav-shop-path"/>
+      </svg>
+    </a>
+
+    <!-- Globe/language icon — exact SVG from real Garena HTML -->
+    <button class="nav-lang-btn" aria-label="Language">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="14" fill="#181818" class="nav-global-circle"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M14 6C18.4183 6 22 9.58172 22 14C22 18.4183 18.4183 22 14 22C9.58172 22 6 18.4183 6 14C6 9.58172 9.58172 6 14 6ZM14 20.4C14.2681 20.4 14.8969 20.1633 15.5532 18.9131C15.8069 18.4299 16.029 17.8521 16.2025 17.2H11.7975C11.971 17.8521 12.1931 18.4299 12.4468 18.9131C13.1031 20.1633 13.7319 20.4 14 20.4ZM11.4942 15.6C11.4331 15.0915 11.4 14.5561 11.4 14C11.4 13.4439 11.4331 12.9085 11.4942 12.4H16.5058C16.5669 12.9085 16.6 13.4439 16.6 14C16.6 14.5561 16.5669 15.0915 16.5058 15.6H11.4942ZM17.8505 17.2C17.6369 18.1311 17.333 18.9699 16.9598 19.676C18.0382 19.1125 18.936 18.2506 19.5438 17.2H17.8505ZM20.1984 15.6H18.116C18.1711 15.083 18.2 14.5479 18.2 14C18.2 13.4521 18.1711 12.917 18.116 12.4H20.1984C20.33 12.9114 20.4 13.4475 20.4 14C20.4 14.5525 20.33 15.0886 20.1984 15.6ZM9.88402 15.6H7.80163C7.67001 15.0886 7.6 14.5525 7.6 14C7.6 13.4475 7.67001 12.9114 7.80163 12.4H9.88402C9.82892 12.917 9.8 13.4521 9.8 14C9.8 14.5479 9.82892 15.083 9.88402 15.6ZM8.45621 17.2H10.1495C10.3631 18.1311 10.667 18.9699 11.0402 19.676C9.9618 19.1125 9.06396 18.2506 8.45621 17.2ZM11.7975 10.8H16.2025C16.029 10.1479 15.8069 9.57012 15.5532 9.08688C14.8969 7.83672 14.2681 7.6 14 7.6C13.7319 7.6 13.1031 7.83672 12.4468 9.08688C12.1931 9.57012 11.971 10.1479 11.7975 10.8ZM17.8505 10.8H19.5438C18.936 9.74937 18.0382 8.88755 16.9598 8.32405C17.333 9.03014 17.6369 9.86886 17.8505 10.8ZM11.0402 8.32405C10.667 9.03014 10.3631 9.86886 10.1495 10.8H8.45621C9.06396 9.74937 9.9618 8.88755 11.0402 8.32405Z" class="nav-global-path"/>
+      </svg>
+    </button>
+
+    <!-- Download CTA -->
+    <button class="nav-download-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.dts.freefireth','_blank')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </button>
+  </div>
+
+  <!-- Mobile burger -->
+  <button class="nav-burger" id="nav-burger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile" id="nav-mobile">
+  <ul>
+    <li class="nav-mobile-item"><a href="/index.html" onclick="toggleMobileNav()">Home</a></li>
+    <li class="nav-mobile-item"><a href="https://ff.garena.com/en/news/" target="_blank">News</a></li>
+    <li class="nav-mobile-item"><a href="https://ff.garena.com/en/chars/" target="_blank">Characters</a></li>
+    <li class="nav-mobile-item"><a href="https://ff.garena.com/en/esports/" target="_blank">Esports</a></li>
+    <li class="nav-mobile-item"><a href="/coderedem.html" onclick="toggleMobileNav()">Code Redeem</a></li>
+    <li class="nav-mobile-item"><a href="/aimlock.html" onclick="toggleMobileNav()">Tool FF</a></li>
+  </ul>
+  <button class="nav-mobile-dl" onclick="window.open('https://play.google.com/store/apps/details?id=com.dts.freefireth','_blank')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download Free Fire
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     HERO BANNER — Fire Kickoff Event 2026
+════════════════════════════════════════════ -->
+<div class="hero">
+  <img class="hero-bg" src="/attached_assets/ff-kickoff.jpg" alt="Free Fire Fire Kickoff Event 2026"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-live"><div class="hero-live-dot"></div>EVENT AKTIF · 5 JUNI 2026</div>
+    <h1 class="hero-title">
+      <span>FIRE KICKOFF</span>
+      <span class="gold">EVENT 2026</span>
+    </h1>
+    <!-- Real Garena title decoration SVG -->
+    <svg class="hero-title-deco" viewBox="0 0 165 9" fill="#FFBA00" xmlns="http://www.w3.org/2000/svg" style="height:9px;width:165px;display:block;margin-bottom:14px">
+      <path d="M129.4 0L121.28 8.12H0V0H129.4Z"/>
+      <path d="M141.16 0L133.04 8.12H128.45L136.57 0H141.16Z"/>
+      <path d="M152.92 0L144.8 8.12H140.2L148.33 0H152.92Z"/>
+      <path d="M164.68 0L156.55 8.12H151.96L160.09 0H164.68Z"/>
+    </svg>
+    <p class="hero-desc">Kampanye sepak bola eksklusif Garena · Garena Free Fire OB53</p>
+    <div class="hero-ctas">
+      <a href="/coderedem.html" class="hero-cta hero-cta-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:13px;height:13px"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><polyline points="16 2 22 2 22 8"/><line x1="11" y1="13" x2="22" y2="2"/></svg>
+        Klaim Kode Redeem
+      </a>
+      <a href="/aimlock.html" class="hero-cta hero-cta-secondary">
+        Tool FF OB53
+      </a>
+    </div>
   </div>
 </div>
 
-<!-- HERO -->
-<div class="hero-wrap">
-  <div class="event-badge fade-up">
-    <div class="live-dot"></div>
-    FIRE KICKOFF EVENT 2026
+<!-- ════════════════════════════════════════════
+     TRAPEZOID DECORATION + TWO-PANEL EVENT SECTION
+     (exact structure from ff.garena.com)
+════════════════════════════════════════════ -->
+<section class="section-module home-about-section">
+
+  <!-- Trapezoid decoration — exact from ff.garena.com HTML -->
+  <svg width="55%" viewBox="0 0 809 5" fill="none" xmlns="http://www.w3.org/2000/svg" class="section-decoration trapezoid" style="display:block;line-height:0">
+    <path d="M0 3.95801H810" stroke="#FFAF00" stroke-width="2" stroke-miterlimit="10"/>
+    <path d="M596.763 1.21411e-06H810V3.83467H590.574L593.672 1.15041C594.53 0.407623 595.628 -0.000812701 596.763 1.21411e-06Z" fill="#FFAF00"/>
+  </svg>
+
+  <!-- TWO-PANEL DIAGONAL (exact CSS from ff.garena.com) -->
+  <div class="home-about-inner">
+
+    <!-- LEFT PANEL: Code Redeem -->
+    <a href="/coderedem.html" class="home-about-left">
+      <img src="/attached_assets/ff-event4.jpg" class="about-cover" alt="Code Redeem"/>
+      <div class="home-about-layer"></div>
+      <div class="panel-label">
+        <div class="panel-badge panel-badge-gold">GRATIS</div>
+        <div class="panel-title">CODE<br>REDEEM</div>
+        <div class="panel-desc">Klaim item eksklusif, diamond, &amp; bundle langka Fire Kickoff 2026.</div>
+        <div class="panel-btn panel-btn-gold">
+          KLAIM
+          <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#000"/>
+            <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#000"/>
+            <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#000"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- RIGHT PANEL: Tool FF -->
+    <a href="/aimlock.html" class="home-about-right">
+      <img src="/attached_assets/ff-event2.jpg" class="about-cover" alt="Tool FF"/>
+      <div class="home-about-layer"></div>
+      <div class="panel-label">
+        <div class="panel-badge panel-badge-orange">OB53 UPDATE</div>
+        <div class="panel-title">AIM LOCK<br>TOOL FF</div>
+        <div class="panel-desc">Auto headshot &amp; aim lock terbaru. Anti-ban, enkripsi AES-256.</div>
+        <div class="panel-btn panel-btn-orange">
+          DOWNLOAD
+          <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#fff"/>
+            <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#fff"/>
+            <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#fff"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- Gold center border decoration — exact from Garena CSS -->
+    <div class="home-about-border"></div>
+    <div class="home-about-border-left"></div>
+    <div class="home-about-border-right"></div>
+
+  </div><!-- /home-about-inner -->
+
+  <!-- Section info below panels -->
+  <div class="home-about-ctx" data-anim>
+    <h2 class="section-title big" style="margin-bottom:16px">
+      <p class="section-title-text">PILIH AKTIVITAS</p>
+      <!-- Real Garena title-decoration SVG (4 diagonal chevrons in gold) -->
+      <svg viewBox="0 0 165 9" fill="#FFBA00" xmlns="http://www.w3.org/2000/svg" class="title-decoration">
+        <path d="M129.4 0L121.28 8.12H0V0H129.4Z"/>
+        <path d="M141.16 0L133.04 8.12H128.45L136.57 0H141.16Z"/>
+        <path d="M152.92 0L144.8 8.12H140.2L148.33 0H152.92Z"/>
+        <path d="M164.68 0L156.55 8.12H151.96L160.09 0H164.68Z"/>
+      </svg>
+    </h2>
+    <p class="section-desc">Pilih antara klaim hadiah eksklusif lewat Code Redeem atau manfaatkan Tool FF terbaru yang kompatibel dengan versi OB53.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="/coderedem.html" class="view-more">
+        Code Redeem
+        <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="view-more-icon">
+          <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#FFBA00"/>
+          <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#FFBA00"/>
+          <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#FFBA00"/>
+        </svg>
+      </a>
+      <a href="/aimlock.html" class="view-more" style="color:#FF6B00;border-color:rgba(255,107,0,0.4)">
+        Tool FF
+        <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="view-more-icon">
+          <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#FF6B00"/>
+          <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#FF6B00"/>
+          <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#FF6B00"/>
+        </svg>
+      </a>
+    </div>
   </div>
-  <div class="main-title fade-up">PILIH MENU</div>
-  <div class="main-sub fade-up">Pilih halaman yang ingin kamu akses</div>
-</div>
 
-<!-- CARDS -->
-<div class="cards-section">
+</section>
 
-  <!-- CODE REDEEM -->
-  <a class="menu-card card-redeem fade-up" href="/coderedem.html">
-    <div class="card-glow"></div>
-    <div class="card-inner">
-      <div class="card-icon-box">🎁</div>
-      <div class="card-body">
-        <div class="card-tag">Gratis</div>
-        <div class="card-title">Code Redeem</div>
-        <div class="card-desc">Klaim kode redeem eksklusif &amp; dapatkan hadiah item langka FF 2026</div>
-      </div>
-      <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18l6-6-6-6"/>
+<!-- ════════════════════════════════════════════
+     POLYGON DECORATION + CHARACTERS SECTION
+     (exact structure from ff.garena.com)
+════════════════════════════════════════════ -->
+<section class="section-module home-chars-section">
+
+  <!-- Polygon decoration — exact from ff.garena.com HTML -->
+  <svg width="100%" viewBox="0 0 1440 25" fill="none" xmlns="http://www.w3.org/2000/svg" class="section-decoration polygon">
+    <path d="M0 23.6899H248.724L270.737 5.17356C272.873 3.03632 275.77 1.8349 278.792 1.8335H1440" stroke="#FFAF00" stroke-width="2" stroke-miterlimit="10"/>
+    <path d="M248.546 23.3337H0V18.7046H253.887L248.546 23.3337Z" fill="#FFAF00"/>
+  </svg>
+
+  <div class="home-chars-inner">
+    <div class="home-chars-overlay"></div>
+    <div class="home-chars-container" data-anim>
+
+      <!-- Real Garena "view more" button -->
+      <a href="https://ff.garena.com/en/chars/" target="_blank" class="view-more" style="margin-bottom:20px;display:inline-flex">
+        <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="view-more-icon">
+          <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#FFBA00"/>
+          <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#FFBA00"/>
+          <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#FFBA00"/>
         </svg>
-      </div>
-    </div>
-    <div class="card-badges">
-      <span class="mini-badge">M1887 Golden</span>
-      <span class="mini-badge">Bundle Rare</span>
-      <span class="mini-badge">Diamond x500</span>
-      <span class="mini-badge">Gold Pass</span>
-    </div>
-  </a>
+      </a>
 
-  <div class="or-divider fade-up">atau</div>
-
-  <!-- TOOL FF -->
-  <a class="menu-card card-tool fade-up" href="/aimlock.html">
-    <div class="card-glow"></div>
-    <div class="card-inner">
-      <div class="card-icon-box">🎯</div>
-      <div class="card-body">
-        <div class="card-tag">Tool FF</div>
-        <div class="card-title">Aim Lock &amp; Auto HS</div>
-        <div class="card-desc">Download tool aim lock &amp; auto headshot terbaru untuk Free Fire 2026</div>
-      </div>
-      <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18l6-6-6-6"/>
+      <!-- Section title with REAL Garena title-decoration SVG -->
+      <h2 class="section-title big">
+        <p class="section-title-text" style="color:#fff">CHOOSE YOUR<br>CHARACTER</p>
+        <svg viewBox="0 0 165 9" fill="#FFBA00" xmlns="http://www.w3.org/2000/svg" class="title-decoration">
+          <path d="M129.4 0L121.28 8.12H0V0H129.4Z"/>
+          <path d="M141.16 0L133.04 8.12H128.45L136.57 0H141.16Z"/>
+          <path d="M152.92 0L144.8 8.12H140.2L148.33 0H152.92Z"/>
+          <path d="M164.68 0L156.55 8.12H151.96L160.09 0H164.68Z"/>
         </svg>
+      </h2>
+      <p class="section-desc" style="margin-top:12px">Lebih dari 50 karakter dengan kemampuan unik. Bangun strategi dan dominasi medan perang Free Fire.</p>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════
+     TRAPEZOID DECORATION + NEWS SECTION
+════════════════════════════════════════════ -->
+<section class="section-module" style="background:#0f0f0f">
+
+  <!-- Trapezoid decoration (mirrored) -->
+  <svg width="55%" viewBox="0 0 809 5" fill="none" xmlns="http://www.w3.org/2000/svg" class="section-decoration trapezoid" style="display:block;line-height:0;transform:scaleX(-1);margin-left:auto">
+    <path d="M0 3.95801H810" stroke="#FFAF00" stroke-width="2" stroke-miterlimit="10"/>
+    <path d="M596.763 1.21411e-06H810V3.83467H590.574L593.672 1.15041C594.53 0.407623 595.628 -0.000812701 596.763 1.21411e-06Z" fill="#FFAF00"/>
+  </svg>
+
+  <div class="home-news-section">
+    <div class="home-news-head" data-anim>
+      <h2 class="section-title big" style="margin-bottom:0">
+        <p class="section-title-text">NEWS &amp; UPDATE</p>
+        <svg viewBox="0 0 165 9" fill="#FFBA00" xmlns="http://www.w3.org/2000/svg" class="title-decoration">
+          <path d="M129.4 0L121.28 8.12H0V0H129.4Z"/>
+          <path d="M141.16 0L133.04 8.12H128.45L136.57 0H141.16Z"/>
+          <path d="M152.92 0L144.8 8.12H140.2L148.33 0H152.92Z"/>
+          <path d="M164.68 0L156.55 8.12H151.96L160.09 0H164.68Z"/>
+        </svg>
+      </h2>
+      <a href="https://ff.garena.com/en/news/" target="_blank" class="news-view-more">
+        VIEW ALL
+        <svg viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:13px;height:9px">
+          <path d="M1.34241 10.96H0V0.0400391H1.71674L6.98958 5.31287L1.34241 10.96Z" fill="#FFBA00"/>
+          <path d="M7.64783 0.0400391V1.58252L10.7715 4.71266L12.0881 3.39607L8.72563 0.0400391H7.64783Z" fill="#FFBA00"/>
+          <path d="M7.64783 10.8117H8.95797L14.1985 5.57113L12.8819 4.26099L7.64783 9.4951V10.8117Z" fill="#FFBA00"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="news-grid">
+      <a href="https://ff.garena.com/en/article/1664/" target="_blank" class="news-card" data-anim>
+        <div class="news-thumb"><img src="/attached_assets/ff-kickoff.jpg" alt="Fire Kickoff" loading="lazy"/></div>
+        <div class="news-body">
+          <div class="news-tag">EVENT · 03/06/2026</div>
+          <div class="news-title">Free Fire introduces "Fire Kickoff" football campaign 2026</div>
+          <div class="news-date">3 Juni 2026</div>
+        </div>
+      </a>
+      <a href="https://ff.garena.com/en/article/1640/" target="_blank" class="news-card" data-anim>
+        <div class="news-thumb"><img src="/attached_assets/ff-event2.jpg" alt="OB53 Patch" loading="lazy"/></div>
+        <div class="news-body">
+          <div class="news-tag">PATCH NOTES · 02/04/2026</div>
+          <div class="news-title">OB53 Update — Undersea Mystery new characters &amp; features</div>
+          <div class="news-date">2 April 2026</div>
+        </div>
+      </a>
+      <a href="https://ff.garena.com/en/article/1655/" target="_blank" class="news-card" data-anim>
+        <div class="news-thumb"><img src="/attached_assets/ff-event3.jpg" alt="Gintama" loading="lazy"/></div>
+        <div class="news-body">
+          <div class="news-tag">COLLAB · 24/04/2026</div>
+          <div class="news-title">Comedy &amp; Samurai Spirit — Free Fire × GINTAMA Collaboration</div>
+          <div class="news-date">24 April 2026</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════
+     POLYGON DECORATION + DOWNLOAD SECTION
+════════════════════════════════════════════ -->
+<section class="section-module" id="home-dl">
+
+  <!-- Polygon decoration (mirrored) -->
+  <svg width="100%" viewBox="0 0 1440 25" fill="none" xmlns="http://www.w3.org/2000/svg" class="section-decoration polygon" style="transform:scaleX(-1)">
+    <path d="M0 23.6899H248.724L270.737 5.17356C272.873 3.03632 275.77 1.8349 278.792 1.8335H1440" stroke="#FFAF00" stroke-width="2" stroke-miterlimit="10" opacity="0.5"/>
+    <path d="M248.546 23.3337H0V18.7046H253.887L248.546 23.3337Z" fill="#FFAF00" opacity="0.5"/>
+  </svg>
+
+  <div class="home-dl-section">
+    <div class="home-dl-bg"></div>
+    <div class="home-dl-inner" data-anim>
+      <img class="home-dl-logo"
+           src="https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/full_logo.969f536.png"
+           alt="Free Fire" onerror="this.style.display='none'"/>
+      <div class="home-dl-title">DOWNLOAD<br>FREE FIRE</div>
+      <p class="home-dl-desc">Battle Royale terbaik di mobile — Tersedia untuk Android &amp; iOS secara gratis.</p>
+      <div class="home-dl-btns">
+        <!-- Google Play — using real Garena CDN button image -->
+        <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" class="dl-store-btn">
+          <img src="/attached_assets/google_play.png" class="dl-gplay-img" alt="Google Play"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div style="display:none;align-items:center;gap:8px">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="dl-store-icon" style="color:#fff">
+              <path d="M0.710817 0C0.284327 0.142163 0 0.606285 0 1.2502V20.1579C0 20.8019 0.250877 21.266 0.677367 21.4081L10.4197 10.7041L0.710817 0ZM2.38751 0.535204L11.0218 10.0602L13.9111 6.88656L2.38751 0.535204ZM14.7683 7.31306L11.6658 10.7041L14.7683 14.0951L19.0123 11.7745C19.7984 11.348 20.1203 11.1306 20.1203 10.7041C20.1203 10.2776 19.7984 10.0602 19.0123 9.63366L14.7683 7.31306ZM11.0595 11.3814L2.38751 20.9106L13.9822 14.5592L11.0595 11.3814Z"/>
+            </svg>
+            <div class="dl-store-label">
+              <div class="dl-store-sub">GET IT ON</div>
+              <div class="dl-store-name">Google Play</div>
+            </div>
+          </div>
+        </a>
+        <a href="https://apps.apple.com/app/garena-free-fire/id1300146617" target="_blank" class="dl-store-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="dl-store-icon" style="color:#fff;width:22px;height:22px">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <div class="dl-store-label">
+            <div class="dl-store-sub">DOWNLOAD ON THE</div>
+            <div class="dl-store-name">App Store</div>
+          </div>
+        </a>
       </div>
     </div>
-    <div class="card-badges">
-      <span class="mini-badge">Aim Lock v2.1</span>
-      <span class="mini-badge">Auto Headshot</span>
-      <span class="mini-badge">Anti-Ban</span>
-      <span class="mini-badge">Speed Boost</span>
-    </div>
-  </a>
+  </div>
 
-</div>
+</section>
 
-<!-- FOOTER -->
-<div class="page-footer">© 2026 FREE FIRE · FIRE KICKOFF EVENT · GARENA</div>
+<!-- ════════════════════════════════════════════
+     FOOTER — exact replica of ff.garena.com footer
+════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <h3 class="footer-logo">
+      <!-- Garena logo — exact from real Garena footer -->
+      <img class="relate-logo"
+           src="/attached_assets/garena_logo.png"
+           alt="Garena"
+           onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png'"/>
+    </h3>
+    <section class="footer-content">
+      <ul class="footer-links">
+        <li><a href="https://content.garena.com/legal/pp/pp_en.html" target="_blank">Privacy Policy</a></li>
+        <li><a href="https://content.garena.com/legal/tos/tos_en.html" target="_blank">Terms of Service</a></li>
+        <li><a href="https://ffsupport.garena.com/hc/en-us" target="_blank">Support</a></li>
+        <li><a href="https://ff.garena.com/en/news/" target="_blank">News</a></li>
+        <li><a href="https://shop.garena.sg/" target="_blank">Garena Shop</a></li>
+      </ul>
+      <p class="footer-copyright">
+        © 2026 Garena International I Private Limited. All Rights Reserved.<br>
+        Free Fire is developed and published by Garena.
+      </p>
+    </section>
+  </div>
+</footer>
 
+<script>
+// Mobile nav toggle
+function toggleMobileNav() {
+  document.getElementById('nav-mobile').classList.toggle('open');
+}
+
+// Scroll animation observer
+const observer = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+  { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+);
+document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.style.background = window.scrollY > 40
+    ? 'rgba(8,8,8,0.98)'
+    : 'rgba(8,8,8,0.96)';
+}, { passive: true });
+</script>
 </body>
 </html>
