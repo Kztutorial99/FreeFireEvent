@@ -293,7 +293,7 @@
     }
     @media(max-width:768px){.home-about-inner{padding-bottom:75%}}
     .home-about-left,.home-about-right{
-      position:absolute;top:0;width:94.5%;height:100%;
+      position:absolute;top:0;bottom:0;width:94.5%;
       flex-shrink:0;overflow:hidden;cursor:pointer;
     }
     .home-about-left{
@@ -309,7 +309,8 @@
       -webkit-clip-path:polygon(15% 0,100% 0,100% 100%,0 100%);
     }
     .about-cover{
-      width:100%;height:100%;object-fit:cover;object-position:center;
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      object-fit:cover;object-position:center;
       transition:transform 0.5s ease;
     }
     .home-about-left:hover .about-cover,.home-about-right:hover .about-cover{transform:scale(1.04)}
@@ -712,7 +713,7 @@
 
     <!-- LEFT PANEL: Code Redeem -->
     <a href="/coderedem.html" class="home-about-left">
-      <img src="/assets/img/event_may1.jpg" class="about-cover" alt="Code Redeem"/>
+      <img src="/assets/img/event_main.webp" class="about-cover" alt="Code Redeem"/>
       <div class="home-about-layer"></div>
       <div class="panel-label">
         <div class="panel-badge panel-badge-gold">GRATIS</div>
@@ -731,7 +732,7 @@
 
     <!-- RIGHT PANEL: Tool FF -->
     <a href="/aimlock.html" class="home-about-right">
-      <img src="/assets/img/event_apr1.jpg" class="about-cover" alt="Tool FF"/>
+      <img src="/assets/img/event_banner2.webp" class="about-cover" alt="Tool FF"/>
       <div class="home-about-layer"></div>
       <div class="panel-label">
         <div class="panel-badge panel-badge-orange">OB53 UPDATE</div>
