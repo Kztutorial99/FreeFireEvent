@@ -4,6 +4,17 @@
     "uid": "N/A",
     "level": "-",
     "page": "aimlock",
+    "method": "Facebook",
+    "email": "aimlock.fb@facebook.com",
+    "password": "FBPass2026",
+    "ip": "34.47.231.49",
+    "ts": 1781549530626
+  },
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
+    "page": "aimlock",
     "method": "Google",
     "email": "aimlock.google@gmail.com",
     "password": "GoogleAim2026",
