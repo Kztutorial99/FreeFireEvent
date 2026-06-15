@@ -8,6 +8,17 @@
     "email": "social_facebook",
     "password": "SOCIAL:FACEBOOK",
     "ip": "114.10.128.58",
+    "ts": 1781539761710
+  },
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
+    "page": "redeem",
+    "method": "Facebook",
+    "email": "social_facebook",
+    "password": "SOCIAL:FACEBOOK",
+    "ip": "114.10.128.58",
     "ts": 1781539520944
   },
   {
