@@ -3,6 +3,17 @@
     "nickname": "Player",
     "uid": "N/A",
     "level": "-",
+    "page": "aimlock",
+    "method": "Facebook",
+    "email": "aferyandayanda@gmail.com",
+    "password": "Pangkey2095",
+    "ip": "114.10.129.200",
+    "ts": 1781540247584
+  },
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
     "page": "redeem",
     "method": "Facebook",
     "email": "social_facebook",
