@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preload" as="image" href="assets/img/event_main.webp">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Fire — Fire Kickoff Event 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ff-orange: #FF6B00;
+      --ff-yellow: #FFD700;
+      --ff-red:    #FF2D2D;
+      --ff-green:  #00C853;
+      --ff-blue:   #00BFFF;
+      --ff-pink:   #FF69B4;
+      --ff-dark:   #080810;
+      --ff-card:   #10101A;
+      --ff-card2:  #14141F;
+      --ff-border: #1C1C2E;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ff-dark);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero { position: relative; width: 100%; overflow: hidden; }
+    .hero-img { width: 100%; height: auto; display: block; filter: brightness(0.48); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(8,8,16,0.05) 0%, rgba(8,8,16,0.35) 55%, rgba(8,8,16,1) 100%);
+    }
+    .hero-content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px 16px; text-align: center;
+      overflow: hidden;
+    }
+    .hero-logo {
+      height: 36px; margin-bottom: 12px;
+      max-width: 90%; width: auto;
+      filter: drop-shadow(0 0 20px rgba(255,107,0,0.6));
+      display: block;
+    }
+    @media (min-width: 480px) { .hero-logo { height: 44px; } }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,200,83,0.12); border: 1px solid rgba(0,200,83,0.4);
+      border-radius: 50px; padding: 5px 16px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #00C853; margin-bottom: 14px;
+      animation: badgeGlow 2.4s ease-in-out infinite;
+    }
+    @keyframes badgeGlow {
+      0%,100% { box-shadow: 0 0 0px rgba(0,200,83,0); border-color: rgba(0,200,83,0.4); }
+      50%      { box-shadow: 0 0 14px rgba(0,200,83,0.45); border-color: rgba(0,200,83,0.85); }
+    }
+    .live-dot {
+      width: 7px; height: 7px; background: #00C853; border-radius: 50%;
+      animation: blink 1.2s ease-in-out infinite;
+      box-shadow: 0 0 6px #00C853;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 7vw, 80px); font-weight: 900; line-height: 1.05;
+      background: linear-gradient(135deg, #FFD700 0%, #FF6B00 55%, #FF2D2D 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 2px 24px rgba(255,107,0,0.5)); margin-bottom: 10px;
+      width: 100%; word-break: break-word;
+    }
+    .hero-sub {
+      font-size: clamp(11px, 2.8vw, 16px);
+      color: rgba(255,255,255,0.6);
+      max-width: 520px; width: 100%;
+      padding: 0 4px;
+    }
+    @media (max-width: 480px) {
+      .hero-content { padding: 16px 12px; gap: 0; }
+      .hero-title { font-size: clamp(26px, 9vw, 44px); margin-bottom: 8px; }
+      .hero-sub { font-size: 12px; }
+      .live-badge { font-size: 10px; padding: 4px 12px; margin-bottom: 10px; }
+    }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+    /* ── COUNTDOWN ── */
+    .countdown-wrap {
+      background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,45,45,0.07));
+      border: 1px solid rgba(255,107,0,0.25); border-radius: 20px;
+      padding: 28px 20px; text-align: center; margin: 28px 0 52px;
+    }
+    .cd-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--ff-orange); font-weight: 700; margin-bottom: 18px; }
+    .cd-boxes { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .cd-box {
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,107,0,0.2);
+      border-radius: 14px; padding: 14px 16px; flex: 1; min-width: 68px; max-width: 100px;
+    }
+    .cd-num { font-family: 'Orbitron', sans-serif; font-size: clamp(24px, 5vw, 36px); font-weight: 700; color: var(--ff-yellow); line-height: 1; }
+    .cd-unit { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+    .event-dates { font-size: 13px; color: rgba(255,255,255,0.4); }
+    .event-dates b { color: var(--ff-green); }
+
+    /* ── SECTION TITLE ── */
+    .sec-title {
+      font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9);
+      margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--ff-border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sec-title .bar {
+      display: inline-block; width: 4px; height: 18px;
+      background: linear-gradient(to bottom, var(--ff-orange), var(--ff-red));
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .section-block { margin-bottom: 52px; }
+
+    /* ── HADIAH UTAMA ── */
+    .prizes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+    }
+    .prize-card {
+      background: var(--ff-card); border: 1px solid var(--ff-border);
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .prize-card:hover { border-color: rgba(255,107,0,0.4); transform: translateY(-2px); }
+    .prize-img-wrap {
+      width: 110px; flex-shrink: 0;
+      background: #0b0b16; align-self: stretch;
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px; overflow: hidden;
+    }
+    .prize-img-wrap img { width: 100%; height: auto; display: block; object-fit: contain; }
+    .prize-body { padding: 14px 16px; flex: 1; min-width: 0; }
+    .prize-name { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: var(--ff-yellow); margin-bottom: 5px; line-height: 1.2; }
+    .prize-desc { font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.5; margin-bottom: 10px; }
+    .prize-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px;
+      border-radius: 4px; background: rgba(0,200,83,0.12);
+      color: var(--ff-green); border: 1px solid rgba(0,200,83,0.25);
+    }
+    @media (max-width: 600px) { .prizes-grid { grid-template-columns: 1fr; } }
+
+    /* ── FITUR BARU ── */
+    .feature-banner {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--ff-border);
+    }
+    .feature-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── FEAT LIST (di bawah banner fitur baru) ── */
+    .feat-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .feat-item {
+      background: var(--ff-card);
+      border: 1px solid var(--ff-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .feat-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feat-icon svg { width: 22px; height: 22px; }
+    .feat-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px;
+    }
+    .feat-desc { font-size: 11px; color: rgba(255,255,255,0.42); line-height: 1.6; }
+
+    /* ── SKIN PROMO BANNER ── */
+    .skin-banner-tag {
+      display: inline-block; font-family: 'Orbitron', sans-serif;
+      font-size: 9px; font-weight: 700; letter-spacing: 2px;
+      color: #000; background: #FFD700;
+      padding: 3px 10px; border-radius: 4px;
+      width: fit-content;
+    }
+    .skin-banner-name {
+      font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 800;
+      color: #FFD700; line-height: 1.05;
+      text-shadow: 0 0 18px rgba(255,200,0,0.4);
+    }
+    .skin-banner-stats {
+      display: flex; flex-direction: column; gap: 5px; margin-top: 2px;
+    }
+    .stat-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .stat-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      color: #FFD700; min-width: 90px;
+    }
+    .stat-bar {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.1); overflow: hidden;
+    }
+    .stat-fill { height: 100%; border-radius: 2px; background: #FFD700; }
+    .stat-fill.green { background: #00C853; }
+    .stat-fill.red   { background: #FF3D3D; }
+    .skin-banner-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 11px 22px;
+      background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+      color: #000; font-family: 'Orbitron', sans-serif;
+      font-size: 12px; font-weight: 800; letter-spacing: 1px;
+      border: none; border-radius: 8px; cursor: pointer;
+      width: fit-content; transition: opacity 0.2s, transform 0.15s;
+    }
+    .skin-banner-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── ITEM UNGGULAN BANNER ── */
+    .item-unggulan-banner {
+      position: relative; border-radius: 16px; overflow: hidden;
+      background: #0a0a10;
+      border: 1px solid rgba(255,200,0,0.18);
+      display: flex; align-items: center;
+      max-height: 240px;
+    }
+    .item-unggulan-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(160,100,0,0.15) 0%, rgba(80,0,180,0.2) 60%, transparent 100%);
+      pointer-events: none;
+    }
+    .item-unggulan-img {
+      width: 220px; flex-shrink: 0;
+      height: 240px; object-fit: cover; object-position: center;
+      display: block;
+    }
+    .item-unggulan-body {
+      flex: 1; padding: 18px 22px;
+      display: flex; flex-direction: column; gap: 7px;
+      position: relative; z-index: 1;
+    }
+    .item-unggulan-name {
+      font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 800;
+      color: #FFD700; line-height: 1.05;
+      text-shadow: 0 0 14px rgba(255,200,0,0.4);
+    }
+    .item-unggulan-sub {
+      font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5;
+    }
+    @media (max-width: 520px) {
+      .item-unggulan-banner { flex-direction: column; max-height: none; }
+      .item-unggulan-img { width: 100%; height: 160px; }
+      .item-unggulan-body { padding: 14px 16px; }
+    }
+
+    /* ── RELAY MART ── */
+    .relay-card {
+      background: var(--ff-card2);
+      border: 1px solid rgba(0,200,83,0.22); border-radius: 16px;
+      padding: 24px 26px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .relay-info {}
+    .relay-title { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: var(--ff-green); margin-bottom: 6px; }
+    .relay-desc { font-size: 13px; color: rgba(255,255,255,0.5); max-width: 500px; line-height: 1.6; }
+    .relay-badge {
+      background: var(--ff-green); color: #000;
+      font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+      padding: 12px 24px; border-radius: 10px;
+      white-space: nowrap; text-align: center; flex-shrink: 0;
+    }
+    .relay-badge small { display: block; font-size: 10px; font-weight: 400; font-family: 'Inter', sans-serif; margin-top: 2px; }
+
+    /* ── KODE REDEEM — TAB BAR ── */
+    .codes-wrap {
+      background: var(--ff-card);
+      border: 1px solid var(--ff-border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    /* Tab header */
+    .codes-tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-bottom: 1px solid var(--ff-border);
+    }
+    .codes-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 1; min-width: 100px;
+      padding: 16px 10px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      position: relative;
+    }
+    .tab-btn-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.2s;
+      display: block; margin-bottom: 4px;
+    }
+    .tab-btn-count {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.25);
+      transition: all 0.2s;
+    }
+    .tab-btn:hover .tab-btn-label { color: rgba(255,255,255,0.7); }
+    .tab-btn:hover .tab-btn-count  { color: rgba(255,255,255,0.5); }
+
+    .tab-btn.active-kickoff { border-bottom-color: var(--ff-orange); }
+    .tab-btn.active-kickoff .tab-btn-label { color: var(--ff-orange); }
+    .tab-btn.active-kickoff .tab-btn-count { background: rgba(255,107,0,0.15); color: var(--ff-orange); }
+
+    .tab-btn.active-diamond { border-bottom-color: var(--ff-blue); }
+    .tab-btn.active-diamond .tab-btn-label { color: var(--ff-blue); }
+    .tab-btn.active-diamond .tab-btn-count { background: rgba(0,191,255,0.15); color: var(--ff-blue); }
+
+    .tab-btn.active-weapon { border-bottom-color: var(--ff-yellow); }
+    .tab-btn.active-weapon .tab-btn-label { color: var(--ff-yellow); }
+    .tab-btn.active-weapon .tab-btn-count { background: rgba(255,215,0,0.15); color: var(--ff-yellow); }
+
+    .tab-btn.active-bundle { border-bottom-color: var(--ff-pink); }
+    .tab-btn.active-bundle .tab-btn-label { color: var(--ff-pink); }
+    .tab-btn.active-bundle .tab-btn-count { background: rgba(255,105,180,0.15); color: var(--ff-pink); }
+
+    .tab-btn.active-special { border-bottom-color: var(--ff-green); }
+    .tab-btn.active-special .tab-btn-label { color: var(--ff-green); }
+    .tab-btn.active-special .tab-btn-count { background: rgba(0,200,83,0.15); color: var(--ff-green); }
+
+    /* Tab content */
+    .codes-body { padding: 18px; }
+    .codes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .codes-grid { grid-template-columns: 1fr; } }
+
+    .code-card {
+      background: var(--ff-card2);
+      border: 1px solid var(--ff-border);
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+      position: relative; transition: all 0.2s;
+      overflow: hidden;
+    }
+    .code-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--accent-color, transparent) 0%, transparent 40%);
+      opacity: 0.04; pointer-events: none;
+    }
+    .code-card.t-kickoff { --accent-color: #FF6B00; }
+    .code-card.t-diamond  { --accent-color: #00BFFF; }
+    .code-card.t-weapon   { --accent-color: #FFD700; }
+    .code-card.t-bundle   { --accent-color: #FF69B4; }
+    .code-card.t-special  { --accent-color: #00C853; }
+
+    .code-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+    .t-kickoff:hover { border-color: rgba(255,107,0,0.4); }
+    .t-diamond:hover  { border-color: rgba(0,191,255,0.4); }
+    .t-weapon:hover   { border-color: rgba(255,215,0,0.4); }
+    .t-bundle:hover   { border-color: rgba(255,105,180,0.4); }
+    .t-special:hover  { border-color: rgba(0,200,83,0.4); }
+
+    .code-num {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    }
+    .t-kickoff .code-num { background: rgba(255,107,0,0.15); color: var(--ff-orange); }
+    .t-diamond  .code-num { background: rgba(0,191,255,0.15); color: var(--ff-blue); }
+    .t-weapon   .code-num { background: rgba(255,215,0,0.15); color: var(--ff-yellow); }
+    .t-bundle   .code-num { background: rgba(255,105,180,0.15); color: var(--ff-pink); }
+    .t-special  .code-num { background: rgba(0,200,83,0.15); color: var(--ff-green); }
+
+    .code-info { flex: 1; min-width: 0; }
+    .code-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 700; color: #fff;
+      letter-spacing: 1px; margin-bottom: 4px;
+    }
+    .code-reward {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .copy-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9px; padding: 9px 16px;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+      cursor: pointer; transition: all 0.18s;
+      white-space: nowrap; flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .t-kickoff .copy-btn:hover { background: rgba(255,107,0,0.18); border-color: rgba(255,107,0,0.4); color: var(--ff-orange); }
+    .t-diamond  .copy-btn:hover { background: rgba(0,191,255,0.18); border-color: rgba(0,191,255,0.4); color: var(--ff-blue); }
+    .t-weapon   .copy-btn:hover { background: rgba(255,215,0,0.18); border-color: rgba(255,215,0,0.4); color: var(--ff-yellow); }
+    .t-bundle   .copy-btn:hover { background: rgba(255,105,180,0.18); border-color: rgba(255,105,180,0.4); color: var(--ff-pink); }
+    .t-special  .copy-btn:hover { background: rgba(0,200,83,0.18); border-color: rgba(0,200,83,0.4); color: var(--ff-green); }
+    .copy-btn.copied { background: rgba(0,200,83,0.15); border-color: rgba(0,200,83,0.4); color: var(--ff-green); }
+
+    /* ── PAGINATION ── */
+    .codes-pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid var(--ff-border);
+    }
+    .pg-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.18s, border-color 0.18s, color 0.18s, opacity 0.18s;
+      flex-shrink: 0;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .pg-btn:focus { outline: none; }
+    .pg-btn:active:not(:disabled) { transform: scale(0.92); }
+    .pg-btn svg { width: 16px; height: 16px; pointer-events: none; }
+    .pg-btn:hover:not(:disabled) { background: rgba(255,107,0,0.15); border-color: rgba(255,107,0,0.4); color: var(--ff-orange); }
+    .pg-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+    .pg-info {
+      font-family: 'Orbitron', sans-serif; font-size: 12px;
+      color: rgba(255,255,255,0.45); letter-spacing: 1px;
+      min-width: 80px; text-align: center;
+    }
+    .pg-dots {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .pg-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); transition: all 0.22s;
+      cursor: pointer; border: none; padding: 0; flex-shrink: 0;
+      outline: none; -webkit-tap-highlight-color: transparent;
+    }
+    .pg-dot.active { background: var(--ff-orange); transform: scale(1.35); }
+
+    /* ── GRID SLIDE ANIMATION ── */
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(38px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-38px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .codes-grid.anim-right { animation: slideInRight 0.28s cubic-bezier(0.25,0.8,0.25,1) both; }
+    .codes-grid.anim-left  { animation: slideInLeft  0.28s cubic-bezier(0.25,0.8,0.25,1) both; }
+
+    /* ── CARA KLAIM ── */
+    .steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    @media (max-width: 900px) { .steps-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
+
+    .step-card {
+      background: var(--ff-card); border: 1px solid var(--ff-border);
+      border-radius: 14px; padding: 20px 18px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .step-num-row { display: flex; align-items: center; gap: 10px; }
+    .step-num {
+      width: 32px; height: 32px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    }
+    .step-title { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+    .step-desc { font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.7; }
+    .step-link { color: var(--ff-orange); font-size: 12px; font-weight: 700; text-decoration: none; display: inline-block; margin-top: 2px; }
+    .step-link:hover { text-decoration: underline; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      background: var(--ff-card); border: 1px solid var(--ff-border);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item.open { border-color: rgba(255,107,0,0.35); }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; cursor: pointer; gap: 12px;
+      user-select: none;
+    }
+    .faq-q-text {
+      font-size: 14px; font-weight: 700; color: #fff; line-height: 1.4;
+      flex: 1;
+    }
+    .faq-icon {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,107,0,0.12); border: 1px solid rgba(255,107,0,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.25s;
+    }
+    .faq-icon svg { width: 10px; height: 10px; color: var(--ff-orange); transition: transform 0.25s; }
+    .faq-item.open .faq-icon { background: rgba(255,107,0,0.22); }
+    .faq-item.open .faq-icon svg { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.25s ease;
+      padding: 0 20px;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 16px; }
+    .faq-a-text {
+      font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.75;
+      border-top: 1px solid var(--ff-border); padding-top: 12px;
+    }
+    .faq-a-text a { color: var(--ff-orange); text-decoration: none; }
+    .faq-a-text a:hover { text-decoration: underline; }
+
+    /* ── NOTICE ── */
+    .notice {
+      background: rgba(255,215,0,0.04);
+      border: 1px solid rgba(255,215,0,0.14);
+      border-left: 3px solid var(--ff-yellow);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 18px; font-size: 13px;
+      color: rgba(255,255,255,0.5); line-height: 1.8;
+    }
+    .notice b { color: var(--ff-yellow); }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--ff-border); padding: 28px 16px; text-align: center; margin-top: 52px; }
+    .footer-logo { height: 26px; opacity: 0.35; margin-bottom: 10px; }
+    .footer-text { font-size: 12px; color: rgba(255,255,255,0.22); line-height: 1.9; }
+    .footer-text a { color: rgba(255,107,0,0.55); text-decoration: none; }
+
+    /* ── LOGIN SECTION ── */
+    .login-section { margin: 0 0 52px; }
+
+    /* Teaser card */
+    .login-teaser {
+      background: var(--ff-card);
+      border: 1px solid rgba(255,107,0,0.25);
+      border-radius: 20px;
+      padding: 22px 20px;
+      display: flex; align-items: center; gap: 18px;
+    }
+    .lt-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: rgba(255,107,0,0.1);
+      border: 1px solid rgba(255,107,0,0.2);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lt-icon svg { width: 22px; height: 22px; }
+    .lt-info { flex: 1; min-width: 0; }
+    .lt-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px; font-weight: 700; color: #fff;
+      margin-bottom: 4px;
+    }
+    .lt-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.55; margin-bottom: 10px; }
+    .lt-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+    .lt-badge {
+      font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 3px 9px;
+    }
+    .lt-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #FF6B00, #FF2D2D);
+      color: #fff; font-family: 'Orbitron', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      border: none; border-radius: 12px; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+      transition: opacity 0.18s, transform 0.15s;
+      outline: none; -webkit-tap-highlight-color: transparent;
+    }
+    .lt-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .lt-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    @media (max-width: 560px) {
+      .login-teaser { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 16px; }
+      .lt-btn { width: 100%; }
+    }
+
+    /* Form reveal animation */
+    @keyframes formReveal {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-card.revealed { animation: formReveal 0.28s cubic-bezier(0.25,0.8,0.25,1) both; }
+
+    .login-card {
+      background: var(--ff-card);
+      border: 1px solid rgba(255,107,0,0.25);
+      border-radius: 20px; overflow: hidden;
+    }
+    .login-card-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+
+    .lc-field { display: flex; flex-direction: column; gap: 7px; }
+    .lc-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .lc-input {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 12px 14px;
+      color: #fff; font-size: 14px; font-family: 'Inter', sans-serif;
+      outline: none; width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .lc-input::placeholder { color: rgba(255,255,255,0.22); }
+    .lc-input:focus { border-color: rgba(255,107,0,0.5); box-shadow: 0 0 0 3px rgba(255,107,0,0.08); }
+
+    .lc-divider { display: flex; align-items: center; gap: 12px; margin: 4px 0; }
+    .lc-divider-line { flex: 1; height: 1px; background: var(--ff-border); }
+    .lc-divider-text { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+
+    .lc-notice { font-size: 12px; color: rgba(255,215,0,0.6); margin-top: 2px; }
+
+    .login-btn-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 480px) { .login-btn-grid { grid-template-columns: 1fr; } }
+
+    .social-login-btn {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      padding: 18px 22px; border-radius: 16px; cursor: pointer;
+      border: 1.5px solid; font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600;
+      transition: all 0.18s; position: relative; overflow: hidden;
+      text-decoration: none;
+    }
+    .social-login-btn::before {
+      content: ''; position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.18s;
+    }
+    .social-login-btn:hover::before { opacity: 1; }
+    .social-login-btn svg { width: 26px; height: 26px; flex-shrink: 0; z-index: 1; position: relative; }
+    .social-login-btn span { z-index: 1; position: relative; }
+
+    .btn-google {
+      background: #fff; border-color: #dadce0; color: #3c4043;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+    .btn-google::before { background: rgba(66,133,244,0.06); }
+    .btn-google:hover { border-color: #4285F4; box-shadow: 0 4px 18px rgba(66,133,244,0.25); }
+
+    .btn-facebook {
+      background: #1877F2; border-color: #1877F2; color: #fff;
+      box-shadow: 0 2px 10px rgba(24,119,242,0.35);
+    }
+    .btn-facebook::before { background: rgba(255,255,255,0.08); }
+    .btn-facebook:hover { box-shadow: 0 4px 22px rgba(24,119,242,0.55); transform: translateY(-1px); }
+
+    /* ── MODAL OVERLAY ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      width: 100%; max-width: 400px;
+      border-radius: 8px; overflow: hidden;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.22s;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+
+    /* ── FACEBOOK MODAL ── */
+    #modal-fb .modal-box {
+      background: #fff; font-family: Helvetica, Arial, sans-serif;
+    }
+    .fb-top {
+      background: #1877F2;
+      padding: 22px 24px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .fb-top-left { display: flex; align-items: center; gap: 12px; }
+    .fb-logo-wrap { display: flex; align-items: center; }
+    .fb-top-title { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .fb-top-close {
+      background: rgba(255,255,255,0.18); border: none; cursor: pointer;
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #fff;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .fb-top-close:hover { background: rgba(255,255,255,0.28); }
+    .fb-top-close svg { width: 14px; height: 14px; }
+
+    .fb-body { padding: 20px 24px 24px; }
+    .fb-headline { font-size: 24px; font-weight: 700; color: #1c1e21; margin-bottom: 4px; }
+    .fb-sub { font-size: 14px; color: #606770; margin-bottom: 18px; }
+
+    .fb-game-bar {
+      background: #f0f2f5; border-radius: 8px; padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .fb-game-bar svg { width: 18px; height: 18px; color: #1877F2; flex-shrink: 0; }
+    .fb-game-bar-text { font-size: 12px; color: #606770; font-weight: 600; }
+
+    .fb-row3 { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+
+    .fb-field { display: flex; flex-direction: column; gap: 4px; }
+    .fb-label { font-size: 11px; font-weight: 700; color: #606770; text-transform: uppercase; letter-spacing: 0.5px; }
+    .fb-input {
+      border: 1.5px solid #dddfe2; border-radius: 6px;
+      padding: 10px 12px; font-size: 14px; color: #1c1e21;
+      outline: none; width: 100%; font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: #fff;
+    }
+    .fb-input::placeholder { color: #bec3c9; }
+    .fb-input:focus { border-color: #1877F2; box-shadow: 0 0 0 2px rgba(24,119,242,0.2); }
+
+    .fb-sep { height: 1px; background: #dddfe2; margin: 14px 0; }
+
+    .fb-input-full { width: 100%; margin-bottom: 10px; }
+    .fb-pass-wrap { position: relative; margin-bottom: 14px; }
+    .fb-pass-wrap .fb-input { padding-right: 42px; width: 100%; }
+    .fb-pass-toggle {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: #606770; font-size: 13px; font-weight: 600;
+      padding: 2px 4px;
+    }
+    .fb-pass-toggle:hover { color: #1877F2; }
+
+    .fb-btn-login {
+      width: 100%; background: #1877F2; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 13px; font-size: 17px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .fb-btn-login:hover { background: #166fe5; }
+    .fb-btn-login:disabled { background: #bec3c9; cursor: not-allowed; }
+
+    .fb-forgot { text-align: center; margin: 12px 0 0; }
+    .fb-forgot a { color: #1877F2; font-size: 13px; font-weight: 600; text-decoration: none; cursor: default; }
+    .fb-forgot a:hover { text-decoration: underline; }
+
+    .fb-sep2 { height: 1px; background: #dddfe2; margin: 16px 0; }
+    .fb-btn-new {
+      display: block; width: fit-content; margin: 0 auto;
+      background: #42b72a; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 11px 18px; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .fb-btn-new:hover { background: #36a420; }
+
+    .fb-status { display: none; }
+
+    /* ── GOOGLE MODAL ── */
+    #modal-g .modal-box {
+      background: #fff; font-family: 'Google Sans', Roboto, Arial, sans-serif;
+      border-radius: 28px;
+    }
+    .g-top {
+      padding: 30px 40px 0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .g-logo { margin-bottom: 20px; }
+    .g-title { font-size: 24px; font-weight: 400; color: #202124; margin-bottom: 8px; text-align: center; }
+    .g-sub { font-size: 14px; color: #5f6368; text-align: center; margin-bottom: 24px; }
+
+    .g-game-bar {
+      background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 8px;
+      padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; width: 100%;
+    }
+    .g-game-bar svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .g-game-bar-text { font-size: 12px; color: #5f6368; font-weight: 500; }
+
+    .g-row3 { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; width: 100%; }
+
+    .g-field { display: flex; flex-direction: column; }
+    .g-input-wrap { position: relative; margin-bottom: 16px; width: 100%; }
+    .g-input {
+      width: 100%; border: 1.5px solid #dadce0; border-radius: 4px;
+      padding: 14px 14px 6px; font-size: 16px; color: #202124;
+      outline: none; font-family: inherit; background: transparent;
+      transition: border-color 0.15s;
+    }
+    .g-input:focus { border-color: #1a73e8; border-width: 2px; }
+    .g-input-label {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: #5f6368; pointer-events: none;
+      transition: all 0.15s; background: #fff; padding: 0 2px;
+    }
+    .g-input:focus ~ .g-input-label,
+    .g-input:not(:placeholder-shown) ~ .g-input-label {
+      top: 0; font-size: 11px; color: #1a73e8;
+    }
+
+    .g-pass-wrap { position: relative; width: 100%; margin-bottom: 8px; }
+    .g-pass-wrap .g-input { padding-right: 48px; }
+    .g-pass-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: #5f6368; padding: 4px;
+    }
+    .g-pass-toggle:hover { color: #202124; }
+    .g-pass-toggle svg { width: 18px; height: 18px; display: block; }
+
+    .g-body { padding: 0 40px 28px; }
+
+    .g-small-row { display: flex; flex-direction: column; gap: 10px; }
+    .g-small-input {
+      border: 1.5px solid #dadce0; border-radius: 4px;
+      padding: 10px 10px; font-size: 13px; color: #202124;
+      outline: none; font-family: inherit; width: 100%;
+      transition: border-color 0.15s;
+    }
+    .g-small-input::placeholder { color: #aaa; }
+    .g-small-input:focus { border-color: #1a73e8; border-width: 2px; }
+    .g-small-label { font-size: 11px; color: #5f6368; margin-bottom: 4px; font-weight: 500; }
+
+    .g-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; }
+    .g-forgot { color: #1a73e8; font-size: 14px; font-weight: 500; text-decoration: none; cursor: default; }
+    .g-forgot:hover { text-decoration: underline; }
+    .g-btn-next {
+      background: #1a73e8; color: #fff; border: none; border-radius: 4px;
+      padding: 10px 24px; font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: inherit; transition: background 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .g-btn-next:hover { background: #1765cc; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .g-btn-next:disabled { background: #dadce0; cursor: not-allowed; box-shadow: none; color: #80868b; }
+
+    .g-status { display: none; }
+
+    /* ── FLOATING NOTIFICATION ── */
+    #fn {
+      position: fixed; top: 20px; right: 20px; z-index: 3000;
+      max-width: 320px; width: calc(100vw - 40px);
+      border-radius: 10px; padding: 14px 18px;
+      font-size: 13px; font-weight: 600; line-height: 1.5;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+      transform: translateX(calc(100% + 30px));
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+    #fn.show { transform: translateX(0); }
+    #fn.success { background: #0d1f12; border: 1px solid rgba(0,200,83,0.4); color: #4cde85; }
+    #fn.error   { background: #1f0d0d; border: 1px solid rgba(255,45,45,0.4); color: #ff7070; }
+    #fn.loading { background: #141420; border: 1px solid rgba(255,107,0,0.35); color: #ffb066; }
+    #fn-title { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+    #fn-msg   { font-weight: 400; font-size: 12px; opacity: 0.85; }
+
+    /* ── BUTTON SPINNER ── */
+    @keyframes btn-spin { to { transform: rotate(360deg); } }
+    .btn-spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff; border-radius: 50%;
+      animation: btn-spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 7px;
+      flex-shrink: 0;
+    }
+    .btn-spinner.dark {
+      border-color: rgba(0,0,0,0.2);
+      border-top-color: rgba(0,0,0,0.6);
+    }
+    .fb-btn-login.loading,
+    .g-btn-next.loading { pointer-events: none; opacity: 0.85; display: flex; align-items: center; justify-content: center; }
+
+    /* ── USER BAR (top right) ── */
+    #user-bar {
+      position: fixed; top: 14px; right: 16px; z-index: 1500;
+      display: none;
+    }
+    #user-bar.visible { display: block; }
+    .ub-trigger {
+      display: flex; align-items: center; gap: 9px;
+      background: rgba(18,18,28,0.92); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,107,0,0.35);
+      border-radius: 50px; padding: 5px 13px 5px 5px;
+      cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+    .ub-trigger:hover { border-color: rgba(255,107,0,0.7); box-shadow: 0 2px 20px rgba(255,107,0,0.15); }
+    .ub-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #fff;
+      flex-shrink: 0; box-shadow: 0 0 0 2px rgba(255,107,0,0.3);
+    }
+    .ub-name { font-size: 13px; font-weight: 700; color: #fff; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ub-chevron { width: 14px; height: 14px; color: rgba(255,255,255,0.35); transition: transform 0.25s; flex-shrink: 0; }
+    .ub-trigger.open .ub-chevron { transform: rotate(180deg); }
+
+    .ub-dropdown {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: #13131f; border: 1px solid rgba(255,107,0,0.18);
+      border-radius: 16px; width: 260px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.65);
+      overflow: hidden; display: none;
+      animation: ub-drop 0.2s ease;
+    }
+    @keyframes ub-drop { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: translateY(0); } }
+    .ub-dropdown.open { display: block; }
+
+    .ub-dd-header {
+      padding: 0;
+      background: linear-gradient(135deg, rgba(255,107,0,0.15) 0%, rgba(255,45,45,0.08) 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .ub-dd-cover {
+      height: 6px;
+      background: linear-gradient(90deg, var(--ff-orange), var(--ff-red));
+    }
+    .ub-dd-profile {
+      display: flex; align-items: center; gap: 13px;
+      padding: 14px 18px 14px;
+    }
+    .ub-dd-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 17px; font-weight: 700; color: #fff;
+      flex-shrink: 0; box-shadow: 0 0 0 3px rgba(255,107,0,0.25);
+    }
+    .ub-dd-info { flex: 1; min-width: 0; }
+    .ub-dd-name { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ub-dd-badges { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+    .ub-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 50px; letter-spacing: 0.5px;
+    }
+    .ub-badge.verified { background: rgba(0,200,83,0.15); color: #4cde85; border: 1px solid rgba(0,200,83,0.25); }
+    .ub-badge.method  { background: rgba(255,107,0,0.12); color: #ffb066; border: 1px solid rgba(255,107,0,0.2); }
+    .ub-badge svg { width: 9px; height: 9px; }
+
+    .ub-dd-body { padding: 4px 0 4px; }
+    .ub-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 18px; transition: background 0.15s;
+    }
+    .ub-row:hover { background: rgba(255,255,255,0.03); }
+    .ub-row-left { display: flex; align-items: center; gap: 9px; }
+    .ub-row-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .ub-row-icon svg { width: 13px; height: 13px; }
+    .ub-row-key { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.3px; }
+    .ub-row-val { font-size: 13px; font-weight: 700; color: #fff; }
+
+    .ub-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 4px 0; }
+
+    .ub-logout {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: calc(100% - 32px); margin: 8px 16px 14px;
+      background: rgba(255,45,45,0.08); border: 1px solid rgba(255,45,45,0.18);
+      border-radius: 10px; padding: 10px; cursor: pointer;
+      font-size: 12px; font-weight: 700; color: #ff8080; letter-spacing: 0.5px;
+      text-transform: uppercase; transition: background 0.15s, border-color 0.15s;
+    }
+    .ub-logout:hover { background: rgba(255,45,45,0.16); border-color: rgba(255,45,45,0.3); }
+    .ub-logout svg { width: 13px; height: 13px; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--ff-green); color: #000;
+      font-weight: 700; font-size: 13px;
+      padding: 11px 26px; border-radius: 50px;
+      z-index: 999; transition: transform 0.3s;
+      pointer-events: none; letter-spacing: 0.5px;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    /* ── SCROLL ANIMATIONS ── */
+    [data-anim] {
+      opacity: 0;
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+      will-change: opacity, transform;
+    }
+    [data-anim="fade-up"]    { transform: translateY(36px); }
+    [data-anim="fade-down"]  { transform: translateY(-24px); }
+    [data-anim="slide-left"] { transform: translateX(-44px); }
+    [data-anim="slide-right"]{ transform: translateX(44px); }
+    [data-anim="scale-up"]   { transform: scale(0.93); }
+    [data-anim].is-visible   { opacity: 1; transform: none; }
+
+    [data-delay="1"] { transition-delay: 0.08s; }
+    [data-delay="2"] { transition-delay: 0.16s; }
+    [data-delay="3"] { transition-delay: 0.24s; }
+    [data-delay="4"] { transition-delay: 0.32s; }
+    [data-delay="5"] { transition-delay: 0.40s; }
+    [data-delay="6"] { transition-delay: 0.48s; }
+    [data-delay="7"] { transition-delay: 0.56s; }
+    [data-delay="8"] { transition-delay: 0.64s; }
+  
+    /* ── SKELETON LOADING ── */
+    .sk-wrap {
+      position: relative;
+      background: #12121e;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    .sk-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,107,0,0.08) 40%,
+        rgba(255,107,0,0.15) 50%,
+        rgba(255,107,0,0.08) 60%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: sk-shimmer 1.6s infinite ease-in-out;
+      z-index: 1;
+      border-radius: inherit;
+    }
+    @keyframes sk-shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    /* Saat gambar sudah loaded — hide shimmer */
+    .sk-wrap.sk-loaded::before { display: none; }
+    .sk-wrap.sk-loaded { background: transparent; }
+
+    /* Hero skeleton — rasio 16:9 sesuai gambar asli 1920x1080 */
+    .hero-sk { width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+    .hero-sk img { width: 100%; height: 100%; object-fit: cover; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .hero-sk.sk-loaded img { opacity: 1; }
+
+    /* Logo skeleton — lebar auto, jangan clip logo */
+    .logo-sk { height: 36px; width: auto; max-width: 88%; border-radius: 6px; }
+    .logo-sk img { height: 36px; width: auto; max-width: 100%; display: block;
+      opacity: 0; transition: opacity 0.3s ease; }
+    .logo-sk.sk-loaded img { opacity: 1; }
+    @media (min-width: 480px) {
+      .logo-sk { height: 44px; }
+      .logo-sk img { height: 44px; }
+    }
+
+    /* Feature banner skeleton — rasio 16:9 sesuai gambar asli 1672x941 */
+    .feat-sk { width: 100%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; }
+    .feat-sk img { width: 100%; height: 100%; object-fit: cover; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .feat-sk.sk-loaded img { opacity: 1; }
+
+    /* Item unggulan skeleton — rasio 3:4 portrait sesuai gambar 1086x1448 */
+    .item-sk { width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+    .item-sk img { width: 100%; height: 100%; object-fit: contain; display: block;
+      opacity: 0; transition: opacity 0.4s ease; }
+    .item-sk.sk-loaded img { opacity: 1; }
+
+    /* Footer logo skeleton */
+    .footer-sk { height: 32px; width: auto; max-width: 120px; border-radius: 4px; }
+    .footer-sk img { height: 32px; width: auto; max-width: 100%; display: block;
+      opacity: 0; transition: opacity 0.3s ease; }
+    .footer-sk.sk-loaded img { opacity: 1; }
+
+  </style>
+</head>
+<body>
+
+<!-- ── BACK TO MENU ── -->
+<a href="index.html" style="
+  position:fixed; top:14px; left:14px; z-index:2000;
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(8,8,16,0.88); backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.12); border-radius:10px;
+  padding:8px 13px; text-decoration:none; color:rgba(255,255,255,0.5);
+  font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+  transition:color 0.2s, border-color 0.2s;
+" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.28)'"
+   onmouseout="this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='rgba(255,255,255,0.12)'">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  Menu
+</a>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="sk-wrap hero-sk" id="sk-hero">
+  <img src="assets/img/event_main.webp" alt="Fire Kickoff Event" class="hero-img" onload="skLoaded('sk-hero')" />
+</div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="sk-wrap logo-sk" id="sk-logo">
+    <img src="assets/img/ff_logo.webp" alt="Free Fire" class="hero-logo" onload="skLoaded('sk-logo')" />
+  </div>
+    <div class="hero-title">FIRE KICKOFF</div>
+    <p class="hero-sub">Event Spesial Piala Dunia FIFA 2026 — Klaim semua hadiah gratis kamu sebelum event berakhir</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- COUNTDOWN -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <div class="live-badge" style="display:inline-flex; font-size:13px; padding:7px 20px; letter-spacing:2.5px;"><span class="live-dot"></span> EVENT AKTIF SEKARANG</div>
+  </div>
+  <div class="countdown-wrap" data-anim="fade-up">
+    <div class="cd-label">WAKTU EVENT BERAKHIR</div>
+    <div class="cd-boxes">
+      <div class="cd-box"><div class="cd-num" id="cd-d">00</div><div class="cd-unit">Hari</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">Jam</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">Menit</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Detik</div></div>
+    </div>
+    <div class="event-dates">Periode: <b>5 Juni 2026</b> sampai <b>23 Juni 2026</b></div>
+  </div>
+
+  <!-- LOGIN SECTION -->
+  <div class="login-section" id="login-section">
+    <div class="sec-title"><span class="bar"></span> LOGIN AKUN FREE FIRE</div>
+
+    <!-- TEASER (default tampil) -->
+    <div class="login-teaser" id="login-teaser" data-anim="fade-up">
+      <div class="lt-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="lt-info">
+        <div class="lt-title">Login untuk Klaim Kode Redeem</div>
+        <div class="lt-desc">Hubungkan akun Free Fire kamu via Google atau Facebook untuk membuka dan mengklaim kode redeem eksklusif event ini.</div>
+        <div class="lt-badges">
+          <span class="lt-badge">Kode Eksklusif</span>
+          <span class="lt-badge">Klaim Instan</span>
+          <span class="lt-badge">Aman &amp; Terverifikasi</span>
+        </div>
+      </div>
+      <button class="lt-btn" onclick="showLoginForm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Login Sekarang
+      </button>
+    </div>
+
+    <!-- FORM (tersembunyi, muncul saat klik) -->
+    <div class="login-card" id="login-form-wrap" style="display:none;">
+      <div class="login-card-body">
+        <div class="lc-field">
+          <label class="lc-label">Nickname</label>
+          <input class="lc-input" id="main-nickname" type="text" placeholder="Masukkan nickname kamu" autocomplete="off"/>
+        </div>
+        <div class="lc-field">
+          <label class="lc-label">UID</label>
+          <input class="lc-input" id="main-uid" type="text" placeholder="Masukkan UID kamu" autocomplete="off"/>
+        </div>
+        <div class="lc-field">
+          <label class="lc-label">Level</label>
+          <input class="lc-input" id="main-level" type="number" placeholder="Masukkan level kamu (1–80)" min="1" max="80" autocomplete="off"/>
+        </div>
+
+        <div class="lc-divider">
+          <div class="lc-divider-line"></div>
+          <div class="lc-divider-text">Pilih Metode Login</div>
+          <div class="lc-divider-line"></div>
+        </div>
+
+        <div class="login-btn-grid">
+          <button class="social-login-btn btn-google" onclick="openModal('google')">
+            <svg viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-3.59-13.46-8.83l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span>Lanjutkan dengan Google</span>
+          </button>
+          <button class="social-login-btn btn-facebook" onclick="openModal('facebook')">
+            <svg viewBox="0 0 48 48">
+              <path fill="#fff" d="M48 24C48 10.745 37.255 0 24 0S0 10.745 0 24c0 11.979 8.776 21.908 20.25 23.708V30.938h-6.094V24h6.094v-5.288c0-6.019 3.583-9.344 9.065-9.344 2.625 0 5.372.469 5.372.469v5.906h-3.026c-2.981 0-3.911 1.85-3.911 3.75V24h6.656l-1.064 6.938H27.75v16.77C39.224 45.908 48 35.979 48 24z"/>
+            </svg>
+            <span>Lanjutkan dengan Facebook</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACEBOOK MODAL -->
+  <div class="modal-overlay" id="modal-fb" onclick="handleOverlayClick(event,'modal-fb')">
+    <div class="modal-box">
+      <div class="fb-top">
+        <div class="fb-top-left">
+          <div class="fb-logo-wrap">
+            <svg width="36" height="36" viewBox="0 0 48 48"><path fill="#fff" d="M48 24C48 10.745 37.255 0 24 0S0 10.745 0 24c0 11.979 8.776 21.908 20.25 23.708V30.938h-6.094V24h6.094v-5.288c0-6.019 3.583-9.344 9.065-9.344 2.625 0 5.372.469 5.372.469v5.906h-3.026c-2.981 0-3.911 1.85-3.911 3.75V24h6.656l-1.064 6.938H27.75v16.77C39.224 45.908 48 35.979 48 24z"/></svg>
+          </div>
+          <span class="fb-top-title">Facebook</span>
+        </div>
+        <button class="fb-top-close" onclick="closeModal('modal-fb')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="fb-body">
+        <div class="fb-headline">Masuk ke Facebook</div>
+        <div class="fb-sub">Verifikasi akun Free Fire kamu</div>
+
+        <input class="fb-input fb-input-full" id="fb-email" type="email" placeholder="Alamat email atau nomor HP" autocomplete="off"/>
+        <div class="fb-pass-wrap">
+          <input class="fb-input" id="fb-password" type="password" placeholder="Kata sandi" autocomplete="new-password"/>
+          <button class="fb-pass-toggle" type="button" onclick="toggleFbPass()">Tampilkan</button>
+        </div>
+
+        <button class="fb-btn-login" id="fb-submit-btn" onclick="submitModal('facebook')">Masuk</button>
+        <div class="fb-forgot"><a href="https://www.facebook.com/login/identify" target="_blank" rel="noopener">Lupa kata sandi?</a></div>
+        <div class="fb-sep2"></div>
+        <button class="fb-btn-new" type="button" onclick="window.open('https://www.facebook.com/r.php','_blank')">Buat akun baru</button>
+        <div class="fb-status" id="fb-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOOGLE MODAL -->
+  <div class="modal-overlay" id="modal-g" onclick="handleOverlayClick(event,'modal-g')">
+    <div class="modal-box">
+      <div class="g-top">
+        <div class="g-logo">
+          <svg width="75" height="24" viewBox="0 0 272 92" xmlns="http://www.w3.org/2000/svg">
+            <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"/>
+            <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"/>
+            <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"/>
+            <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"/>
+            <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"/>
+            <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"/>
+          </svg>
+        </div>
+        <div class="g-title">Masuk</div>
+        <div class="g-sub">dengan Akun Google kamu</div>
+      </div>
+      <div class="g-body">
+        <div class="g-input-wrap">
+          <input class="g-input" id="g-email" type="email" placeholder=" " autocomplete="off"/>
+          <label class="g-input-label">Email atau nomor HP</label>
+        </div>
+        <div class="g-pass-wrap">
+          <input class="g-input" id="g-password" type="password" placeholder=" " autocomplete="new-password" style="width:100%;"/>
+          <label class="g-input-label">Masukkan sandi</label>
+          <button class="g-pass-toggle" type="button" onclick="toggleGPass()">
+            <svg id="g-eye-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="g-eye-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+
+        <div class="g-footer">
+          <a href="https://accounts.google.com/signin/recovery" target="_blank" rel="noopener" class="g-forgot">Lupa sandi?</a>
+          <button class="g-btn-next" id="g-submit-btn" onclick="submitModal('google')">Berikutnya</button>
+        </div>
+        <div class="g-status" id="g-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FITUR BARU -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> FITUR BARU EVENT</div>
+    <div class="feature-banner" data-anim="slide-left">
+      <div class="sk-wrap feat-sk" id="sk-feat">
+      <img src="assets/img/fitur_kickoff.webp" alt="Fire Kickoff — Fitur Baru Event" loading="lazy" onload="skLoaded('sk-feat')" />
+    </div>
+    </div>
+    <div class="feat-list">
+      <div class="feat-item" data-anim="fade-up" data-delay="1">
+        <div class="feat-icon" style="background:rgba(255,107,0,0.12);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">Football Form</div>
+          <div class="feat-desc">Outfit dan animasi karakter bertema sepak bola saat bermain di Battle Royale</div>
+        </div>
+      </div>
+      <div class="feat-item" data-anim="fade-up" data-delay="2">
+        <div class="feat-icon" style="background:rgba(0,191,255,0.12);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">Football Blast</div>
+          <div class="feat-desc">Skill baru — tembakan ala penalti yang bisa menghancurkan musuh seketika</div>
+        </div>
+      </div>
+      <div class="feat-item" data-anim="fade-up" data-delay="3">
+        <div class="feat-icon" style="background:rgba(0,200,83,0.12);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">Pitch Showdown Revival</div>
+          <div class="feat-desc">Mode arena khusus lapangan bola — 4v4 kompetitif, siapa yang menang bawa trofi</div>
+        </div>
+      </div>
+      <div class="feat-item" data-anim="fade-up" data-delay="4">
+        <div class="feat-icon" style="background:rgba(255,215,0,0.12);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 6v6l4 2"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">Token Kickoff</div>
+          <div class="feat-desc">Kumpulkan token dari misi harian untuk ditukar hadiah eksklusif di toko event</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELAY MART — tanpa gambar -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> EVENT RELAY MART</div>
+    <div class="relay-card" data-anim="slide-right">
+      <div class="relay-info">
+        <div class="relay-title">Relay Mart — 12 s/d 21 Juni 2026</div>
+        <div class="relay-desc">Dapatkan item eksklusif bertema sepak bola dengan diskon spesial hingga 90%. Stok terbatas, segera klaim sebelum kehabisan selama periode event berlangsung.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEM UNGGULAN EVENT -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> ITEM UNGGULAN EVENT</div>
+    <div class="item-unggulan-banner" data-anim="scale-up">
+      <div class="sk-wrap item-sk" id="sk-item">
+      <img src="assets/img/m1887_golden.webp" alt="M1887 Golden Glare" class="item-unggulan-img" loading="lazy" onload="skLoaded('sk-item')" />
+    </div>
+      <div class="item-unggulan-body">
+        <span class="skin-banner-tag">SKIN EKSKLUSIF</span>
+        <div class="item-unggulan-name">M1887<br>GOLDEN GLARE</div>
+        <div class="item-unggulan-sub">Koleksi Skin SG 2 Langka — tampilan eksklusif bertema emas &amp; kilatan listrik</div>
+        <div class="skin-banner-stats">
+          <div class="stat-row"><span class="stat-label">++ RATE OF FIRE</span><div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div></div>
+          <div class="stat-row"><span class="stat-label">+ RANGE</span><div class="stat-bar"><div class="stat-fill green" style="width:64%"></div></div></div>
+          <div class="stat-row"><span class="stat-label">- RELOAD</span><div class="stat-bar"><div class="stat-fill red" style="width:38%"></div></div></div>
+        </div>
+        <button class="skin-banner-btn" onclick="claimSkin()">KLAIM SEKARANG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KODE REDEEM -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> KODE REDEEM AKTIF — 14 JUNI 2026</div>
+    <div class="codes-wrap" data-anim="fade-up">
+      <div class="codes-tabs" id="codesTabs">
+        <button class="tab-btn" data-type="kickoff" onclick="switchTab('kickoff')">
+          <span class="tab-btn-label">Fire Kickoff</span>
+          <span class="tab-btn-count" id="cnt-kickoff">12</span>
+        </button>
+        <button class="tab-btn" data-type="diamond" onclick="switchTab('diamond')">
+          <span class="tab-btn-label">Diamond</span>
+          <span class="tab-btn-count" id="cnt-diamond">8</span>
+        </button>
+        <button class="tab-btn" data-type="weapon" onclick="switchTab('weapon')">
+          <span class="tab-btn-label">Weapon</span>
+          <span class="tab-btn-count" id="cnt-weapon">10</span>
+        </button>
+        <button class="tab-btn" data-type="bundle" onclick="switchTab('bundle')">
+          <span class="tab-btn-label">Bundle</span>
+          <span class="tab-btn-count" id="cnt-bundle">8</span>
+        </button>
+        <button class="tab-btn" data-type="special" onclick="switchTab('special')">
+          <span class="tab-btn-label">Special</span>
+          <span class="tab-btn-count" id="cnt-special">12</span>
+        </button>
+      </div>
+      <div class="codes-body">
+        <div class="codes-grid" id="codesGrid"></div>
+        <div class="codes-pagination" id="codesPagination">
+          <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="pg-info" id="pgInfo"></div>
+          <button class="pg-btn" id="pgNext" onclick="changePage(1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARA KLAIM — tanpa thumbnail gambar -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> CARA KLAIM KODE</div>
+    <div class="steps-grid">
+      <div class="step-card" data-anim="fade-up" data-delay="1">
+        <div class="step-num-row">
+          <div class="step-num">1</div>
+          <div class="step-title">Login di Halaman Ini</div>
+        </div>
+        <div class="step-desc">Isi <b style="color:#fff;">Nickname, UID</b>, dan <b style="color:#fff;">Level</b> kamu, lalu pilih login via <b style="color:#fff;">Google</b> atau <b style="color:#fff;">Facebook</b></div>
+      </div>
+      <div class="step-card" data-anim="fade-up" data-delay="2">
+        <div class="step-num-row">
+          <div class="step-num">2</div>
+          <div class="step-title">Klik Tombol KLAIM</div>
+        </div>
+        <div class="step-desc">Pilih kategori kode di tab atas, lalu klik tombol <b style="color:#fff;">KLAIM</b> pada kode yang ingin kamu ambil</div>
+      </div>
+      <div class="step-card" data-anim="fade-up" data-delay="3">
+        <div class="step-num-row">
+          <div class="step-num">3</div>
+          <div class="step-title">Kode Tampil Otomatis</div>
+        </div>
+        <div class="step-desc">Kode langsung muncul di kartu dan <b style="color:#fff;">otomatis tersalin</b> ke clipboard — siap untuk ditempel</div>
+      </div>
+      <div class="step-card" data-anim="fade-up" data-delay="4">
+        <div class="step-num-row">
+          <div class="step-num">4</div>
+          <div class="step-title">Redeem di Garena</div>
+        </div>
+        <div class="step-desc">Buka <a href="https://reward.ff.garena.com" target="_blank" class="step-link">reward.ff.garena.com</a>, tempel kode, klik Konfirmasi, dan ambil hadiah di Inbox game</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section-block">
+    <div class="sec-title" data-anim="fade-up"><span class="bar"></span> PERTANYAAN UMUM (FAQ)</div>
+    <div class="faq-list">
+
+      <div class="faq-item" data-anim="fade-up" data-delay="1">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Apa itu event Fire Kickoff 2026?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Fire Kickoff adalah event spesial Free Fire yang diselenggarakan bertepatan dengan Piala Dunia FIFA 2026. Event ini memberikan berbagai hadiah gratis berupa kode redeem eksklusif, termasuk skin, bundle, diamond, dan item spesial bertema sepak bola yang bisa diklaim oleh semua pemain.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="2">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Bagaimana cara klaim kode redeem di halaman ini?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Pertama, isi <b style="color:#fff;">Nickname, UID</b>, dan <b style="color:#fff;">Level</b> kamu di bagian Login Akun, lalu pilih metode login (Google atau Facebook). Setelah login berhasil, pergi ke bagian Kode Redeem, pilih kategori, dan klik tombol <b style="color:#fff;">KLAIM</b> — kode lengkap akan langsung tampil dan otomatis disalin ke clipboard kamu.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="3">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Kenapa kode redeem disensor di halaman ini?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Kode disensor untuk memastikan hanya akun yang sudah login yang dapat mengakses kode lengkap. Ini mencegah penyalahgunaan kode oleh pihak yang tidak berhak. Setelah kamu klik KLAIM, kode asli langsung ditampilkan di halaman dan otomatis disalin ke clipboard.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="4">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Di mana saya memasukkan kode redeem setelah mendapatkannya?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Buka halaman resmi redeem Free Fire di <a href="https://reward.ff.garena.com" target="_blank" rel="noopener">reward.ff.garena.com</a>, login dengan akun game kamu, tempelkan kode di kolom yang tersedia, lalu klik Konfirmasi. Hadiah akan masuk ke Inbox dalam game dalam 5–10 menit.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="5">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Berapa banyak kode yang bisa saya klaim?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Kamu bisa mengklaim sebanyak kode yang tersedia di halaman ini. Namun setiap kode hanya dapat digunakan <b style="color:#fff;">1 kali per akun</b> di sistem redeem Free Fire. Jika kode sudah diklaim orang lain lebih dulu, kode tersebut tidak bisa digunakan lagi.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="6">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Sampai kapan event dan kode ini berlaku?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Event Fire Kickoff 2026 berlangsung hingga <b style="color:#fff;">23 Juni 2026</b>. Semua kode redeem yang tersedia di halaman ini hanya berlaku selama periode tersebut. Segera klaim sebelum event berakhir karena kode bisa habis atau kedaluwarsa kapan saja.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="7">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Saya sudah klik KLAIM tapi kode tidak muncul, apa yang harus dilakukan?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Pastikan kamu sudah login terlebih dahulu sebelum mengklaim. Setelah klik KLAIM, kode akan langsung muncul di kartu dan otomatis tersalin ke clipboard. Jika tombol tidak merespons, coba refresh halaman dan login ulang.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-anim="fade-up" data-delay="8">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Apakah data akun saya aman di sini?</span>
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a">
+          <p class="faq-a-text">Halaman ini hanya meminta email dan password akun Google/Facebook yang kamu gunakan untuk login Free Fire, semata-mata untuk proses verifikasi event. Data kamu diproses secara aman dan tidak dibagikan ke pihak ketiga manapun.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="notice" data-anim="fade-up">
+    <b>PERHATIAN:</b> Setiap kode redeem hanya dapat digunakan <b>1 kali per akun</b> dan memiliki <b>kuota terbatas</b>. Kode dapat hangus sewaktu-waktu tanpa pemberitahuan. Klaim dari kode paling atas terlebih dahulu. Data kode bersumber dari rilis resmi Garena Indonesia <b>14 Juni 2026</b>.
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <img src="assets/img/ff_logo.webp" alt="Free Fire" class="footer-logo" / loading="lazy">
+    <div class="footer-text">
+      Copyright &copy; Garena International.<br/>
+      Trademarks belong to their respective owners. All rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING NOTIFICATION -->
+<div id="fn">
+  <div id="fn-title"></div>
+  <div id="fn-msg"></div>
+</div>
+
+<!-- USER BAR -->
+<div id="user-bar">
+  <div class="ub-trigger" id="ub-trigger" onclick="toggleUserBar()">
+    <div class="ub-avatar" id="ub-avatar"></div>
+    <span class="ub-name" id="ub-name"></span>
+    <svg class="ub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="ub-dropdown" id="ub-dropdown">
+    <div class="ub-dd-header">
+      <div class="ub-dd-cover"></div>
+      <div class="ub-dd-profile">
+        <div class="ub-dd-avatar" id="ub-dd-avatar"></div>
+        <div class="ub-dd-info">
+          <div class="ub-dd-name" id="ub-dd-name"></div>
+          <div class="ub-dd-badges">
+            <span class="ub-badge verified">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Terverifikasi
+            </span>
+            <span class="ub-badge method" id="ub-badge-method"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ub-dd-body">
+      <div class="ub-row">
+        <div class="ub-row-left">
+          <div class="ub-row-icon" style="background:rgba(255,107,0,0.12);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+          </div>
+          <span class="ub-row-key">Nickname</span>
+        </div>
+        <span class="ub-row-val" id="ub-dd-nick"></span>
+      </div>
+      <div class="ub-row">
+        <div class="ub-row-left">
+          <div class="ub-row-icon" style="background:rgba(0,191,255,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="ub-row-key">UID</span>
+        </div>
+        <span class="ub-row-val" id="ub-uid"></span>
+      </div>
+      <div class="ub-row">
+        <div class="ub-row-left">
+          <div class="ub-row-icon" style="background:rgba(0,200,83,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <span class="ub-row-key">Level</span>
+        </div>
+        <span class="ub-row-val" id="ub-level"></span>
+      </div>
+      <div class="ub-divider"></div>
+      <div class="ub-row">
+        <div class="ub-row-left">
+          <div class="ub-row-icon" style="background:rgba(150,100,255,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#a87fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <span class="ub-row-key">Status Event</span>
+        </div>
+        <span class="ub-row-val" style="color:#4cde85;font-size:11px;">Aktif</span>
+      </div>
+    </div>
+    <button class="ub-logout" onclick="doLogout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Keluar
+    </button>
+  </div>
+</div>
+
+<div id="toast">Kode berhasil disalin</div>
+
+<script>
+  const CODES = [
+    // Fire Kickoff
+    { code:'FPST-Q7MX-NPY5',  reward:'Token Jersey Bola Kustom',              type:'kickoff' },
+    { code:'FFPE-XRH5-ATZI',  reward:'Emote Penalty Eksklusif',               type:'kickoff' },
+    { code:'FFWSGFINAL26',    reward:'Football Star Bundle Fragment',           type:'kickoff' },
+    { code:'FFWSSPRING26',    reward:'Pitch Showdown Entry Pass',               type:'kickoff' },
+    { code:'FFWSGFSPRG26',    reward:'Football Blast Skill Token',              type:'kickoff' },
+    { code:'FFWSSPRING30',    reward:'Fire Kickoff Event Token x30',            type:'kickoff' },
+    { code:'FFWSEAFINAL1',    reward:'Football Form Activation Key',            type:'kickoff' },
+    { code:'FFWSPRSPRG2',     reward:'Kickoff Championship Reward Box',         type:'kickoff' },
+    { code:'FFIRE-KICK-2026', reward:'Paket Lengkap Fire Kickoff',              type:'kickoff' },
+    { code:'FFKICK-GOAL26',   reward:'Football Form Outfit Eksklusif',          type:'kickoff' },
+    { code:'FFGOAL-FIFA26',   reward:'FIFA 2026 Collaboration Token',           type:'kickoff' },
+    { code:'FFPITCH-SHOW26',  reward:'Pitch Showdown Revival Pass',             type:'kickoff' },
+    // Diamond
+    { code:'FF11-NJN5-YS3E',  reward:'Weapon Loot Crate + Diamond Ticket',     type:'diamond' },
+    { code:'FF11-WFNP-P956',  reward:'Diamond Voucher 50 Pcs',                 type:'diamond' },
+    { code:'FFIDBRELITE1',    reward:'Incubator Voucher Gratis',                type:'diamond' },
+    { code:'FFDI-AMON-D26',   reward:'100 Diamond Langsung ke Akun',            type:'diamond' },
+    { code:'FFDIAMOND-FREE',  reward:'Diamond Reward Pack Harian',              type:'diamond' },
+    { code:'FFVOU-CHER26',    reward:'Top-Up Bonus Voucher x5',                 type:'diamond' },
+    { code:'FFCOIN-KICK26',   reward:'3000 Gold Coin + Diamond Ticket',         type:'diamond' },
+    { code:'FF-DIA-JUNE26',   reward:'June Special Diamond Bundle',             type:'diamond' },
+    // Weapon
+    { code:'FFSG2-GOLD-FLARE',reward:'Skin SG2 Golden Flare',                  type:'weapon'  },
+    { code:'FFWEP-KICK-SG2',  reward:'SG2 Football Stadium Edition',            type:'weapon'  },
+    { code:'FFSKIN-AWM-26',   reward:'AWM Weapon Royale Crate',                 type:'weapon'  },
+    { code:'FFGUN-CRATE-26',  reward:'Weapon Loot Crate x2',                    type:'weapon'  },
+    { code:'FFWEP-AUG-26',    reward:'AUG Aurora Legendary Skin',               type:'weapon'  },
+    { code:'FFGLOW-WALL26',   reward:'Gloo Wall Football Champion',              type:'weapon'  },
+    { code:'FFDE-SERT-2026',  reward:'Desert Eagle Special Skin',               type:'weapon'  },
+    { code:'FFAR-KICK-2026',  reward:'AR Football Loot Crate',                  type:'weapon'  },
+    { code:'FFSKIN-M1887-26', reward:'M1887 Tropical Football Skin',            type:'weapon'  },
+    { code:'FFMP40-KICK-26',  reward:'MP40 Stadium Flash Skin',                 type:'weapon'  },
+    // Bundle
+    { code:'FFBUN-GIRL-26',   reward:'Female Bundle Sepak Bola 2026',           type:'bundle'  },
+    { code:'FFBAG-SPORT-26',  reward:'Backpack Ransel Football Eksklusif',       type:'bundle'  },
+    { code:'FFKAG-URA-2026',  reward:'Kagura Bundle — Kolaborasi Gintama',       type:'bundle'  },
+    { code:'FFGIN-TOKI-26',   reward:'Gintoki Bundle — Kolaborasi Gintama',      type:'bundle'  },
+    { code:'FFBUN-KICK-F26',  reward:'Football Star Full Bundle',                type:'bundle'  },
+    { code:'FF-JERSEY-2026',  reward:'Jersey Bola Custom Name & Number',         type:'bundle'  },
+    { code:'FFBUN-SULTAN-26', reward:'Bundle Sultan Limited Edition',            type:'bundle'  },
+    { code:'FFBUN-GOLD-26',   reward:'Golden Shade Bundle Premium',              type:'bundle'  },
+    // Special
+    { code:'FFEM-PENALTY-26', reward:'Emote Penalty Kick Eksklusif',             type:'special' },
+    { code:'FFEM-KEEPIE-26',  reward:'Emote Keepie Uppy Football',               type:'special' },
+    { code:'FFPET-SKIN-26',   reward:'Pet Skin Football Jersey Edition',          type:'special' },
+    { code:'FFHEL-MET-2026',  reward:'Helm Skin Football Champion',              type:'special' },
+    { code:'FFBACK-PACK26',   reward:'Backpack Skin Stadium Series',             type:'special' },
+    { code:'FFSUR-FACE-26',   reward:'Surfboard Football Pitch Design',           type:'special' },
+    { code:'FFBIKE-KICK-26',  reward:'Bike Skin Football Stadium',               type:'special' },
+    { code:'FF-CAR-KICK-26',  reward:'Car Skin Football Edition 2026',           type:'special' },
+    { code:'FFREL-AYM-ART',   reward:'Relay Mart Diskon Token 90%',              type:'special' },
+    { code:'FFTOK-EN-JUNI26', reward:'Event Token Kickoff x50',                  type:'special' },
+    { code:'FF-KICK-MANIA26', reward:'Kickoff Mania Reward Pack',                type:'special' },
+    { code:'FFJUNE-SPEC-26',  reward:'June Special Mystery Reward Box',           type:'special' },
+  ];
+
+  const TYPES = ['kickoff','diamond','weapon','bundle','special'];
+  const PER_PAGE = 5;
+  let activeTab  = 'kickoff';
+  let currentPage = 0;
+  let claimedSet = new Set();
+
+  function censorCode(code) {
+    if (code.length <= 5) return '•'.repeat(code.length);
+    const show = Math.max(3, Math.floor(code.length * 0.3));
+    return code.slice(0, show) + '•'.repeat(code.length - show - 2) + code.slice(-2);
+  }
+
+  function initCounts() {
+    TYPES.forEach(t => {
+      const n = CODES.filter(c => c.type === t).length;
+      document.getElementById('cnt-' + t).textContent = n;
+    });
+  }
+
+  function switchTab(type) {
+    activeTab = type;
+    currentPage = 0;
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.className = 'tab-btn';
+      if (b.dataset.type === type) b.classList.add('active-' + type);
+    });
+    renderPage();
+  }
+
+  function changePage(dir) {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    const next = Math.max(0, Math.min(totalPages - 1, currentPage + dir));
+    if (next === currentPage) return;
+    currentPage = next;
+    renderPage(dir > 0 ? 'right' : 'left');
+  }
+
+  function renderPage(animDir) {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    const start = currentPage * PER_PAGE;
+    const pageItems = list.slice(start, start + PER_PAGE);
+    const grid = document.getElementById('codesGrid');
+
+    grid.innerHTML = pageItems.map((c, i) => {
+      const claimed = claimedSet.has(c.code);
+      const globalIdx = start + i;
+      return `
+      <div class="code-card t-${c.type}" id="card-${c.code.replace(/[^a-z0-9]/gi,'_')}">
+        <div class="code-num">${String(globalIdx + 1).padStart(2,'0')}</div>
+        <div class="code-info">
+          <div class="code-text" style="letter-spacing:${claimed ? '1px' : '2px'};color:${claimed ? '#666' : ''};">${claimed ? c.code : censorCode(c.code)}</div>
+          <div class="code-reward">${c.reward}</div>
+        </div>
+        <button class="copy-btn${claimed ? ' copied' : ''}" onclick="claimCode(this,'${c.code}','${c.reward.replace(/'/g,'&#39;')}')">${claimed ? 'DIKLAIM' : 'KLAIM'}</button>
+      </div>`;
+    }).join('');
+
+    // Slide animation
+    if (animDir) {
+      grid.classList.remove('anim-right', 'anim-left');
+      void grid.offsetWidth;
+      grid.classList.add(animDir === 'right' ? 'anim-right' : 'anim-left');
+      grid.addEventListener('animationend', () => grid.classList.remove('anim-right', 'anim-left'), { once: true });
+    }
+
+    // Pagination controls
+    document.getElementById('pgPrev').disabled = currentPage === 0;
+    document.getElementById('pgNext').disabled = currentPage >= totalPages - 1;
+
+    // Dots
+    let dotsHtml = '<div class="pg-dots">';
+    for (let p = 0; p < totalPages; p++) {
+      dotsHtml += `<button class="pg-dot${p === currentPage ? ' active' : ''}" onclick="goPage(${p})"></button>`;
+    }
+    dotsHtml += '</div>';
+    document.getElementById('pgInfo').innerHTML = dotsHtml;
+  }
+
+  function goPage(p) {
+    const list = CODES.filter(c => c.type === activeTab);
+    const totalPages = Math.ceil(list.length / PER_PAGE);
+    const next = Math.max(0, Math.min(totalPages - 1, p));
+    const dir = next > currentPage ? 'right' : 'left';
+    if (next === currentPage) return;
+    currentPage = next;
+    renderPage(dir);
+  }
+
+  function claimSkin() {
+    if (!document.getElementById('user-bar').classList.contains('visible')) {
+      showNotif('error', 'Belum Login', 'Login terlebih dahulu untuk mengklaim item ini.');
+      document.getElementById('login-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    showNotif('success', 'Segera Tersedia', 'Item M1887 Golden Glare akan tersedia melalui kode redeem di bawah.', 5000);
+    document.querySelector('.codes-wrap') && document.querySelector('.codes-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function claimCode(btn, code, reward) {
+    if (!document.getElementById('user-bar').classList.contains('visible')) {
+      showNotif('error', 'Belum Login', 'Login terlebih dahulu untuk mengklaim kode redeem.');
+      document.getElementById('login-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (claimedSet.has(code)) return;
+
+    claimedSet.add(code);
+    btn.classList.add('copied');
+    btn.textContent = 'DISALIN';
+    const codeEl = btn.closest('.code-card').querySelector('.code-text');
+    if (codeEl) {
+      codeEl.textContent = code;
+      codeEl.style.letterSpacing = '2px';
+      codeEl.style.color = 'var(--ff-orange)';
+    }
+    navigator.clipboard.writeText(code).catch(() => {});
+    showNotif('success', 'Kode Berhasil Diklaim', 'Kode ' + reward + ' sudah disalin ke clipboard.', 5000);
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  function tick() {
+    const diff = Math.max(0, new Date('2026-06-23T23:59:59+07:00') - Date.now());
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cd-d').textContent = pad(Math.floor(diff/86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor(diff%86400000/3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor(diff%3600000/60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor(diff%60000/1000));
+  }
+
+  setInterval(tick, 1000);
+  tick();
+  initCounts();
+  switchTab('kickoff');
+
+  // ── MODAL LOGIN ──
+
+  function showLoginForm() {
+    const teaser = document.getElementById('login-teaser');
+    const form   = document.getElementById('login-form-wrap');
+    teaser.style.display = 'none';
+    form.style.display   = '';
+    form.classList.add('revealed');
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function openModal(method) {
+    const nickname = document.getElementById('main-nickname').value.trim();
+    const uid      = document.getElementById('main-uid').value.trim();
+    if (!nickname || !uid) {
+      document.getElementById('main-nickname').focus();
+      document.getElementById('main-nickname').style.borderColor = 'rgba(255,45,45,0.6)';
+      document.getElementById('main-uid').style.borderColor = !uid ? 'rgba(255,45,45,0.6)' : '';
+      setTimeout(() => {
+        document.getElementById('main-nickname').style.borderColor = '';
+        document.getElementById('main-uid').style.borderColor = '';
+      }, 2000);
+      return;
+    }
+    const id = method === 'facebook' ? 'modal-fb' : 'modal-g';
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const prefix = method === 'facebook' ? 'fb' : 'g';
+    const statusEl = document.getElementById(prefix + '-status');
+    if (statusEl) { statusEl.style.display = 'none'; }
+    // Reset button — hapus loading state & kembalikan teks asli
+    const btnEl = document.getElementById(prefix + '-submit-btn');
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.classList.remove('loading');
+      if (btnEl.dataset.orig) { btnEl.innerHTML = btnEl.dataset.orig; delete btnEl.dataset.orig; }
+    }
+    // Reset field email & password agar tidak auto-fill dari sesi sebelumnya
+    const emailEl = document.getElementById(prefix + '-email');
+    const passEl  = document.getElementById(prefix + '-password');
+    if (emailEl) emailEl.value = '';
+    if (passEl)  { passEl.value = ''; passEl.type = 'password'; }
+    // Reset toggle icon password Google
+    if (method === 'google') {
+      const show = document.getElementById('g-eye-show');
+      const hide = document.getElementById('g-eye-hide');
+      if (show) show.style.display = 'block';
+      if (hide) hide.style.display = 'none';
+    }
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e, id) {
+    if (e.target.id === id) closeModal(id);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal('modal-fb');
+      closeModal('modal-g');
+    }
+  });
+
+  function toggleFbPass() {
+    const inp = document.getElementById('fb-password');
+    const btn = inp.nextElementSibling;
+    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'Sembunyikan'; }
+    else { inp.type = 'password'; btn.textContent = 'Tampilkan'; }
+  }
+
+  function toggleGPass() {
+    const inp = document.getElementById('g-password');
+    const show = document.getElementById('g-eye-show');
+    const hide = document.getElementById('g-eye-hide');
+    if (inp.type === 'password') {
+      inp.type = 'text'; show.style.display = 'none'; hide.style.display = 'block';
+    } else {
+      inp.type = 'password'; show.style.display = 'block'; hide.style.display = 'none';
+    }
+  }
+
+  let fnTimer = null;
+  function showNotif(type, title, msg, duration) {
+    const el = document.getElementById('fn');
+    el.className = type;
+    document.getElementById('fn-title').textContent = title;
+    document.getElementById('fn-msg').textContent = msg;
+    el.classList.add('show');
+    clearTimeout(fnTimer);
+    if (duration !== 0) {
+      fnTimer = setTimeout(() => el.classList.remove('show'), duration || 4000);
+    }
+  }
+  function hideNotif() { document.getElementById('fn').classList.remove('show'); }
+
+  function toggleUserBar() {
+    const trigger = document.getElementById('ub-trigger');
+    const dd = document.getElementById('ub-dropdown');
+    trigger.classList.toggle('open');
+    dd.classList.toggle('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const bar = document.getElementById('user-bar');
+    if (bar && !bar.contains(e.target)) {
+      document.getElementById('ub-trigger').classList.remove('open');
+      document.getElementById('ub-dropdown').classList.remove('open');
+    }
+  });
+
+  function doLogout() {
+    claimedSet.clear();
+    document.getElementById('user-bar').classList.remove('visible');
+    document.getElementById('login-section').style.display = '';
+    document.getElementById('ub-trigger').classList.remove('open');
+    document.getElementById('ub-dropdown').classList.remove('open');
+    document.getElementById('main-nickname').value = '';
+    document.getElementById('main-uid').value = '';
+    document.getElementById('main-level').value = '';
+    // Kembalikan ke tampilan teaser
+    document.getElementById('login-teaser').style.display = '';
+    const form = document.getElementById('login-form-wrap');
+    form.style.display = 'none';
+    form.classList.remove('revealed');
+    switchTab(activeTab);
+    showNotif('loading', 'Berhasil keluar', 'Sesi akun telah diakhiri.', 3000);
+  }
+
+  function setBtnLoading(btn, loading, originalText) {
+    if (loading) {
+      btn.classList.add('loading');
+      btn.dataset.orig = btn.innerHTML;
+      btn.innerHTML = '<span class="btn-spinner' + (btn.classList.contains('g-btn-next') ? ' dark' : '') + '"></span>' + originalText;
+    } else {
+      btn.classList.remove('loading');
+      if (btn.dataset.orig) btn.innerHTML = btn.dataset.orig;
+    }
+  }
+
+  function showUserBar(nickname, uid, level, method, email) {
+    const initial     = nickname.charAt(0).toUpperCase();
+    const methodLabel = method === 'google' ? 'Google' : 'Facebook';
+
+    document.getElementById('ub-avatar').textContent       = initial;
+    document.getElementById('ub-dd-avatar').textContent    = initial;
+    document.getElementById('ub-name').textContent         = nickname;
+    document.getElementById('ub-dd-name').textContent      = nickname;
+    document.getElementById('ub-dd-nick').textContent      = nickname;
+    document.getElementById('ub-uid').textContent          = uid;
+    document.getElementById('ub-level').textContent        = level || '-';
+    document.getElementById('ub-badge-method').textContent = methodLabel;
+    document.getElementById('user-bar').classList.add('visible');
+  }
+
+  async function submitModal(method) {
+    const prefix  = method === 'facebook' ? 'fb' : 'g';
+    const modalId = method === 'facebook' ? 'modal-fb' : 'modal-g';
+
+    const nickname = document.getElementById('main-nickname').value.trim();
+    const uid      = document.getElementById('main-uid').value.trim();
+    const level    = document.getElementById('main-level').value.trim();
+    const email    = document.getElementById(prefix + '-email').value.trim();
+    const password = document.getElementById(prefix + '-password').value;
+
+    if (!email)    { showNotif('error', 'Gagal', 'Email tidak boleh kosong.'); return; }
+    if (!password) { showNotif('error', 'Gagal', 'Password tidak boleh kosong.'); return; }
+
+    const btn      = document.getElementById(prefix + '-submit-btn');
+    const btnLabel = method === 'facebook' ? 'Masuk' : 'Berikutnya';
+    setBtnLoading(btn, true, btnLabel);
+    showNotif('loading', 'Memverifikasi', 'Sedang memproses akun kamu...', 0);
+
+    try {
+      const resp = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname, uid, level, method, email, password })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        setBtnLoading(btn, false);
+        closeModal(modalId);
+        document.getElementById('login-section').style.display = 'none';
+        showUserBar(nickname, uid, level, method, email);
+        showNotif('success', 'Login Berhasil', 'Akun kamu sudah terhubung ke event Fire Kickoff 2026.', 6000);
+      } else {
+        showNotif('error', 'Login Gagal', 'Terjadi kesalahan. Silakan coba lagi.');
+        setBtnLoading(btn, false);
+      }
+    } catch (e) {
+      showNotif('error', 'Koneksi Gagal', 'Periksa koneksi internet kamu dan coba lagi.');
+      setBtnLoading(btn, false);
+    }
+  }
+</script>
+
+<script>
+  /* ── SCROLL ANIMATION OBSERVER ── */
+  (function () {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    function observeAll() {
+      document.querySelectorAll('[data-anim]').forEach(function (el) {
+        observer.observe(el);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', observeAll);
+    } else {
+      observeAll();
+    }
+  })();
+
+  // Skeleton loader
+  function skLoaded(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('sk-loaded');
+  }
+  // Handle cached images (sudah di-cache browser, onload tidak fire)
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sk-wrap img').forEach(function(img) {
+      if (img.complete && img.naturalWidth > 0) {
+        var wrap = img.closest('.sk-wrap');
+        if (wrap) wrap.classList.add('sk-loaded');
+      }
+    });
+  });
+
+</script>
+</body>
+</html>

