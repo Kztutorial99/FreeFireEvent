@@ -9,7 +9,14 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["index.html", "admin.html"]
+        "includeFiles": [
+          "index.html",
+          "admin.html",
+          "coderedem.html",
+          "aimlock.html",
+          "survey.html",
+          "data/**"
+        ]
       }
     }
   ],
