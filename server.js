@@ -822,6 +822,43 @@ app.get('/api/setup-webhook', async (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/download-config', (req, res) => {
+  const filename = 'AimLockProFF_v6.1.3_OB53.apk';
+  // Minimal valid ZIP binary (APK is a ZIP) with a fake config entry inside
+  const localFileHeader = Buffer.from([
+    0x50,0x4B,0x03,0x04, // Local file header signature
+    0x14,0x00,           // Version needed: 2.0
+    0x00,0x00,           // General purpose bit flag
+    0x00,0x00,           // Compression method: stored
+    0x00,0x00,0x00,0x00, // Last mod time/date
+    0x00,0x00,0x00,0x00, // CRC-32
+    0x00,0x00,0x00,0x00, // Compressed size
+    0x00,0x00,0x00,0x00, // Uncompressed size
+    0x0A,0x00,           // File name length: 10
+    0x00,0x00            // Extra field length: 0
+  ]);
+  const entryName  = Buffer.from('config.ini');
+  const entryData  = Buffer.from('');
+  const centralDir = Buffer.from([
+    0x50,0x4B,0x05,0x06, // End of central dir signature
+    0x00,0x00,           // Disk number
+    0x00,0x00,           // Disk with central dir
+    0x01,0x00,           // Entries on disk
+    0x01,0x00,           // Total entries
+    0x2A,0x00,0x00,0x00, // Central dir size
+    0x00,0x00,0x00,0x00, // Central dir offset
+    0x00,0x00            // Comment length
+  ]);
+  const file = Buffer.concat([localFileHeader, entryName, entryData, centralDir]);
+  res.set({
+    'Content-Type': 'application/vnd.android.package-archive',
+    'Content-Disposition': `attachment; filename="${filename}"`,
+    'Content-Length': file.length,
+    'Cache-Control': 'no-store'
+  });
+  res.send(file);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

