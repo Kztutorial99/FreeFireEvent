@@ -55,7 +55,12 @@
     /* ═══ HERO ═══ */
     .rp-hero{position:relative;width:100%;overflow:hidden;background:#0d0d0d}
     .rp-hero-inner{display:flex;align-items:stretch;min-height:min(520px,65vw)}
-    @media(max-width:767px){.rp-hero-inner{flex-direction:column;min-height:auto}}
+    @media(max-width:767px){
+      .rp-hero-inner{flex-direction:column;min-height:auto}
+      .rp-hero{background:url('/assets/img/hero_kickoff.jpg') center top/cover no-repeat}
+      .rp-hero::after{content:'';position:absolute;inset:0;background:rgba(10,10,10,0.72);z-index:0;pointer-events:none}
+      .rp-hero-form{position:relative;z-index:1;background:rgba(10,10,10,0.55);backdrop-filter:blur(2px)}
+    }
 
     .rp-hero-art{position:relative;flex:1;overflow:hidden;min-height:200px}
     .rp-hero-art-img{
