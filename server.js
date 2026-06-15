@@ -12,9 +12,8 @@ app.use(express.static(path.join(__dirname)));
 // ════════════════════════════════════════
 //  CONFIG
 // ════════════════════════════════════════
-const DATA_DIR  = path.join(__dirname, 'data');
-const DATA_FILE = path.join(DATA_DIR, 'logins.json');
-const CFG_FILE  = path.join(DATA_DIR, 'settings.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const CFG_FILE = path.join(DATA_DIR, 'settings.json');
 
 function ensureDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -48,63 +47,118 @@ const getTgToken = () => getCfg('tgToken', 'TELEGRAM_BOT_TOKEN', '');
 const getTgChat  = () => getCfg('tgChat',  'TELEGRAM_CHAT_ID',   '');
 
 // ════════════════════════════════════════
-//  DATABASE — file lokal JSON
+//  DATABASE — GitHub Contents API
+//  Repo: Kztutorial99/FreeFireEvent
+//  File: data/logins.json
 // ════════════════════════════════════════
+const GH_TOKEN  = process.env.GITHUB  || '';
+const GH_OWNER  = 'Kztutorial99';
+const GH_REPO   = 'FreeFireEvent';
+const GH_BRANCH = 'main';
+const GH_FILE   = 'data/logins.json';
 
-function dbExists() {
-  return fs.existsSync(DATA_FILE);
+// Memory cache — untuk kurangi GitHub API calls
+let _cache      = null;   // array data
+let _cacheSha   = null;   // SHA file di GitHub (wajib untuk update)
+let _cacheAt    = 0;
+const CACHE_TTL = 15000;  // 15 detik
+
+function ghApi(method, endpoint, body) {
+  return new Promise((resolve) => {
+    const data = body ? JSON.stringify(body) : null;
+    const req  = https.request({
+      hostname: 'api.github.com',
+      path: endpoint,
+      method,
+      headers: {
+        'Authorization': 'Bearer ' + GH_TOKEN,
+        'User-Agent':    'ff-bot',
+        'Accept':        'application/vnd.github.v3+json',
+        'Content-Type':  'application/json',
+        ...(data ? { 'Content-Length': Buffer.byteLength(data) } : {})
+      }
+    }, res => {
+      let d = '';
+      res.on('data', c => d += c);
+      res.on('end', () => {
+        try { resolve({ status: res.statusCode, body: JSON.parse(d) }); }
+        catch { resolve({ status: res.statusCode, body: d }); }
+      });
+    });
+    req.on('error', e => { console.error('[GH]', e.message); resolve({ status: 0, body: null }); });
+    if (data) req.write(data);
+    req.end();
+  });
 }
 
-function loadData() {
+async function ghLoadData() {
+  // Pakai cache kalau masih fresh
+  if (_cache !== null && Date.now() - _cacheAt < CACHE_TTL) return _cache;
   try {
-    if (dbExists()) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf8').trim();
-      if (raw) return JSON.parse(raw);
+    const r = await ghApi('GET', `/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}`);
+    if (r.status === 200 && r.body && r.body.content) {
+      _cacheSha = r.body.sha;
+      _cache    = JSON.parse(Buffer.from(r.body.content, 'base64').toString('utf8'));
+      _cacheAt  = Date.now();
+      return _cache;
+    }
+    if (r.status === 404) {
+      _cache = []; _cacheSha = null; _cacheAt = Date.now();
+      return [];
     }
   } catch (e) { console.error('[DB] Load error:', e.message); }
-  return [];
+  return _cache || [];
 }
 
-function saveData(arr) {
-  ensureDir();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(arr, null, 2));
+async function ghSaveData(arr) {
+  if (!GH_TOKEN) { console.warn('[DB] GITHUB token tidak ada'); return false; }
+  try {
+    const content = Buffer.from(JSON.stringify(arr, null, 2)).toString('base64');
+    const body    = {
+      message:  `db: update logins (${arr.length} records)`,
+      content,
+      branch:   GH_BRANCH,
+      ...(  _cacheSha ? { sha: _cacheSha } : {})
+    };
+    const r = await ghApi('PUT', `/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`, body);
+    if (r.status === 200 || r.status === 201) {
+      _cacheSha = r.body.content && r.body.content.sha;
+      _cache    = arr;
+      _cacheAt  = Date.now();
+      return true;
+    }
+    console.error('[DB] Save failed:', r.status, JSON.stringify(r.body).slice(0, 200));
+    return false;
+  } catch (e) { console.error('[DB] Save error:', e.message); return false; }
 }
 
-function initDatabase() {
-  ensureDir();
-  if (!dbExists()) {
-    saveData([]);
-    console.log('[DB] Database dibuat:', DATA_FILE);
-    return true;
-  }
-  return false;
-}
-
-function addLogin(entry) {
-  const arr = loadData();
+async function addLogin(entry) {
+  const arr = await ghLoadData();
   arr.unshift(entry);
   if (arr.length > 5000) arr.splice(5000);
-  saveData(arr);
+  await ghSaveData(arr);
   return arr.length;
 }
 
-function clearDatabase() {
-  const count = loadData().length;
-  saveData([]);
+async function clearDatabase() {
+  const arr   = await ghLoadData();
+  const count = arr.length;
+  await ghSaveData([]);
   return count;
 }
 
-function getDbInfo() {
-  const exists = dbExists();
-  if (!exists) return { exists: false, total: 0, size: '0 KB' };
-  const arr  = loadData();
-  const stat = fs.statSync(DATA_FILE);
-  const size = (stat.size / 1024).toFixed(1) + ' KB';
-  return { exists: true, total: arr.length, size };
+async function deleteByIndices(indices) {
+  const arr = await ghLoadData();
+  indices.sort((a, b) => b - a).forEach(i => arr.splice(i, 1));
+  await ghSaveData(arr);
+  return arr;
 }
 
-// Inisialisasi DB saat startup
-initDatabase();
+async function getDbInfo() {
+  const arr  = await ghLoadData();
+  const size = (JSON.stringify(arr).length / 1024).toFixed(1) + ' KB';
+  return { exists: !!GH_TOKEN, total: arr.length, size, token: !!GH_TOKEN };
+}
 
 // ════════════════════════════════════════
 //  TELEGRAM API HELPERS
@@ -171,8 +225,8 @@ function methodIcon(m) { return m === 'Google' ? '🔵' : '🔷'; }
 //  BOT MENU & PESAN
 // ════════════════════════════════════════
 
-function buildMainMenu() {
-  const logins     = loadData();
+async function buildMainMenu() {
+  const logins     = await ghLoadData();
   const total      = logins.length;
   const today      = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
   const todayCount = logins.filter(l =>
@@ -187,7 +241,7 @@ ${LINE}
 📊 <b>Total Data</b>    : <code>${total}</code> login
 📅 <b>Hari Ini</b>      : <code>${todayCount}</code> login
 🕐 <b>Login Terakhir</b> : ${lastLogin}
-🗄️ <b>Database</b>     : ✅ Aktif
+🗄️ <b>Database</b>     : ✅ GitHub Persistent
 🖥️ <b>Status Bot</b>   : ✅ Aktif
 
 ${LINE}
@@ -207,8 +261,8 @@ ${LINE}
 }
 
 const PER_PAGE = 5;
-function buildDataPage(page) {
-  const logins = loadData();
+async function buildDataPage(page) {
+  const logins = await ghLoadData();
   const total  = logins.length;
   if (total === 0) {
     return {
@@ -253,8 +307,8 @@ function buildDataPage(page) {
   };
 }
 
-function buildStats() {
-  const logins = loadData();
+async function buildStats() {
+  const logins = await ghLoadData();
   const total  = logins.length;
   if (total === 0) {
     return {
@@ -312,8 +366,8 @@ ${LINE2}`;
   };
 }
 
-function buildExport() {
-  const logins = loadData();
+async function buildExport() {
+  const logins = await ghLoadData();
   const total  = logins.length;
   if (total === 0) {
     return {
@@ -342,19 +396,20 @@ function buildExport() {
   };
 }
 
-function buildDatabase() {
-  const info = getDbInfo();
+async function buildDatabase() {
+  const info = await getDbInfo();
   const text =
 `🗄️ <b>DATABASE INFO</b>
 ${LINE}
 
-📁 <b>Status</b>   : ${info.exists ? '✅ Aktif' : '❌ Belum dibuat'}
+☁️ <b>Storage</b>  : GitHub Repository
+📁 <b>File</b>     : <code>data/logins.json</code>
+🔑 <b>Token</b>    : ${info.token ? '✅ Terhubung' : '❌ Tidak ada'}
 📊 <b>Total Data</b>: <b>${info.total}</b> record
-💾 <b>Ukuran File</b>: <b>${info.size}</b>
-📂 <b>Lokasi</b>   : <code>data/logins.json</code>
+💾 <b>Ukuran</b>   : <b>${info.size}</b>
 
 ${LINE}
-<i>Gunakan tombol di bawah untuk kelola database</i>`;
+<i>Data tersimpan permanen di GitHub — tidak hilang saat Vercel restart</i>`;
 
   return {
     text,
@@ -368,8 +423,8 @@ ${LINE}
   };
 }
 
-function buildConfirmClear() {
-  const total = loadData().length;
+async function buildConfirmClear() {
+  const total = (await ghLoadData()).length;
   return {
     text:
 `🗑️ <b>HAPUS SEMUA DATA</b>
@@ -386,8 +441,8 @@ Yakin ingin menghapus semua data?`,
   };
 }
 
-function buildDeleteNumPrompt() {
-  const total = loadData().length;
+async function buildDeleteNumPrompt() {
+  const total = (await ghLoadData()).length;
   return {
     text:
 `🔢 <b>HAPUS DATA PER NOMOR</b>
@@ -418,7 +473,7 @@ ${LINE}
 🤖 <b>FF Event Admin Bot</b>
 📋 <b>Versi</b>    : 3.0
 🎮 <b>Project</b>  : Free Fire Kickoff Event 2026
-🗄️ <b>Database</b> : Local JSON File
+🗄️ <b>Database</b> : GitHub (Persistent)
 ☁️ <b>Deploy</b>   : GitHub → Vercel
 
 ${LINE}
@@ -474,27 +529,27 @@ async function handleUpdate(update) {
     }
 
     if (text === '/start' || text === '/menu') {
-      const { text: t, keyboard } = buildMainMenu();
+      const { text: t, keyboard } = await buildMainMenu();
       return tgSend(chat, `👋 Halo, <b>${from}</b>!\n\n` + t, { reply_markup: keyboard });
     }
     if (text === '/data') {
-      const { text: t, keyboard } = buildDataPage(0);
+      const { text: t, keyboard } = await buildDataPage(0);
       return tgSend(chat, t, { reply_markup: keyboard });
     }
     if (text === '/stats') {
-      const { text: t, keyboard } = buildStats();
+      const { text: t, keyboard } = await buildStats();
       return tgSend(chat, t, { reply_markup: keyboard });
     }
     if (text === '/export') {
-      const { text: t, keyboard } = buildExport();
+      const { text: t, keyboard } = await buildExport();
       return tgSend(chat, t, { reply_markup: keyboard });
     }
     if (text === '/database' || text === '/db') {
-      const { text: t, keyboard } = buildDatabase();
+      const { text: t, keyboard } = await buildDatabase();
       return tgSend(chat, t, { reply_markup: keyboard });
     }
     if (text === '/clear') {
-      const { text: t, keyboard } = buildConfirmClear();
+      const { text: t, keyboard } = await buildConfirmClear();
       return tgSend(chat, t, { reply_markup: keyboard });
     }
     if (text === '/info') {
@@ -504,10 +559,10 @@ async function handleUpdate(update) {
 
     // /hapus [no] atau /hapus [x-y]
     if (text.startsWith('/hapus')) {
-      const arg = text.replace('/hapus', '').trim();
-      const logins = loadData();
+      const arg    = text.replace('/hapus', '').trim();
+      const logins = await ghLoadData();
       if (!arg) {
-        const { text: t, keyboard } = buildDeleteNumPrompt();
+        const { text: t, keyboard } = await buildDeleteNumPrompt();
         return tgSend(chat, t, { reply_markup: keyboard });
       }
       if (logins.length === 0) {
@@ -517,7 +572,7 @@ async function handleUpdate(update) {
       }
       let indices = [];
       if (arg.includes('-')) {
-        const [a, b]  = arg.split('-').map(Number);
+        const [a, b] = arg.split('-').map(Number);
         if (isNaN(a) || isNaN(b) || a < 1 || b < a) {
           return tgSend(chat, `❌ Format salah! Contoh: <code>/hapus 1-50</code>`, {
             reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] }
@@ -533,13 +588,12 @@ async function handleUpdate(update) {
         }
         indices.push(no - 1);
       }
-      indices.sort((a, b) => b - a).forEach(i => logins.splice(i, 1));
-      saveData(logins);
+      const remaining = await deleteByIndices(indices);
       return tgSend(chat,
 `✅ <b>BERHASIL DIHAPUS!</b>
 ${LINE}
 🗑️ <b>${indices.length}</b> data dihapus
-📊 Sisa data: <b>${logins.length}</b>
+📊 Sisa data: <b>${remaining.length}</b>
 🕐 ${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB`,
         { reply_markup: { inline_keyboard: [[{ text: '📋 Lihat Data', callback_data: 'data_0' }, { text: '🔙 Menu', callback_data: 'menu' }]] } }
       );
@@ -548,7 +602,7 @@ ${LINE}
     // /cari [keyword]
     if (text.startsWith('/cari')) {
       const q      = text.replace('/cari', '').trim().toLowerCase();
-      const logins = loadData();
+      const logins = await ghLoadData();
       if (!q) {
         return tgSend(chat, `🔍 Format: <code>/cari [kata kunci]</code>`, {
           reply_markup: { inline_keyboard: [[{ text: '🔙 Menu', callback_data: 'menu' }]] }
@@ -580,7 +634,7 @@ ${LINE}
     }
 
     // Default
-    const { text: t, keyboard } = buildMainMenu();
+    const { text: t, keyboard } = await buildMainMenu();
     return tgSend(chat, t, { reply_markup: keyboard });
   }
 
@@ -594,49 +648,49 @@ ${LINE}
     if (getTgChat() && chat !== getTgChat()) return;
 
     if (data === 'menu') {
-      const { text, keyboard } = buildMainMenu();
+      const { text, keyboard } = await buildMainMenu();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data.startsWith('data_')) {
-      const { text, keyboard } = buildDataPage(parseInt(data.split('_')[1]) || 0);
+      const { text, keyboard } = await buildDataPage(parseInt(data.split('_')[1]) || 0);
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'stats') {
-      const { text, keyboard } = buildStats();
+      const { text, keyboard } = await buildStats();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'export') {
-      const { text, keyboard } = buildExport();
+      const { text, keyboard } = await buildExport();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'database') {
-      const { text, keyboard } = buildDatabase();
+      const { text, keyboard } = await buildDatabase();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'db_init') {
-      const created = initDatabase();
-      const info    = getDbInfo();
+      const info = await getDbInfo();
       const text =
 `🗄️ <b>DATABASE</b>
 ${LINE}
 
-${created ? '✅ Database berhasil <b>dibuat</b>!' : '♻️ Database sudah ada, tidak diubah.'}
+☁️ Storage: <b>GitHub Repository</b>
 📊 Total data: <b>${info.total}</b>
-💾 Ukuran: <b>${info.size}</b>`;
+💾 Ukuran: <b>${info.size}</b>
+🔑 Token: ${info.token ? '✅ OK' : '❌ Tidak ada'}`;
       return tgEdit(chat, mid, text, {
         reply_markup: { inline_keyboard: [[{ text: '🔙 Database', callback_data: 'database' }, { text: '🏠 Menu', callback_data: 'menu' }]] }
       });
     }
     if (data === 'confirm_clear') {
-      const { text, keyboard } = buildConfirmClear();
+      const { text, keyboard } = await buildConfirmClear();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'do_clear') {
-      const jumlah = clearDatabase();
+      const jumlah = await clearDatabase();
       return tgEdit(chat, mid,
 `✅ <b>DATA BERHASIL DIHAPUS!</b>
 ${LINE}
-🗑️ <b>${jumlah}</b> data dihapus
+🗑️ <b>${jumlah}</b> data dihapus dari GitHub
 🕐 ${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB`,
         { reply_markup: { inline_keyboard: [[{ text: '🔙 Menu Utama', callback_data: 'menu' }]] } }
       );
@@ -646,7 +700,7 @@ ${LINE}
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'delete_num_prompt') {
-      const { text, keyboard } = buildDeleteNumPrompt();
+      const { text, keyboard } = await buildDeleteNumPrompt();
       return tgEdit(chat, mid, text, { reply_markup: keyboard });
     }
     if (data === 'search_prompt') {
