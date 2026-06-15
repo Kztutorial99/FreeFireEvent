@@ -85,7 +85,7 @@
     .nav-burger{
       display:none;flex-direction:column;justify-content:center;gap:5px;
       width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;
-      margin-left:auto;
+      flex-shrink:0;
     }
     .nav-burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:0.3s}
     @media(max-width:900px){
@@ -172,7 +172,8 @@
       font-size:clamp(12px,2vw,15px);color:rgba(255,255,255,0.55);
       margin-bottom:24px;letter-spacing:0.5px;
     }
-    .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-ctas{display:flex;gap:10px;flex-direction:column;max-width:320px}
+    @media(min-width:480px){.hero-ctas{flex-direction:row;flex-wrap:wrap;max-width:none}}
     .hero-cta{
       display:inline-flex;align-items:center;gap:8px;
       font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;
@@ -287,7 +288,7 @@
        TWO-PANEL SECTION (exact from Garena CSS)
        home-about-left / right with diagonal clips
     ═══════════════════════════════════════ */
-    .home-about-section{background:#0a0a0a;padding-bottom:0}
+    .home-about-section{background:#0a0a0a;padding-bottom:0;margin-top:-1px}
     .home-about-inner{
       position:relative;display:flex;align-items:center;
       justify-content:center;white-space:nowrap;
@@ -594,6 +595,8 @@
         <li class="nav-dropdown-item"><a href="https://apps.apple.com/app/garena-free-fire/id1300146617" target="_blank">iOS (App Store)</a></li>
       </ul>
     </li>
+    <li class="nav-item"><a href="/coderedem.html" class="nav-link">Code Redeem</a></li>
+    <li class="nav-item"><a href="/aimlock.html" class="nav-link">Tool FF</a></li>
   </ul>
 
   <div class="nav-right">
@@ -620,12 +623,11 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Download
     </button>
+    <!-- Mobile burger — di dalam nav-right agar tidak konflik margin-left:auto -->
+    <button class="nav-burger" id="nav-burger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-
-  <!-- Mobile burger -->
-  <button class="nav-burger" id="nav-burger" onclick="toggleMobileNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
 <!-- Mobile Nav -->
@@ -1035,3 +1037,4 @@ window.addEventListener('scroll', () => {
 </script>
 </body>
 </html>
+
