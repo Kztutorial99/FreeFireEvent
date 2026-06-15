@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Fire — Verifikasi Peserta Event 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ff-orange:#FF6B00; --ff-yellow:#FFD700; --ff-red:#FF2D2D;
+      --ff-green:#00C853;  --ff-blue:#00BFFF;   --ff-dark:#080810;
+      --ff-card:#10101A;   --ff-card2:#14141F;  --ff-border:#1C1C2E;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--ff-dark); color:#fff;
+      font-family:'Inter', sans-serif; min-height:100vh;
+      overflow-x:hidden; display:flex; flex-direction:column;
+    }
+
+    .bg-glow {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 20%, rgba(255,107,0,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,45,45,0.05) 0%, transparent 70%);
+    }
+
+    /* NAV */
+    .top-nav {
+      position:sticky; top:0; z-index:900;
+      background:rgba(8,8,16,0.92); backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--ff-border);
+      display:flex; align-items:center; justify-content:center;
+      padding:12px 16px; gap:10px;
+    }
+    .nav-logo-wrap { display:flex; align-items:center; gap:9px; }
+    .nav-logo-img {
+      width:26px; height:26px; border-radius:6px; overflow:hidden; flex-shrink:0;
+    }
+    .nav-logo-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .nav-logo-text {
+      font-family:'Orbitron', sans-serif; font-size:13px; font-weight:900; letter-spacing:2px;
+      background:linear-gradient(135deg,#FFD700,#FF6B00);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+
+    /* PROGRESS */
+    .progress-wrap {
+      position:relative; z-index:10;
+      padding:20px 16px 0; max-width:520px; margin:0 auto; width:100%;
+    }
+    .progress-label {
+      display:flex; justify-content:space-between; align-items:center;
+      font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:1px;
+      margin-bottom:8px;
+    }
+    .progress-bar-bg {
+      height:3px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden;
+    }
+    .progress-bar-fill {
+      height:100%;
+      background:linear-gradient(90deg,var(--ff-orange),var(--ff-red));
+      border-radius:4px;
+      transition:width 0.5s ease;
+      width:0%;
+    }
+
+    /* HERO */
+    .hero {
+      position:relative; z-index:10;
+      padding:24px 16px 16px; text-align:center; max-width:520px; margin:0 auto; width:100%;
+    }
+    .event-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(255,107,0,0.1); border:1px solid rgba(255,107,0,0.3);
+      border-radius:50px; padding:5px 14px; margin-bottom:14px;
+      font-size:10px; font-weight:700; letter-spacing:2px; color:var(--ff-orange);
+      text-transform:uppercase;
+    }
+    .badge-dot { width:6px; height:6px; background:var(--ff-orange); border-radius:50%; animation:blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+    .hero-title {
+      font-family:'Orbitron', sans-serif;
+      font-size:clamp(18px,5vw,26px); font-weight:900; line-height:1.15;
+      background:linear-gradient(135deg,#FFD700 0%,#FF6B00 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      margin-bottom:8px;
+    }
+    .hero-sub {
+      font-size:12px; color:rgba(255,255,255,0.4); line-height:1.7; max-width:380px; margin:0 auto;
+    }
+
+    /* FORM WRAPPER */
+    .form-wrap {
+      position:relative; z-index:10;
+      padding:16px 16px 32px; max-width:520px; margin:0 auto; width:100%;
+    }
+
+    /* STEP CARD */
+    .step-card {
+      background:var(--ff-card); border:1px solid var(--ff-border);
+      border-radius:20px; padding:24px 20px;
+      display:none;
+      animation:fadeUp 0.35s ease both;
+    }
+    .step-card.active { display:block; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    .step-num {
+      font-family:'Rajdhani', sans-serif; font-size:10px; font-weight:700;
+      letter-spacing:2px; color:var(--ff-orange); margin-bottom:6px; text-transform:uppercase;
+    }
+    .step-q {
+      font-family:'Rajdhani', sans-serif; font-size:18px; font-weight:700; color:#fff;
+      margin-bottom:4px; line-height:1.3;
+    }
+    .step-hint { font-size:11px; color:rgba(255,255,255,0.35); margin-bottom:18px; line-height:1.5; }
+
+    /* CHOICE OPTIONS */
+    .choices { display:flex; flex-direction:column; gap:10px; }
+    .choice-btn {
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,0.03); border:1px solid var(--ff-border);
+      border-radius:12px; padding:13px 16px; cursor:pointer;
+      transition:border-color 0.2s, background 0.2s;
+      text-align:left; width:100%;
+    }
+    .choice-btn:hover { border-color:rgba(255,107,0,0.4); background:rgba(255,107,0,0.05); }
+    .choice-btn.selected {
+      border-color:var(--ff-orange); background:rgba(255,107,0,0.08);
+    }
+    .choice-icon {
+      width:36px; height:36px; flex-shrink:0; border-radius:9px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,107,0,0.1); border:1px solid rgba(255,107,0,0.15);
+      color:var(--ff-orange);
+    }
+    .choice-icon svg { width:18px; height:18px; }
+    .choice-label { flex:1; }
+    .choice-title { font-family:'Rajdhani', sans-serif; font-size:15px; font-weight:700; color:#fff; }
+    .choice-sub { font-size:11px; color:rgba(255,255,255,0.35); margin-top:1px; }
+    .choice-radio {
+      width:18px; height:18px; flex-shrink:0; border-radius:50%;
+      border:2px solid rgba(255,255,255,0.2);
+      display:flex; align-items:center; justify-content:center;
+      transition:border-color 0.2s;
+    }
+    .choice-btn.selected .choice-radio { border-color:var(--ff-orange); }
+    .choice-btn.selected .choice-radio::after {
+      content:''; width:9px; height:9px; border-radius:50%; background:var(--ff-orange);
+      display:block;
+    }
+
+    /* TEXT INPUT OPTION */
+    .input-group { display:flex; flex-direction:column; gap:6px; }
+    .ff-input {
+      background:rgba(255,255,255,0.04); border:1px solid var(--ff-border);
+      border-radius:12px; padding:13px 16px; color:#fff; font-size:14px;
+      font-family:'Inter', sans-serif; width:100%; outline:none;
+      transition:border-color 0.2s;
+    }
+    .ff-input:focus { border-color:rgba(255,107,0,0.5); background:rgba(255,107,0,0.03); }
+    .ff-input::placeholder { color:rgba(255,255,255,0.2); }
+    .input-hint { font-size:10px; color:rgba(255,255,255,0.25); letter-spacing:0.3px; }
+
+    /* NAV BUTTONS */
+    .btn-row {
+      display:flex; gap:10px; margin-top:22px;
+    }
+    .btn-back {
+      padding:12px 18px; border:1px solid var(--ff-border); border-radius:12px;
+      background:transparent; color:rgba(255,255,255,0.4); cursor:pointer;
+      font-family:'Rajdhani', sans-serif; font-size:14px; font-weight:700;
+      transition:color 0.2s, border-color 0.2s; display:none;
+    }
+    .btn-back:hover { color:#fff; border-color:rgba(255,255,255,0.25); }
+    .btn-back.show { display:block; }
+    .btn-next {
+      flex:1; padding:14px; border:none; border-radius:12px; cursor:pointer;
+      background:linear-gradient(135deg,var(--ff-orange),var(--ff-red));
+      color:#fff; font-family:'Rajdhani', sans-serif; font-size:15px; font-weight:700;
+      letter-spacing:1px; display:flex; align-items:center; justify-content:center; gap:8px;
+      transition:opacity 0.2s, transform 0.15s;
+    }
+    .btn-next:hover { opacity:0.88; }
+    .btn-next:active { transform:scale(0.98); }
+    .btn-next:disabled { opacity:0.4; cursor:not-allowed; }
+    .btn-next svg { width:16px; height:16px; stroke:#fff; }
+
+    /* FINAL CARD */
+    .final-card {
+      background:var(--ff-card); border:1px solid rgba(0,200,83,0.25);
+      border-radius:20px; padding:32px 20px; text-align:center;
+      display:none; animation:fadeUp 0.4s ease both;
+    }
+    .final-card.show { display:block; }
+    .final-icon {
+      width:68px; height:68px; border-radius:50%; margin:0 auto 16px;
+      background:rgba(0,200,83,0.12); border:1px solid rgba(0,200,83,0.3);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .final-icon svg { width:34px; height:34px; }
+    .final-title {
+      font-family:'Orbitron', sans-serif; font-size:17px; font-weight:900;
+      color:var(--ff-green); margin-bottom:8px;
+    }
+    .final-sub { font-size:12px; color:rgba(255,255,255,0.4); line-height:1.7; margin-bottom:24px; }
+    .final-reward {
+      background:rgba(255,107,0,0.07); border:1px solid rgba(255,107,0,0.2);
+      border-radius:12px; padding:14px 16px; margin-bottom:22px; text-align:left;
+    }
+    .reward-label { font-size:10px; color:rgba(255,107,0,0.7); letter-spacing:1.5px; font-weight:700; text-transform:uppercase; margin-bottom:8px; }
+    .reward-items { display:flex; flex-direction:column; gap:7px; }
+    .reward-item { display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,255,255,0.7); }
+    .reward-dot { width:6px; height:6px; background:var(--ff-orange); border-radius:50%; flex-shrink:0; }
+    .btn-enter {
+      width:100%; padding:15px; border:none; border-radius:14px; cursor:pointer;
+      background:linear-gradient(135deg,var(--ff-orange),var(--ff-red));
+      color:#fff; font-family:'Rajdhani', sans-serif; font-size:16px; font-weight:700;
+      letter-spacing:2px; transition:opacity 0.2s, transform 0.15s;
+    }
+    .btn-enter:hover { opacity:0.88; transform:translateY(-1px); }
+    .btn-enter:active { transform:scale(0.98); }
+
+    /* FOOTER */
+    .page-footer {
+      text-align:center; padding:20px 16px;
+      font-size:10px; color:rgba(255,255,255,0.12); letter-spacing:1px;
+      position:relative; z-index:10; margin-top:auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-logo-wrap">
+    <div class="nav-logo-img">
+      <img src="/attached_assets/ff-icon.png" alt="FF" onerror="this.style.display='none'"/>
+    </div>
+    <div class="nav-logo-text">FREE FIRE</div>
+  </div>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="prog-text">PERTANYAAN 1 DARI 5</span>
+    <span id="prog-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="prog-fill"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="event-badge"><div class="badge-dot"></div>FIRE KICKOFF EVENT 2026</div>
+  <div class="hero-title">VERIFIKASI PESERTA</div>
+  <div class="hero-sub">Jawab beberapa pertanyaan untuk memverifikasi akunmu dan membuka akses hadiah eksklusif event ini.</div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- STEP 1: SERVER -->
+  <div class="step-card active" id="step-1">
+    <div class="step-num">Pertanyaan 1 / 5</div>
+    <div class="step-q">Server Free Fire kamu?</div>
+    <div class="step-hint">Pilih server tempat akun kamu terdaftar</div>
+    <div class="choices" id="q1-choices">
+      <button class="choice-btn" data-val="Indonesia" onclick="selectChoice(this,'q1')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Indonesia</div><div class="choice-sub">Server ID — Garena</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Malaysia" onclick="selectChoice(this,'q1')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Malaysia / Singapore</div><div class="choice-sub">Server MY/SG — Garena</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Thailand" onclick="selectChoice(this,'q1')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Thailand</div><div class="choice-sub">Server TH — Garena</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Lainnya" onclick="selectChoice(this,'q1')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Server Lainnya</div><div class="choice-sub">Global / Middle East / India</div></div>
+        <div class="choice-radio"></div>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" id="back-1">Kembali</button>
+      <button class="btn-next" id="next-1" onclick="goNext(1)" disabled>
+        Lanjut
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: DURASI MAIN -->
+  <div class="step-card" id="step-2">
+    <div class="step-num">Pertanyaan 2 / 5</div>
+    <div class="step-q">Sudah berapa lama bermain Free Fire?</div>
+    <div class="step-hint">Pilih durasi yang paling sesuai dengan pengalamanmu</div>
+    <div class="choices" id="q2-choices">
+      <button class="choice-btn" data-val="Kurang dari 1 tahun" onclick="selectChoice(this,'q2')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Kurang dari 1 tahun</div><div class="choice-sub">Pemain baru</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="1-2 tahun" onclick="selectChoice(this,'q2')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="choice-label"><div class="choice-title">1 – 2 Tahun</div><div class="choice-sub">Pemain menengah</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="3-4 tahun" onclick="selectChoice(this,'q2')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="choice-label"><div class="choice-title">3 – 4 Tahun</div><div class="choice-sub">Pemain veteran</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="5+ tahun" onclick="selectChoice(this,'q2')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="choice-label"><div class="choice-title">5 Tahun ke Atas</div><div class="choice-sub">OG player — sejak launch</div></div>
+        <div class="choice-radio"></div>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back show" onclick="goBack(2)">Kembali</button>
+      <button class="btn-next" id="next-2" onclick="goNext(2)" disabled>
+        Lanjut
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: RANK -->
+  <div class="step-card" id="step-3">
+    <div class="step-num">Pertanyaan 3 / 5</div>
+    <div class="step-q">Rank tertinggi yang pernah kamu capai?</div>
+    <div class="step-hint">Rank season terbaik sepanjang bermain</div>
+    <div class="choices" id="q3-choices">
+      <button class="choice-btn" data-val="Bronze-Silver" onclick="selectChoice(this,'q3')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Bronze / Silver</div><div class="choice-sub">Rank pemula</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Gold-Platinum" onclick="selectChoice(this,'q3')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Gold / Platinum</div><div class="choice-sub">Rank menengah</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Diamond-Heroic" onclick="selectChoice(this,'q3')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Diamond / Heroic</div><div class="choice-sub">Rank tinggi</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Grandmaster" onclick="selectChoice(this,'q3')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Grandmaster</div><div class="choice-sub">Rank tertinggi</div></div>
+        <div class="choice-radio"></div>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back show" onclick="goBack(3)">Kembali</button>
+      <button class="btn-next" id="next-3" onclick="goNext(3)" disabled>
+        Lanjut
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4: PERANGKAT -->
+  <div class="step-card" id="step-4">
+    <div class="step-num">Pertanyaan 4 / 5</div>
+    <div class="step-q">Perangkat yang kamu gunakan untuk bermain?</div>
+    <div class="step-hint">Sistem operasi utama perangkatmu</div>
+    <div class="choices" id="q4-choices">
+      <button class="choice-btn" data-val="Android" onclick="selectChoice(this,'q4')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Android</div><div class="choice-sub">Semua merek Android</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="iOS (iPhone)" onclick="selectChoice(this,'q4')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="choice-label"><div class="choice-title">iOS (iPhone / iPad)</div><div class="choice-sub">Apple device</div></div>
+        <div class="choice-radio"></div>
+      </button>
+      <button class="choice-btn" data-val="Emulator PC" onclick="selectChoice(this,'q4')">
+        <div class="choice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="choice-label"><div class="choice-title">Emulator (PC)</div><div class="choice-sub">BlueStacks / LDPlayer</div></div>
+        <div class="choice-radio"></div>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back show" onclick="goBack(4)">Kembali</button>
+      <button class="btn-next" id="next-4" onclick="goNext(4)" disabled>
+        Lanjut
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 5: ID FF -->
+  <div class="step-card" id="step-5">
+    <div class="step-num">Pertanyaan 5 / 5</div>
+    <div class="step-q">Masukkan ID Free Fire kamu</div>
+    <div class="step-hint">ID akun Free Fire terdiri dari 9–12 angka. Cek di profil in-game.</div>
+    <div class="input-group">
+      <input class="ff-input" id="ff-id-input" type="number" placeholder="Contoh: 123456789" maxlength="12" oninput="onIdInput(this)"/>
+      <span class="input-hint">ID kamu tidak akan dibagikan ke pihak ketiga</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back show" onclick="goBack(5)">Kembali</button>
+      <button class="btn-next" id="next-5" onclick="goNext(5)" disabled>
+        Selesai
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="final-card" id="final-card">
+    <div class="final-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    </div>
+    <div class="final-title">VERIFIKASI BERHASIL!</div>
+    <div class="final-sub">Akunmu telah terverifikasi. Kamu mendapatkan akses penuh ke semua hadiah dan tool eksklusif Fire Kickoff Event 2026.</div>
+    <div class="final-reward">
+      <div class="reward-label">Hadiah Tersedia Untukmu</div>
+      <div class="reward-items">
+        <div class="reward-item"><div class="reward-dot"></div>Kode Redeem Eksklusif (M1887 Golden + Diamond x500)</div>
+        <div class="reward-item"><div class="reward-dot"></div>Aim Lock &amp; Auto Headshot Tool OB48</div>
+        <div class="reward-item"><div class="reward-dot"></div>Anti-Ban Shield + Speed Boost Config</div>
+      </div>
+    </div>
+    <button class="btn-enter" onclick="enterSite()">
+      AKSES HADIAH SEKARANG
+    </button>
+  </div>
+
+</div>
+
+<div class="page-footer">© 2026 FREE FIRE · FIRE KICKOFF EVENT · GARENA INTERNATIONAL</div>
+
+<script>
+const answers = {};
+const TOTAL = 5;
+
+function updateProgress(step) {
+  const done  = step - 1;
+  const pct   = Math.round((done / TOTAL) * 100);
+  document.getElementById('prog-fill').style.width  = pct + '%';
+  document.getElementById('prog-pct').textContent   = pct + '%';
+  document.getElementById('prog-text').textContent  =
+    done < TOTAL ? `PERTANYAAN ${step} DARI ${TOTAL}` : 'SELESAI';
+}
+
+function selectChoice(btn, qKey) {
+  const parent = btn.closest('.choices');
+  parent.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[qKey] = btn.dataset.val;
+  const stepNum = parseInt(qKey.replace('q',''));
+  document.getElementById('next-' + stepNum).disabled = false;
+}
+
+function onIdInput(input) {
+  const val = input.value.replace(/\D/g,'');
+  input.value = val;
+  document.getElementById('next-5').disabled = val.length < 6;
+  if (val.length >= 6) answers['q5'] = val;
+}
+
+function goNext(fromStep) {
+  if (fromStep === TOTAL) {
+    showFinal();
+    return;
+  }
+  document.getElementById('step-' + fromStep).classList.remove('active');
+  const next = fromStep + 1;
+  document.getElementById('step-' + next).classList.add('active');
+  updateProgress(next);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack(fromStep) {
+  document.getElementById('step-' + fromStep).classList.remove('active');
+  const prev = fromStep - 1;
+  document.getElementById('step-' + prev).classList.add('active');
+  updateProgress(prev);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showFinal() {
+  document.getElementById('step-5').classList.remove('active');
+  document.getElementById('final-card').classList.add('show');
+  document.getElementById('prog-fill').style.width = '100%';
+  document.getElementById('prog-pct').textContent  = '100%';
+  document.getElementById('prog-text').textContent = 'SELESAI';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function enterSite() {
+  window.location.href = '/index.html';
+}
+
+updateProgress(1);
+</script>
+</body>
+</html>
