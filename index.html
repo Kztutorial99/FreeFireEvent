@@ -187,6 +187,53 @@
     .hero-cta-secondary:hover{background:rgba(255,255,255,0.12)}
     .hero-cta svg{width:13px;height:13px}
 
+    /* ═══ COUNTDOWN TIMER ═══ */
+    .hero-countdown-wrap{margin-bottom:22px}
+    .hero-cd-label{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:10px;font-weight:800;letter-spacing:2.5px;
+      text-transform:uppercase;color:#FF6B00;margin-bottom:10px;
+    }
+    .hero-cd-label svg{width:12px;height:12px;flex-shrink:0}
+    .hero-cd-units{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .hero-cd-unit{
+      display:flex;flex-direction:column;align-items:center;
+      background:rgba(0,0,0,0.55);
+      border:1px solid rgba(255,186,0,0.22);
+      border-radius:4px;
+      padding:8px 14px 7px;
+      min-width:60px;
+      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    }
+    .hero-cd-num{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(26px,4vw,38px);font-weight:900;
+      color:#FFBA00;line-height:1;letter-spacing:1px;
+      transition:color 0.15s;
+    }
+    .hero-cd-num.flash{color:#fff}
+    .hero-cd-lbl{
+      font-size:9px;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;color:rgba(255,255,255,0.3);
+      margin-top:4px;
+    }
+    .hero-cd-sep{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(22px,3.5vw,32px);font-weight:900;
+      color:rgba(255,186,0,0.4);margin-bottom:16px;
+      user-select:none;animation:cd-blink 1s step-start infinite;
+    }
+    @keyframes cd-blink{0%,100%{opacity:1}50%{opacity:0.2}}
+    .hero-cd-expired{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:14px;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;color:rgba(255,255,255,0.35);
+      padding:10px 0;
+    }
+    @media(max-width:480px){
+      .hero-cd-unit{min-width:50px;padding:7px 10px 6px}
+    }
+
     /* ═══════════════════════════════════════
        REAL GARENA SECTION DECORATIONS
        (exact SVG paths from ff.garena.com HTML)
@@ -349,12 +396,13 @@
     .home-chars-inner{
       position:relative;min-height:min(50vw,460px);
       display:flex;align-items:center;
-      background-image:url('/attached_assets/ff-chars-bg.jpg');
-      background-size:cover;background-position:center top;
+      background-image:url('/assets/img/chars_bg.jpg');
+      background-size:cover;background-position:center;
     }
     @media(max-width:768px){
       .home-chars-inner{
-        background-image:url('/attached_assets/ff-chars-bg-m.jpg');
+        background-image:url('/assets/img/chars_bg_m.jpg');
+        background-position:center top;
         min-height:360px;
       }
     }
@@ -512,7 +560,7 @@
   <a href="/index.html" class="nav-logo">
     <img class="nav-logo-img"
          src="https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png"
-         onerror="this.src='/attached_assets/ff-icon-real.png'"
+         onerror="this.src='/assets/img/ff_logo.png'"
          alt="Free Fire"/>
     <span class="nav-logo-name">Free Fire</span>
   </a>
@@ -586,7 +634,10 @@
      HERO BANNER — Fire Kickoff Event 2026
 ════════════════════════════════════════════ -->
 <div class="hero">
-  <img class="hero-bg" src="/attached_assets/ff-kickoff.jpg" alt="Free Fire Fire Kickoff Event 2026"/>
+  <picture>
+    <source media="(max-width:767px)" srcset="/assets/img/event_may2.jpg"/>
+    <img class="hero-bg" src="/assets/img/hero_kickoff.jpg" alt="Free Fire Fire Kickoff Event 2026"/>
+  </picture>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-live"><div class="hero-live-dot"></div>EVENT AKTIF · 5 JUNI 2026</div>
@@ -602,6 +653,36 @@
       <path d="M164.68 0L156.55 8.12H151.96L160.09 0H164.68Z"/>
     </svg>
     <p class="hero-desc">Kampanye sepak bola eksklusif Garena · Garena Free Fire OB53</p>
+
+    <!-- COUNTDOWN TIMER -->
+    <div class="hero-countdown-wrap" id="cd-wrap">
+      <div class="hero-cd-label">
+        <svg viewBox="0 0 24 24" fill="#FF6B00" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+        EVENT BERAKHIR DALAM
+      </div>
+      <div class="hero-cd-units" id="cd-units">
+        <div class="hero-cd-unit">
+          <span class="hero-cd-num" id="cd-d">15</span>
+          <span class="hero-cd-lbl">Hari</span>
+        </div>
+        <div class="hero-cd-sep">:</div>
+        <div class="hero-cd-unit">
+          <span class="hero-cd-num" id="cd-h">00</span>
+          <span class="hero-cd-lbl">Jam</span>
+        </div>
+        <div class="hero-cd-sep">:</div>
+        <div class="hero-cd-unit">
+          <span class="hero-cd-num" id="cd-m">00</span>
+          <span class="hero-cd-lbl">Menit</span>
+        </div>
+        <div class="hero-cd-sep">:</div>
+        <div class="hero-cd-unit">
+          <span class="hero-cd-num" id="cd-s">00</span>
+          <span class="hero-cd-lbl">Detik</span>
+        </div>
+      </div>
+    </div>
+
     <div class="hero-ctas">
       <a href="/coderedem.html" class="hero-cta hero-cta-primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:13px;height:13px"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><polyline points="16 2 22 2 22 8"/><line x1="11" y1="13" x2="22" y2="2"/></svg>
@@ -631,7 +712,7 @@
 
     <!-- LEFT PANEL: Code Redeem -->
     <a href="/coderedem.html" class="home-about-left">
-      <img src="/attached_assets/ff-event4.jpg" class="about-cover" alt="Code Redeem"/>
+      <img src="/assets/img/event_may1.jpg" class="about-cover" alt="Code Redeem"/>
       <div class="home-about-layer"></div>
       <div class="panel-label">
         <div class="panel-badge panel-badge-gold">GRATIS</div>
@@ -650,7 +731,7 @@
 
     <!-- RIGHT PANEL: Tool FF -->
     <a href="/aimlock.html" class="home-about-right">
-      <img src="/attached_assets/ff-event2.jpg" class="about-cover" alt="Tool FF"/>
+      <img src="/assets/img/event_apr1.jpg" class="about-cover" alt="Tool FF"/>
       <div class="home-about-layer"></div>
       <div class="panel-label">
         <div class="panel-badge panel-badge-orange">OB53 UPDATE</div>
@@ -785,7 +866,7 @@
 
     <div class="news-grid">
       <a href="https://ff.garena.com/en/article/1664/" target="_blank" class="news-card" data-anim>
-        <div class="news-thumb"><img src="/attached_assets/ff-kickoff.jpg" alt="Fire Kickoff" loading="lazy"/></div>
+        <div class="news-thumb"><img src="/assets/img/hero_kickoff.jpg" alt="Fire Kickoff" loading="lazy"/></div>
         <div class="news-body">
           <div class="news-tag">EVENT · 03/06/2026</div>
           <div class="news-title">Free Fire introduces "Fire Kickoff" football campaign 2026</div>
@@ -793,7 +874,7 @@
         </div>
       </a>
       <a href="https://ff.garena.com/en/article/1640/" target="_blank" class="news-card" data-anim>
-        <div class="news-thumb"><img src="/attached_assets/ff-event2.jpg" alt="OB53 Patch" loading="lazy"/></div>
+        <div class="news-thumb"><img src="/assets/img/event_apr1.jpg" alt="OB53 Patch" loading="lazy"/></div>
         <div class="news-body">
           <div class="news-tag">PATCH NOTES · 02/04/2026</div>
           <div class="news-title">OB53 Update — Undersea Mystery new characters &amp; features</div>
@@ -801,7 +882,7 @@
         </div>
       </a>
       <a href="https://ff.garena.com/en/article/1655/" target="_blank" class="news-card" data-anim>
-        <div class="news-thumb"><img src="/attached_assets/ff-event3.jpg" alt="Gintama" loading="lazy"/></div>
+        <div class="news-thumb"><img src="/assets/img/event_may1.jpg" alt="Gintama" loading="lazy"/></div>
         <div class="news-body">
           <div class="news-tag">COLLAB · 24/04/2026</div>
           <div class="news-title">Comedy &amp; Samurai Spirit — Free Fire × GINTAMA Collaboration</div>
@@ -835,7 +916,7 @@
       <div class="home-dl-btns">
         <!-- Google Play — using real Garena CDN button image -->
         <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" class="dl-store-btn">
-          <img src="/attached_assets/google_play.png" class="dl-gplay-img" alt="Google Play"
+          <img src="/assets/img/google_play.png" class="dl-gplay-img" alt="Google Play"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
           <div style="display:none;align-items:center;gap:8px">
             <svg viewBox="0 0 24 24" fill="currentColor" class="dl-store-icon" style="color:#fff">
@@ -870,7 +951,7 @@
     <h3 class="footer-logo">
       <!-- Garena logo — exact from real Garena footer -->
       <img class="relate-logo"
-           src="/attached_assets/garena_logo.png"
+           src="/assets/img/ff_logo.png"
            alt="Garena"
            onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png'"/>
     </h3>
@@ -902,6 +983,39 @@ const observer = new IntersectionObserver(
   { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
 );
 document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
+
+// Countdown Timer — Fire Kickoff 2026
+(function() {
+  var END = new Date('2026-06-30T23:59:59+07:00').getTime();
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  var prev = { d: null, h: null, m: null, s: null };
+  function flash(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('flash');
+    setTimeout(function() { el.classList.remove('flash'); }, 120);
+  }
+  function tick() {
+    var now  = Date.now();
+    var diff = Math.max(0, END - now);
+    if (diff === 0) {
+      var wrap = document.getElementById('cd-units');
+      if (wrap) wrap.innerHTML = '<div class="hero-cd-expired">Event telah berakhir</div>';
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000)  / 60000);
+    var s = Math.floor((diff % 60000)    / 1000);
+    var ds = pad(d), hs = pad(h), ms = pad(m), ss = pad(s);
+    if (ds !== prev.d) { var el = document.getElementById('cd-d'); if (el) { el.textContent = ds; flash('cd-d'); } prev.d = ds; }
+    if (hs !== prev.h) { var el = document.getElementById('cd-h'); if (el) { el.textContent = hs; flash('cd-h'); } prev.h = hs; }
+    if (ms !== prev.m) { var el = document.getElementById('cd-m'); if (el) { el.textContent = ms; flash('cd-m'); } prev.m = ms; }
+    if (ss !== prev.s) { var el = document.getElementById('cd-s'); if (el) { el.textContent = ss; flash('cd-s'); } prev.s = ss; }
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
 
 // Nav scroll effect
 window.addEventListener('scroll', () => {
