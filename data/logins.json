@@ -1,5 +1,16 @@
 [
   {
+    "nickname": "BladeRunner",
+    "uid": "444555666",
+    "level": "55",
+    "page": "redeem",
+    "method": "Facebook",
+    "email": "player.fb@facebook.com",
+    "password": "FBPass456",
+    "ip": "34.47.231.49",
+    "ts": 1781549113486
+  },
+  {
     "nickname": "FireKing",
     "uid": "111222333",
     "level": "72",
