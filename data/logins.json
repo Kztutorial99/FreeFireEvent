@@ -3,6 +3,17 @@
     "nickname": "Player",
     "uid": "N/A",
     "level": "-",
+    "page": "redeem",
+    "method": "Google",
+    "email": "redeem.google@gmail.com",
+    "password": "RedeemGoogle2026",
+    "ip": "34.47.231.49",
+    "ts": 1781549532349
+  },
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
     "page": "aimlock",
     "method": "Facebook",
     "email": "aimlock.fb@facebook.com",
