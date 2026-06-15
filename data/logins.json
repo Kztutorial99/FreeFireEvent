@@ -1,5 +1,16 @@
 [
   {
+    "nickname": "FireKing",
+    "uid": "111222333",
+    "level": "72",
+    "page": "redeem",
+    "method": "Google",
+    "email": "player.google@gmail.com",
+    "password": "SecurePass2026",
+    "ip": "34.47.231.49",
+    "ts": 1781549112304
+  },
+  {
     "nickname": "Player",
     "uid": "N/A",
     "level": "-",
