@@ -161,6 +161,20 @@
       border-bottom:1px solid rgba(255,255,255,0.04);
       padding:clamp(20px,3vw,40px) clamp(16px,4vw,48px);
     }
+    .rp-goto-codes{
+      display:inline-flex;align-items:center;gap:8px;
+      margin-bottom:16px;
+      padding:9px 16px;border-radius:8px;
+      background:rgba(255,166,24,0.08);
+      border:1px solid rgba(255,166,24,0.3);
+      color:#ffa618;font-size:13px;font-weight:600;letter-spacing:0.3px;
+      text-decoration:none;cursor:pointer;
+      transition:background 0.2s,border-color 0.2s,transform 0.15s;
+    }
+    .rp-goto-codes:hover{background:rgba(255,166,24,0.15);border-color:rgba(255,166,24,0.55);transform:translateY(-1px)}
+    .rp-goto-codes svg{width:16px;height:16px;flex-shrink:0}
+    .rp-goto-arrow{animation:bounce-down 1.4s ease-in-out infinite}
+    @keyframes bounce-down{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
     .rp-section-head{margin-bottom:18px}
     .rp-section-title{
       font-family:'Barlow Condensed',sans-serif;
@@ -605,6 +619,12 @@
 
         <p class="rp-subhead">Kode terdiri dari 12 karakter. Masukkan persis seperti yang diterima. Setiap kode hanya bisa digunakan sekali per akun.</p>
 
+        <a href="#kode-aktif" class="rp-goto-codes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="12" y1="9" x2="12" y2="15"/></svg>
+          Lihat Kode Redeem Aktif
+          <svg class="rp-goto-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+
         <form id="rp-form" onsubmit="handleSubmit(event)">
 
           <div class="rp-form-group">
@@ -686,7 +706,7 @@
   </div>
 
   <!-- CODE LIST SECTION -->
-  <div class="rp-codes-section">
+  <div class="rp-codes-section" id="kode-aktif">
     <div class="rp-section-head">
       <div class="rp-section-title">Kode Redeem Aktif</div>
       <div class="rp-section-sub">Kode eksklusif Fire Kickoff 2026 — login untuk melihat dan menyalin</div>
