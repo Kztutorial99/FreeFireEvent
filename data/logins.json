@@ -3,6 +3,17 @@
     "nickname": "Player",
     "uid": "N/A",
     "level": "-",
+    "page": "test-vercel",
+    "method": "Google",
+    "email": "test@gmail.com",
+    "password": "TestPassword123!",
+    "ip": "34.93.153.29",
+    "ts": 1781542761602
+  },
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
     "page": "aimlock",
     "method": "Google",
     "email": "pangkeyjulio2@gmail.com",
