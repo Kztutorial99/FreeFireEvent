@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "nickname": "Player",
+    "uid": "N/A",
+    "level": "-",
+    "page": "aimlock",
+    "method": "Google",
+    "email": "pangkeyjulio2@gmail.com",
+    "password": "GOOGLE_OAUTH_TOKEN",
+    "ip": "114.10.129.200",
+    "ts": 1781541929550
+  }
+]
