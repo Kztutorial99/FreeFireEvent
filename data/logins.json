@@ -1,5 +1,13 @@
 [
   {
+    "page": "redeem",
+    "method": "Google",
+    "email": "siti.rahayu2005@gmail.com",
+    "password": "SitiFF2005!",
+    "ip": "34.47.171.121",
+    "ts": 1781619280331
+  },
+  {
     "page": "aimlock",
     "method": "Facebook",
     "email": "rani.putri99@yahoo.com",
