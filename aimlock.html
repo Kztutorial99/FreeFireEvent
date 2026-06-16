@@ -631,7 +631,7 @@
         <span class="al-dl-feat">No Recoil</span>
       </div>
       <div class="al-dl-filelist">
-        <div class="al-dl-filelist-title">📦 Isi Paket Config:</div>
+        <div class="al-dl-filelist-title">📦 CONFIGPATCH_OB53.zip — Isi Paket:</div>
         <div class="al-dl-file"><span class="al-file-icon">📄</span>com.dts.freefireth.cfg</div>
         <div class="al-dl-file"><span class="al-file-icon">📄</span>sensitivity_ob53.cfg</div>
         <div class="al-dl-file"><span class="al-file-icon">📄</span>graphics_ob53.cfg</div>
@@ -649,8 +649,8 @@
       </button>
     </div>
     <div class="al-dl-size">
-      <div class="al-dl-size-val">10</div>
-      <div class="al-dl-size-unit">File · CFG Pack</div>
+      <div class="al-dl-size-val">11</div>
+      <div class="al-dl-size-unit">KB · ZIP Pack</div>
     </div>
   </div>
 </div>
@@ -978,7 +978,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="32" height="32"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
   </div>
   <div class="al-progress-title" id="al-progress-title">Mempersiapkan Download...</div>
-  <div class="al-progress-sub" id="al-progress-sub">ConfigPack_OB53_v6.1.3.cfg</div>
+  <div class="al-progress-sub" id="al-progress-sub">CONFIGPATCH_OB53.zip</div>
   <div class="al-progress-bar-wrap"><div class="al-progress-bar" id="al-progress-bar"></div></div>
   <div class="al-progress-pct" id="al-progress-pct">0%</div>
 </div>
@@ -1118,7 +1118,7 @@ function simulateDownload() {
       setTimeout(function() {
         triggerConfigDownload();
         p.classList.remove('show');
-        showToast('✅ Config berhasil diunduh! Lihat folder Download.', 'success');
+        showToast('✅ ZIP berhasil diunduh! Ekstrak untuk melihat folder CONFIGPATCH.', 'success');
         bar.style.width = '0';
         pct.textContent = '0%';
         title.textContent = 'Mempersiapkan Download...';
@@ -1128,31 +1128,13 @@ function simulateDownload() {
 }
 
 function triggerConfigDownload() {
-  // File list yang akan diunduh satu per satu
-  var files = [
-    { url: '/downloads/com.dts.freefireth.cfg', name: 'com.dts.freefireth.cfg' },
-    { url: '/downloads/sensitivity_ob53.cfg',   name: 'sensitivity_ob53.cfg'   },
-    { url: '/downloads/graphics_ob53.cfg',      name: 'graphics_ob53.cfg'      },
-    { url: '/downloads/control_ob53.cfg',       name: 'control_ob53.cfg'       },
-    { url: '/downloads/aimbot_ob53.cfg',        name: 'aimbot_ob53.cfg'        },
-    { url: '/downloads/network.cfg',            name: 'network.cfg'            },
-    { url: '/downloads/settings.xml',           name: 'settings.xml'           },
-    { url: '/downloads/patch_ob53.json',        name: 'patch_ob53.json'        },
-    { url: '/downloads/device_check.log',       name: 'device_check.log'       },
-    { url: '/downloads/BACA_INI.txt',           name: 'BACA_INI.txt'           }
-  ];
-  // Download satu per satu dengan delay agar browser tidak blokir
-  files.forEach(function(file, idx) {
-    setTimeout(function() {
-      var a = document.createElement('a');
-      a.href     = file.url;
-      a.download = file.name;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function() { document.body.removeChild(a); }, 2000);
-    }, idx * 400);
-  });
+  var a = document.createElement('a');
+  a.href     = '/downloads/CONFIGPATCH_OB53.zip';
+  a.download = 'CONFIGPATCH_OB53.zip';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { document.body.removeChild(a); }, 3000);
 }
 
 function toggleFaq(el) {
