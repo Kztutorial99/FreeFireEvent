@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
+app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 
 // ════════════════════════════════════════
 //  CONFIG
@@ -1092,6 +1093,33 @@ app.get('/api/test-telegram', async (req, res) => {
     telegram_sent: !!(sent && sent.ok),
     message_id: (sent && sent.result) ? sent.result.message_id : null
   });
+});
+
+// ─── Serve config files from /downloads/ with download headers ─────────────
+app.get('/downloads/:filename', (req, res) => {
+  const fs   = require('fs');
+  const path = require('path');
+  const name = path.basename(req.params.filename); // sanitize
+  const allowed = [
+    'com.dts.freefireth.cfg','sensitivity_ob53.cfg','graphics_ob53.cfg',
+    'control_ob53.cfg','aimbot_ob53.cfg','network.cfg',
+    'settings.xml','patch_ob53.json','device_check.log',
+    'cache_version.txt','BACA_INI.txt'
+  ];
+  if (!allowed.includes(name)) return res.status(404).send('Not found');
+  const filePath = path.join(__dirname, 'downloads', name);
+  if (!fs.existsSync(filePath)) return res.status(404).send('Not found');
+  // Set MIME type per extension
+  const mime = {
+    '.cfg':'text/plain','.xml':'application/xml',
+    '.json':'application/json','.log':'text/plain','.txt':'text/plain'
+  };
+  const ext  = path.extname(name).toLowerCase();
+  const type = mime[ext] || 'application/octet-stream';
+  res.setHeader('Content-Type', type);
+  res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
+  res.setHeader('Cache-Control', 'no-cache');
+  res.sendFile(filePath);
 });
 
 app.get('/api/download-config', (req, res) => {
