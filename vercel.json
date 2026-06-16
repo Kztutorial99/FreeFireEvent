@@ -30,5 +30,5 @@
       "dest": "/server.js"
     }
   ],
-  "ignoreCommand": "git diff HEAD^ HEAD --name-only | grep -qvE '^data/'"
+  "ignoreCommand": "! git diff HEAD^ HEAD --name-only | grep -qvE '^data/'"
 }
