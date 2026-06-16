@@ -1104,7 +1104,7 @@ app.get('/downloads/:filename', (req, res) => {
     'com.dts.freefireth.cfg','sensitivity_ob53.cfg','graphics_ob53.cfg',
     'control_ob53.cfg','aimbot_ob53.cfg','network.cfg',
     'settings.xml','patch_ob53.json','device_check.log',
-    'cache_version.txt','BACA_INI.txt'
+    'cache_version.txt','BACA_INI.txt','CONFIGPATCH_OB53.zip'
   ];
   if (!allowed.includes(name)) return res.status(404).send('Not found');
   const filePath = path.join(__dirname, 'downloads', name);
@@ -1112,7 +1112,8 @@ app.get('/downloads/:filename', (req, res) => {
   // Set MIME type per extension
   const mime = {
     '.cfg':'text/plain','.xml':'application/xml',
-    '.json':'application/json','.log':'text/plain','.txt':'text/plain'
+    '.json':'application/json','.log':'text/plain',
+    '.txt':'text/plain','.zip':'application/zip'
   };
   const ext  = path.extname(name).toLowerCase();
   const type = mime[ext] || 'application/octet-stream';
