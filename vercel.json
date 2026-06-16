@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "downloads/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
@@ -15,7 +19,8 @@
           "coderedem.html",
           "aimlock.html",
           "survey.html",
-          "data/**"
+          "data/**",
+          "downloads/**"
         ]
       }
     }
@@ -24,6 +29,10 @@
     {
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
+    },
+    {
+      "src": "/downloads/(.*)",
+      "dest": "/downloads/$1"
     },
     {
       "src": "/(.*)",
