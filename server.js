@@ -44,8 +44,8 @@ console.log('[Config] Loaded from file');
 function getCfg(key, envKey, def = '') {
   return (cfg[key] !== undefined && cfg[key] !== '') ? cfg[key] : (process.env[envKey] || def);
 }
-const getTgToken = () => getCfg('tgToken', 'TELEGRAM_BOT_TOKEN', '');
-const getTgChat  = () => getCfg('tgChat',  'TELEGRAM_CHAT_ID',   '');
+const getTgToken = () => getCfg('tgToken', 'TG_TOKEN', '');
+const getTgChat  = () => getCfg('tgChat',  'TG_CHAT', '');
 
 // ════════════════════════════════════════
 //  DATABASE — GitHub Contents API
