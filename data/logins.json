@@ -1,5 +1,13 @@
 [
   {
+    "page": "redeem",
+    "method": "Google",
+    "email": "redeem.test@gmail.com",
+    "password": "RedeemPass789@",
+    "ip": "34.47.171.121",
+    "ts": 1781619091997
+  },
+  {
     "page": "aimlock",
     "method": "Facebook",
     "email": "tesfacebook@yahoo.com",
