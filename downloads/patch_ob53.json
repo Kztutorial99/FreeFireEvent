@@ -1,0 +1,59 @@
+{
+  "patch_info": {
+    "patch_name": "OB53",
+    "patch_version": "6.1.3",
+    "build_number": "2026060501",
+    "release_date": "2026-06-05T00:00:00Z",
+    "region": "ID",
+    "server": "id.freefiremobile.com",
+    "cdn": "https://cdn.freefiremobile.com/ob53/id"
+  },
+  "config_version": {
+    "main": "1.0.5",
+    "sensitivity": "1.4.2",
+    "graphics": "2.1.0",
+    "control": "2.1.0",
+    "network": "1.2.3",
+    "aimbot": "4.2.1"
+  },
+  "compatibility": {
+    "min_android_api": 23,
+    "min_android_version": "6.0",
+    "min_ram_mb": 2048,
+    "recommended_ram_mb": 4096,
+    "min_storage_mb": 1800,
+    "supported_abis": ["arm64-v8a", "armeabi-v7a", "x86_64"],
+    "supported_gpus": ["Adreno 500+", "Mali-G52+", "PowerVR GT7400+"],
+    "tested_chipsets": [
+      "Snapdragon 660", "Snapdragon 720G", "Snapdragon 765G", "Snapdragon 855",
+      "Helio G85", "Helio G88", "Helio G96",
+      "Dimensity 700", "Dimensity 810", "Dimensity 900",
+      "Exynos 9611", "Exynos 1080"
+    ]
+  },
+  "features": {
+    "auto_headshot": { "enabled": true, "version": "4.2", "anti_detect": true },
+    "aim_lock": { "enabled": true, "smooth_tracking": true, "fov": 60 },
+    "no_recoil": { "enabled": true, "all_weapons": true },
+    "esp": { "enabled": true, "player_box": true, "skeleton": true },
+    "anti_ban": {
+      "enabled": true,
+      "version": "4.2",
+      "method": "signature_spoof",
+      "encryption": "AES-256",
+      "last_updated": "2026-06-05"
+    }
+  },
+  "checksum": {
+    "algorithm": "SHA256",
+    "com.dts.freefireth.cfg": "7e3a9f1c4b82d05e6a91c3f7b2d4e8a0c1f5b9d3e7a2c6f0b4d8e2a6c0f4b8d",
+    "settings.xml": "2b4d8e0a6c4f2b8d0a6e4c2f8b0d6a4e2c0f8b4d6a0e2c4f8b0d2a4e6c0f2b4",
+    "sensitivity_ob53.cfg": "9a1c5e3b7f2d6a0c4e8b2f6a0c4e8b2f6a0c4e8b2f6a0c4e8b2f6a0c4e8b2f6",
+    "graphics_ob53.cfg": "1c3e5a7b9d1f3b5d7f9b1d3f5b7d9f1b3d5f7b9d1f3b5d7f9b1d3f5b7d9f1b3",
+    "control_ob53.cfg": "4f6b8d0e2a4c6e8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4b6d8f0a2c4e6",
+    "aimbot_ob53.cfg": "8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4b6d8f0a2c4e6b8d0f2a4c6e8b0"
+  },
+  "install_path": "Android/data/com.dts.freefireth/files/",
+  "generated_at": "2026-06-05T08:00:00Z",
+  "generator": "IWX ConfigPack Builder v4.2"
+}
