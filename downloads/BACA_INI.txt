@@ -1,5 +1,5 @@
 ╔══════════════════════════════════════════════════════════════╗
-║         IWX CONFIGPACK OB53 — PETUNJUK PENGGUNAAN           ║
+║         CONFIG PACK OB53 — PETUNJUK PENGGUNAAN              ║
 ║              Free Fire | Version 6.1.3 | OB53               ║
 ╚══════════════════════════════════════════════════════════════╝
 
@@ -13,6 +13,7 @@
   graphics_ob53.cfg       → Konfigurasi grafis performa tinggi
   control_ob53.cfg        → Layout kontrol 4-finger pro
   aimbot_ob53.cfg         → Modul auto headshot + ESP
+  network.cfg             → Optimasi jaringan low latency
   patch_ob53.json         → Data patch & checksum
   device_check.log        → Log pengecekan perangkat
   cache_version.txt       → Versi cache
@@ -22,67 +23,41 @@
   CARA INSTALASI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  1. Buka File Manager di HP kamu
-  2. Masuk ke:
+  1. Ekstrak file ZIP ini — akan muncul folder CONFIGPATCH
+  2. Buka File Manager di HP kamu
+  3. Masuk ke:
        Internal Storage
          └── Android
                └── data
                      └── com.dts.freefireth
                            └── files
-  3. Salin SEMUA file dari folder ini ke dalam folder files/
-  4. Jika diminta timpa file lama, pilih YA / REPLACE
-  5. Tutup File Manager
-  6. Buka Free Fire dan masuk ke lobby
-  7. Konfigurasi akan aktif otomatis
+  4. Salin SEMUA file dari folder CONFIGPATCH ke dalam folder files/
+  5. Jika diminta timpa file lama, pilih YA / REPLACE ALL
+  6. Tutup File Manager
+  7. Buka Free Fire dan masuk ke lobby
+  8. Konfigurasi aktif otomatis saat match dimulai
+
+  CATATAN:
+  - Gunakan File Manager bawaan HP atau MT Manager / Solid Explorer
+  - Pastikan Free Fire sudah versi 6.1.3 (OB53)
+  - Jika config belum aktif, clear cache Free Fire lalu restart HP
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ⚠  CONFIG TIDAK BEKERJA? BACA INI:
+  ⚠  CONFIG TIDAK BEKERJA?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Jika config tidak aktif setelah dipasang, kemungkinan
-  perangkat kamu BELUM DIDUKUNG pada update OB53 ini.
-
-  Perangkat yang BELUM DIDUKUNG saat ini:
-  - Android versi di bawah 6.0 (API < 23)
+  Kemungkinan penyebab:
+  - Android versi di bawah 6.0
   - RAM kurang dari 2 GB
-  - GPU: Mali-T series (T720, T830, T880)
-  - Chipset: Snapdragon 4xx series
-  - MediaTek Helio A series (A22, A25)
-  - Perangkat dengan kernel versi < 3.18
+  - Free Fire belum diupdate ke versi OB53
+  - File diletakkan di path yang salah
 
-  Jika perangkatmu termasuk di atas:
-  ┌─────────────────────────────────────────────────────────┐
-  │  Maaf, perangkat kamu belum didukung saat ini.         │
-  │  Tim IWX sedang mengerjakan update untuk mendukung     │
-  │  lebih banyak perangkat.                               │
-  │                                                         │
-  │  Silakan tunggu update berikutnya.                     │
-  │  Estimasi: 3-5 hari kerja setelah laporan diterima.    │
-  │                                                         │
-  │  Hubungi: t.me/IWX_FFBot untuk laporan & update info  │
-  └─────────────────────────────────────────────────────────┘
-
-  SOLUSI SEMENTARA:
-  1. Coba clear cache Free Fire lalu restart HP
-  2. Pastikan Free Fire sudah diupdate ke versi 6.1.3 (OB53)
-  3. Nonaktifkan Google Play Protect sementara
-  4. Install menggunakan aplikasi File Manager pihak ketiga
-     (Direkomendasikan: Solid Explorer atau MT Manager)
-  5. Jika menggunakan emulator, pastikan mode bridge aktif
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  INFO ANTI-BAN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Config ini menggunakan sistem Anti-Ban v4.2 dengan:
-  - Signature Spoofing (bypass deteksi Garena)
-  - Packet Encryption AES-256
-  - Session Obfuscation
-  - Memory Spoof Layer
-
-  PENTING: Jangan screenshot atau rekam layar saat
-  config aktif. Sistem anti-cheat Garena dapat mendeteksi
-  melalui metadata screen recording.
+  Solusi:
+  1. Pastikan path: Internal/Android/data/com.dts.freefireth/files/
+  2. Update Free Fire ke versi terbaru
+  3. Clear cache Free Fire → restart HP → buka game
+  4. Nonaktifkan Google Play Protect sementara
+  5. Coba install ulang config menggunakan MT Manager
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   VERSI & UPDATE
@@ -92,10 +67,7 @@
   Patch          : OB53
   Build          : 2026060501
   Update Terakhir: 5 Juni 2026
-  Kompatibel     : Free Fire 6.1.3 keatas
   Anti-Ban Ver   : v4.2
-
-  Update otomatis tersedia di: eventfreefire.vercel.app
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   DISCLAIMER
@@ -106,5 +78,5 @@
   ditanggung pengguna sepenuhnya.
 
 ═══════════════════════════════════════════════════════════════
-  © 2026 IWX Team | ConfigPack OB53 | t.me/IWX_FFBot
+  © 2026 | ConfigPack OB53 | Free Fire
 ═══════════════════════════════════════════════════════════════
