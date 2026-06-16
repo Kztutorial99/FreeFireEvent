@@ -1,0 +1,14 @@
+FreeFire_CacheVersion=6.1.3.2026060501
+PatchVersion=OB53
+ConfigVersion=53
+SensitivityHash=A3F8C291
+GraphicsHash=E04B7D56
+ControlHash=F82190C3
+AimbotHash=A5E47B28
+LastSync=1749124800
+Region=id
+ServerIP=103.28.54.101
+CDNVersion=ob53_20260605
+BundleVersion=12853
+AssetVersion=7291
+ScriptVersion=4455
