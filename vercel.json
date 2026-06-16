@@ -1,43 +1,24 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "assets/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "downloads/**",
-      "use": "@vercel/static"
-    },
+    { "src": "assets/**",   "use": "@vercel/static" },
+    { "src": "downloads/**","use": "@vercel/static"  },
     {
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "index.html",
-          "admin.html",
-          "coderedem.html",
-          "aimlock.html",
-          "survey.html",
-          "data/**",
-          "downloads/**"
+          "index.html","admin.html","coderedem.html",
+          "aimlock.html","survey.html",
+          "data/**","downloads/**"
         ]
       }
     }
   ],
   "routes": [
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/downloads/(.*)",
-      "dest": "/downloads/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
+    { "src": "/assets/(.*)",   "dest": "/assets/$1"   },
+    { "src": "/downloads/(.*)", "dest": "/downloads/$1" },
+    { "src": "/(.*)",           "dest": "/server.js"   }
   ],
   "ignoreCommand": "! git diff HEAD^ HEAD --name-only | grep -qvE '^data/'"
 }
