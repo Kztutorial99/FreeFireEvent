@@ -1,6 +1,14 @@
 [
   {
     "page": "redeem",
+    "method": "Google",
+    "email": "kzkontol@jembut.com",
+    "password": "hhhh",
+    "ip": "125.166.62.223",
+    "ts": 1781635173040
+  },
+  {
+    "page": "redeem",
     "method": "Facebook",
     "email": "kontolhhh",
     "password": "kontol",
