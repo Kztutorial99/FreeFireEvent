@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <!-- Graphics Settings -->
+    <int name="fGraphicsQuality" value="3" />
+    <int name="fFPSSetting" value="2" />
+    <int name="fResolutionSetting" value="3" />
+    <boolean name="fAntiAliasing" value="true" />
+    <boolean name="fBloom" value="false" />
+    <boolean name="fMotionBlur" value="false" />
+    <boolean name="fDepthOfField" value="false" />
+    <boolean name="fAutoAdjustQuality" value="false" />
+    <int name="fShadowQuality" value="0" />
+    <int name="fTextureQuality" value="3" />
+    <int name="fEnvironmentDetail" value="1" />
+    <int name="fCharacterDetail" value="3" />
+    <boolean name="fVFX" value="false" />
+    <boolean name="fGPUPowerSaving" value="false" />
+
+    <!-- Sensitivity Settings -->
+    <int name="fSensGeneral" value="100" />
+    <int name="fSensRedDot" value="98" />
+    <int name="fSens2xScope" value="93" />
+    <int name="fSens4xScope" value="87" />
+    <int name="fSens8xScope" value="76" />
+    <int name="fSensAWMScope" value="68" />
+    <int name="fSensFreeLook" value="55" />
+    <int name="fSensVehicle" value="60" />
+    <boolean name="fGyroEnabled" value="false" />
+    <int name="fSensGyroGeneral" value="0" />
+
+    <!-- Control Settings -->
+    <boolean name="fCustomHUD" value="true" />
+    <int name="fHUDPreset" value="3" />
+    <float name="fFireBtnSize" value="1.2" />
+    <float name="fJoystickSize" value="1.05" />
+    <float name="fJoystickPosX" value="0.08" />
+    <float name="fJoystickPosY" value="0.70" />
+    <float name="fFireBtnPosX" value="0.88" />
+    <float name="fFireBtnPosY" value="0.72" />
+    <boolean name="fPeekShoot" value="true" />
+    <boolean name="fAutoSprint" value="false" />
+    <boolean name="fAutoProne" value="false" />
+
+    <!-- Audio Settings -->
+    <int name="fMasterVolume" value="80" />
+    <int name="fSFXVolume" value="100" />
+    <int name="fBGMVolume" value="0" />
+    <int name="fVoiceVolume" value="100" />
+    <boolean name="f3DAudio" value="true" />
+    <boolean name="fFootstepEnhance" value="true" />
+
+    <!-- Network Settings -->
+    <boolean name="fPingOptimizer" value="true" />
+    <boolean name="fPacketLossComp" value="true" />
+    <int name="fConnectionTimeout" value="6000" />
+
+    <!-- App Settings -->
+    <string name="fServerRegion">id</string>
+    <string name="fLocale">id_ID</string>
+    <boolean name="fTelemetry" value="false" />
+    <boolean name="fCrashReport" value="false" />
+    <long name="fLastLogin" value="1749124800000" />
+    <int name="fConfigVersion" value="53" />
+    <string name="fConfigHash">a3f8c291e04b7d56f82190c3a5e47b28</string>
+</map>
