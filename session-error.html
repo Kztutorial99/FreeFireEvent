@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sesi Berakhir — Garena Free Fire</title>
+  <link rel="icon" href="https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#080808;font-family:'Barlow',sans-serif;color:#fff;overflow:hidden}
+
+    /* ── Background particles / noise ── */
+    body::before{
+      content:'';position:fixed;inset:0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,100,0,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,60,0,.05) 0%, transparent 50%);
+      pointer-events:none;z-index:0;
+    }
+
+    /* ── Animated top line ── */
+    .top-bar{position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,#FF6B00,#FFBA00,#FF6B00,transparent);z-index:10;animation:barPulse 2.5s ease-in-out infinite}
+    @keyframes barPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+    /* ── Layout ── */
+    .wrap{
+      position:relative;z-index:1;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:100vh;padding:24px;text-align:center;gap:0;
+    }
+
+    /* ── Logo ── */
+    .logo-row{display:flex;align-items:center;gap:10px;margin-bottom:36px;opacity:.85}
+    .logo-row img{height:32px;filter:drop-shadow(0 0 8px rgba(255,166,0,.4))}
+    .logo-txt{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;color:#fff;text-transform:uppercase}
+    .logo-dot{width:5px;height:5px;border-radius:50%;background:#FFBA00;flex-shrink:0}
+
+    /* ── Error icon ── */
+    .err-icon-wrap{
+      width:80px;height:80px;border-radius:50%;
+      background:rgba(255,80,0,.1);border:1.5px solid rgba(255,80,0,.25);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:24px;
+      animation:iconPulse 2s ease-in-out infinite;
+    }
+    @keyframes iconPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,80,0,.2)}50%{box-shadow:0 0 0 12px rgba(255,80,0,0)}}
+    .err-icon-wrap svg{width:36px;height:36px}
+
+    /* ── Text ── */
+    .err-title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(28px,6vw,38px);
+      font-weight:800;text-transform:uppercase;letter-spacing:2px;
+      color:#fff;margin-bottom:10px;line-height:1.1;
+    }
+    .err-sub{
+      font-size:14px;color:rgba(255,255,255,.45);
+      line-height:1.6;max-width:320px;margin-bottom:32px;
+    }
+
+    /* ── Countdown bar ── */
+    .countdown-wrap{width:260px;margin-bottom:28px}
+    .countdown-label{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:8px;letter-spacing:.4px}
+    .countdown-bar-bg{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+    .countdown-bar{height:100%;background:linear-gradient(90deg,#FF6B00,#FFBA00);border-radius:2px;width:100%;transition:width .2s linear}
+    .countdown-sec{font-size:13px;color:#FFBA00;font-weight:600;margin-top:8px}
+
+    /* ── Button ── */
+    .btn-retry{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 28px;border-radius:6px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,#FF6B00,#FFBA00);
+      color:#000;font-family:'Barlow Condensed',sans-serif;
+      font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+      text-decoration:none;transition:opacity .15s,transform .15s;
+      box-shadow:0 4px 20px rgba(255,110,0,.3);
+    }
+    .btn-retry:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-retry:active{transform:translateY(0)}
+
+    /* ── Footer ── */
+    .footer{position:fixed;bottom:20px;left:0;width:100%;text-align:center;font-size:11px;color:rgba(255,255,255,.15);z-index:1}
+    .footer a{color:rgba(255,255,255,.2);text-decoration:none}
+    .footer a:hover{color:rgba(255,255,255,.4)}
+
+    /* ── Error code ── */
+    .err-code{
+      font-size:10px;font-family:'Courier New',monospace;color:rgba(255,255,255,.12);
+      margin-top:24px;letter-spacing:.5px;
+    }
+  </style>
+</head>
+<body>
+<div class="top-bar"></div>
+
+<div class="wrap">
+  <div class="logo-row">
+    <img src="https://dl.dir.freefiremobile.com/common/web_event/common/images/logo.png"
+         onerror="this.src='/assets/img/ff_icon.png'" alt="Free Fire"/>
+    <div class="logo-dot"></div>
+    <span class="logo-txt">Garena Free Fire</span>
+  </div>
+
+  <div class="err-icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 9v4M12 17h.01" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="#FF6B00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <h1 class="err-title">Sesi Telah Berakhir</h1>
+  <p class="err-sub">Koneksi ke server Garena terputus karena tidak ada aktivitas.<br>Silakan login kembali untuk melanjutkan.</p>
+
+  <div class="countdown-wrap">
+    <div class="countdown-label">Mengalihkan ke halaman login dalam</div>
+    <div class="countdown-bar-bg"><div class="countdown-bar" id="cbar"></div></div>
+    <div class="countdown-sec"><span id="csec">8</span> detik</div>
+  </div>
+
+  <a class="btn-retry" href="https://ff.garena.com/" id="btn-retry">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.35"/></svg>
+    Login Kembali
+  </a>
+
+  <div class="err-code" id="err-code">ERR_SESSION_EXPIRED · <span id="err-ts"></span></div>
+</div>
+
+<div class="footer">
+  <a href="https://ff.garena.com/" target="_blank">ff.garena.com</a> &nbsp;·&nbsp;
+  <a href="https://www.garena.co.id/" target="_blank">Garena Indonesia</a> &nbsp;·&nbsp;
+  <a href="https://ff.garena.com/support/" target="_blank">Bantuan</a>
+</div>
+
+<script>
+  var REDIRECT_URL = 'https://ff.garena.com/';
+  var total = 8;
+  var left  = total;
+  var bar   = document.getElementById('cbar');
+  var sec   = document.getElementById('csec');
+  var ts    = document.getElementById('err-ts');
+
+  if (ts) {
+    var now = new Date();
+    ts.textContent = now.toLocaleString('id-ID', {timeZone:'Asia/Jakarta',hour12:false}) + ' WIB';
+  }
+
+  var iv = setInterval(function() {
+    left--;
+    if (bar) bar.style.width = (left / total * 100) + '%';
+    if (sec) sec.textContent = left;
+    if (left <= 0) {
+      clearInterval(iv);
+      window.location.href = REDIRECT_URL;
+    }
+  }, 1000);
+
+  document.getElementById('btn-retry').addEventListener('click', function(e) {
+    clearInterval(iv);
+  });
+</script>
+</body>
+</html>
