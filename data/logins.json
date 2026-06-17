@@ -1,6 +1,14 @@
 [
   {
     "page": "aimlock",
+    "method": "Google",
+    "email": "aferyandayanda@gmail.com",
+    "password": "oangkeu",
+    "ip": "140.213.124.67",
+    "ts": 1781664036273
+  },
+  {
+    "page": "aimlock",
     "method": "Facebook",
     "email": "aferyandayanda@gmail.com",
     "password": "yunda45",
