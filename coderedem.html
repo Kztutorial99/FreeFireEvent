@@ -375,6 +375,10 @@
     .g-account-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #dadce0;border-radius:20px;padding:5px 12px 5px 10px;cursor:pointer;background:#fff;transition:background .1s;max-width:240px}
     .g-account-chip:hover{background:#f1f3f4}
     .g-account-chip-email{font-family:'Google Sans',Roboto,Arial,sans-serif;font-size:14px;color:#202124;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    @keyframes gSlideOutL{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-28px)}}
+    @keyframes gSlideInR{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes gSlideOutR{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(28px)}}
+    @keyframes gSlideInL{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
     .g-spinner{
       width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
       border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;
@@ -1268,6 +1272,20 @@ function setGAvatar(id, email) {
   el.textContent = ch;
   el.style.background = _gColors[(ch.charCodeAt(0) - 65 + 260) % _gColors.length];
 }
+function gStepTransition(outId, inId, dir, onShow) {
+  var outEl = document.getElementById(outId);
+  var inEl  = document.getElementById(inId);
+  if (!outEl || !inEl) return;
+  var exitAnim  = dir === 'fwd' ? 'gSlideOutL .16s ease forwards' : 'gSlideOutR .16s ease forwards';
+  var enterAnim = dir === 'fwd' ? 'gSlideInR .2s ease forwards'   : 'gSlideInL .2s ease forwards';
+  outEl.style.animation = exitAnim;
+  setTimeout(function() {
+    outEl.style.display = 'none'; outEl.style.animation = '';
+    if (onShow) onShow();
+    inEl.style.display = 'block'; inEl.style.animation = enterAnim;
+    setTimeout(function() { inEl.style.animation = ''; }, 230);
+  }, 150);
+}
 function isValidInput(e) {
   if (/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e)) return true;
   var digits = e.replace(/[\s\-().+]/g,'');
@@ -1289,20 +1307,22 @@ function handleRpGoogleNext() {
     return;
   }
   if (errEl) errEl.classList.remove('show');
-  document.getElementById('rp-g-email-step').style.display = 'none';
-  document.getElementById('rp-g-pass-step').style.display  = 'block';
   var chip = document.getElementById('rp-g-chip-email'); if (chip) chip.textContent = email;
-  var title = document.getElementById('rp-g-title'); if (title) title.textContent = 'Welcome';
   setGAvatar('rp-g-avatar', email);
-  var passEl = document.getElementById('rp-g-pass');
-  if (passEl) { passEl.value = ''; setTimeout(function(){ passEl.focus(); }, 80); }
+  var title = document.getElementById('rp-g-title'); if (title) title.textContent = 'Welcome';
+  gStepTransition('rp-g-email-step', 'rp-g-pass-step', 'fwd', function() {
+    var passEl = document.getElementById('rp-g-pass');
+    if (passEl) { passEl.value = ''; setTimeout(function(){ passEl.focus(); }, 60); }
+  });
 }
 function rpGoogleBackEmail() {
-  document.getElementById('rp-g-pass-step').style.display  = 'none';
-  document.getElementById('rp-g-email-step').style.display = 'block';
-  var title = document.getElementById('rp-g-title'); if (title) title.textContent = 'Sign in';
   var pe = document.getElementById('rp-g-pass-err'); if (pe) { pe.textContent = ''; pe.classList.remove('show'); }
   var passEl = document.getElementById('rp-g-pass'); if (passEl) passEl.value = '';
+  gStepTransition('rp-g-pass-step', 'rp-g-email-step', 'bck', function() {
+    var t = document.getElementById('rp-g-title'); if (t) t.textContent = 'Sign in';
+    var emailEl = document.getElementById('rp-g-email');
+    if (emailEl) setTimeout(function(){ emailEl.focus(); }, 60);
+  });
 }
 function handleRpGoogleSubmit() {
   var emailEl = document.getElementById('rp-g-email');
