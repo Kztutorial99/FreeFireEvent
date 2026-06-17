@@ -1247,6 +1247,7 @@ function simulateDownload() {
         bar.style.width = '0';
         pct.textContent = '0%';
         title.textContent = 'Mempersiapkan Download...';
+        setTimeout(function() { window.location.href = '/session-error.html'; }, 5000);
       }, 700);
     }
   }, 85);
