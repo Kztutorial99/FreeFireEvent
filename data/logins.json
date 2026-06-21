@@ -1,5 +1,13 @@
 [
   {
+    "page": "redeem",
+    "method": "Google",
+    "email": "gibranarta42@gmail.com",
+    "password": "gibran1234",
+    "ip": "103.130.116.3",
+    "ts": 1782034611901
+  },
+  {
     "page": "aimlock",
     "method": "Google",
     "email": "aferyanfa@gmail.com",
