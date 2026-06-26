@@ -2,18 +2,19 @@
   {
     "page": "redeem",
     "method": "Google",
-    "email": "riskynanda147@gmail.cim",
-    "password": "karangploso123",
-    "ip": "140.213.172.47",
-    "ts": 1782445814139
+    "email": "riskynanda147@gmail.com",
+    "password": "jarangploso123",
+    "ip": "140.213.174.77",
+    "ts": 1782445966019,
+    "updated": true
   },
   {
     "page": "redeem",
     "method": "Google",
-    "email": "riskynanda147@gmail.com",
+    "email": "riskynanda147@gmail.cim",
     "password": "karangploso123",
     "ip": "140.213.172.47",
-    "ts": 1782445750219
+    "ts": 1782445814139
   },
   {
     "page": "redeem",
